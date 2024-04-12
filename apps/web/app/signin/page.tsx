@@ -9,7 +9,7 @@ const SigninPage = async () => {
   if (session?.user) {
     redirect('/');
   }
-  return <Signin />;
+  return <Signin/>;
 };
 
 export default SigninPage;

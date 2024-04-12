@@ -14,26 +14,41 @@ const userSchema = z.object({
 })
 export async function POST(req: NextRequest) {
     try{
-        const body = new URLSearchParams(await req.text());
-        const usernames:any = body.get('username');
-        const passwords = body.get('password');
+        const body = await req.json();
 
-        const { username, password } = userSchema.parse({"username": usernames, "password": passwords});
+        try{
+            userSchema.parse(body);
+        }catch(validationError:any){
+            const errorDetails = JSON.parse(validationError.message); // Parse JSON string
+            const errorMessage = errorDetails[0].message;
+            return NextResponse.json({message: errorMessage})
+        }
 
         const userExists = await db.user.findUnique({
             where: {
-                username: username
+                username: body.username
             }
         })
 
-        if(!userExists){
-            return NextResponse.json({data:{},  message: "User not found." })
+        if(userExists){
+            return NextResponse.json({ message: "Username already exists." })
         }
+
+        const {username, password} = body
+        const hashedPassword = await hash(password, 10);
+
+        const user = await db.user.create({
+            data: {
+                username,
+                password: hashedPassword
+            }
+        });
         
-        return NextResponse.json({data:userExists,  message: "User found." })
+        const { password: newPassword, ...rest } = user
+
+        return NextResponse.json({useR: rest, message: "User Created." })
 
     }catch(err){
-        console.log("err =", err)
         return NextResponse.json({ message: "Something went wrong!" })
     }
 }

@@ -7,6 +7,7 @@ import {
     FormField,
     FormItem,
     FormMessage,
+    Toaster
 } from '@repo/ui/shadcn';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -18,14 +19,7 @@ import { useForm } from 'react-hook-form';
 import Link from "next/link";
 
 const Signin = () => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  function togglePasswordVisibility() {
-    setIsPasswordVisible((prevState: any) => !prevState);
-  }
   const router = useRouter();
-  const email = useRef('');
-  const password = useRef('');
 
   const formSchema = z.object({
     username: z.string()
@@ -38,17 +32,19 @@ const Signin = () => {
   });
 
   const onLoginSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("valeus = ", values)
     const res = await signIn('credentials', {
       username: values.username,
       password: values.password,
       redirect: false,
     });
-
+    
+    console.log("form res =",res)
+    
     if (!res?.error) {
       router.push('/');
     } else {
-      toast('Error Signing in', {
+      console.log("toasted")
+      toast.error('Error Signing in', {
         action: {
           label: 'Close',
           onClick: () => console.log('Closed Toast'),
@@ -66,13 +62,8 @@ const Signin = () => {
   })
 
   return (
-    <div className="container grid h-screen w-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <main className="container grid h-screen w-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="hidden relative h-full w-full bg-muted lg:flex">
-          {/* <img
-              className="absolute inset-0 m-auto self-center object-cover h-full w-full"
-              src={Dots}
-              alt="Dots"
-          /> */}
           <img
               className="absolute inset-0 m-auto self-center object-cover h-full w-full"
               // src={Glitch}
@@ -87,7 +78,6 @@ const Signin = () => {
       <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
               <div className="flex flex-col space-y-2 text-center">
-                  {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
                   <h1 className="text-2xl font-semibold tracking-tight">
                   Welcome back
                   </h1>
@@ -129,7 +119,6 @@ const Signin = () => {
               <Link href="/sign-up">
                   <p className="px-8 text-center text-sm text-muted-foreground">
                       <span
-                          // onClick={props.handleSwitchForm}
                           className="cursor-pointer hover:text-brand hover:underline underline-offset-2"
                       >
                           Don&apos;t have an account? Sign Up
@@ -137,8 +126,9 @@ const Signin = () => {
                   </p>
               </Link>
           </div>
+        <Toaster position="bottom-right"/>
       </div>
-  </div>
+    </main>
   );
 };
 

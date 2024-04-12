@@ -7,7 +7,6 @@ async function validateUser(
   password: string,
 ): Promise<| { data: null }| { data: { firstname: string; userid: string; } }> {
   if (false) {
-    console.log("hey", process.env.LOCAL_CMS_PROVIDER)
     if (password === '123456') {
       return {
         data: {
@@ -18,7 +17,7 @@ async function validateUser(
     }
     return { data: null };
   }
-  const url = 'http://localhost:3000/api/user';
+  const url = 'http://localhost:3000/api/login';
   const headers = {
     'Client-Service': process.env.APPX_CLIENT_SERVICE || '',
     'Auth-Key': process.env.APPX_AUTH_KEY || '',
@@ -28,21 +27,20 @@ async function validateUser(
   body.append('username', username);
   body.append('password', password);
 
-  console.log("called it bruhhh", body)
   try {
     // const response = await fetch(url, {
     //   method: 'POST',
     //   headers,
     //   body,
     // });
-    console.log("pre body =", body)
     const response = await axios.post(url, body, { headers });
 
-    // if (!response.ok) {
-    //   throw new Error(`HTTP error! Status: ${response.status}`);
-    // }
     console.log("res = ", response.data)
-    // const data = await response.json();
+
+    if (response.data.status == 401) {
+      throw new Error(`HTTP error! Status: ${response.data.status}`);
+    }
+
     return response as any; // Or process data as needed
   } catch (error) {
     console.error('Error validating user:', error);
@@ -69,21 +67,7 @@ export const authOptions = {
             credentials.password,
           );
 
-          // const user = await db.user.findUnique({
-          //   where: {
-          //     username: credentials.username
-          //   }
-          // })
-
-          // console.log("check = ", user )
-          if (user) {
-            // try {
-            // //   await db.user.upsert({
-
-            // //   });
-            // } catch (e) {
-            //   console.log(e);
-            // }
+          if (user.data != null) {
 
             return {
               username: credentials.username,
@@ -91,11 +75,11 @@ export const authOptions = {
             };
           }
           // Return null if user data could not be retrieved
-          return {username: credentials.username, password: credentials.password};
+          return null
         } catch (e) {
-          console.error("error = ", e);
+          console.error("error = ", e)
         }
-        return null;
+        return null
       },
     }),
   ],
