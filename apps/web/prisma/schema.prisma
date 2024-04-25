@@ -14,7 +14,19 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  username   String   @unique
-  password   String
+  user_id       Int      @id @default(autoincrement())
+  username      String   @unique
+  password      String
+  email         String   @unique
+  first_name    String
+  last_name     String
+  preferences UserPreferences?
+}
+
+model UserPreferences {
+  id        Int     @id @default(autoincrement())
+  theme     String
+
+  user_id   Int     @unique
+  user      User    @relation(fields: [user_id], references: [user_id])
 }

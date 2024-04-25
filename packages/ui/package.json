@@ -8,6 +8,7 @@
     "./code": "./src/code.tsx",
     "./utils": "./lib/utils.ts",
     "./shadcn": "./src/index.ts",
+    "./form": "./src/shadcn/ui/form.tsx",
     "./globals.css": "./app/globals.css"
   },
   "scripts": {
