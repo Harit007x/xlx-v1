@@ -1,10 +1,10 @@
 'use server'
 
 import { db } from "../../db";
-import { InputTypeRegisterUser } from "./types";
+import { InputTypeRegisterUser, ReturnTypeRegisterUser } from "./types";
 import { hash } from 'bcrypt';
 
-export async function getUserDetails(username?: string) {
+export const getUserDetails = async (username?: string) => {
    
     try {
         const user = await db.user.findUnique({
@@ -18,7 +18,7 @@ export async function getUserDetails(username?: string) {
     }
 }
 
-export async function createUser(data: InputTypeRegisterUser) {
+export const createUser = async (data: InputTypeRegisterUser): Promise<ReturnTypeRegisterUser> => {
    
     try {
         const userExists = await db.user.findUnique({
@@ -28,7 +28,7 @@ export async function createUser(data: InputTypeRegisterUser) {
         })
 
         if(userExists){
-            return {data: {}, message: '', error: 'Username is already taken.'}
+            return {error: 'Username is already taken.'}
         }
 
         const {username, password, first_name, last_name} = data
@@ -44,8 +44,9 @@ export async function createUser(data: InputTypeRegisterUser) {
             }
         });
         
-        return { data: user, message: 'User fetched.'}
-    }  catch(e) {
-        console.log(e);
+        return { data: user, message: 'Signed up successfully.'}
+    }  catch(err) {
+        console.log(err);
+        return { error: 'Failed to signup.' };
     }
 }

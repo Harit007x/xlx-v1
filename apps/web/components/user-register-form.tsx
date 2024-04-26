@@ -13,9 +13,7 @@ import {
   FormMessage,
 } from '@repo/ui/form';
 import * as React from "react"
-import { useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useRouter } from 'next/navigation'
@@ -26,8 +24,6 @@ import { createUser } from '../actions/user/user-actions';
 import { Icons } from './icons';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-type FormData = z.infer<typeof userRegisterSchema>
 
 export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter();
@@ -41,17 +37,18 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
     console.log("data =", res)
 
     if (!res?.error) {
-      toast.success("Account created successfully")
+      toast.success(res.message)
       router.push('/login');
     } else {
       console.log("toasted")
-      toast.error('Error Signing up', {
+      toast.error(res.error, {
         action: {
           label: 'Close',
           onClick: () => console.log('Closed Toast'),
         },
       });
     }
+    setIsLoading(false)
 
   }
 
