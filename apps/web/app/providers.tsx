@@ -2,6 +2,7 @@
 import React from 'react';
 import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from '../components/theme-provider';
+import { RecoilRoot } from 'recoil';
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -12,7 +13,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         enableSystem
         disableTransitionOnChange
       >
-        {children}
+        <RecoilRoot>
+          {children}
+        </RecoilRoot>
       </ThemeProvider>
     </SessionProvider>
   );

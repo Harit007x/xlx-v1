@@ -2,25 +2,22 @@ import { NextRequest, NextResponse } from 'next/server';
 import { compare, hash } from 'bcrypt';
 import * as z from "zod";
 import { db } from '../../../db';
-
-const userSchema = z.object({
-    username: z.string()
-        .min(1, 'Username is required')
-        .min(4, 'Username must be at least 4 characters')
-        .max(10),
-    password: z.string()
-        .min(1, 'Password is required')
-        .min(6, 'Password must be at least 6 characters').max(10),
-})
+import { userLoginSchema } from '../../../actions/user/schema';
 
 export async function POST(req: NextRequest) {
     try{
         const body = new URLSearchParams(await req.text());
         const usernames:any = body.get('username');
         const passwords = body.get('password');
+        const parsed = userLoginSchema.safeParse({"username": usernames, "password": passwords});
 
-        const { username, password } = userSchema.parse({"username": usernames, "password": passwords});
+        if (!parsed.success) {
+            let error = JSON.parse(parsed.error.message)
+            return NextResponse.json({ message: error[0].message });
+        }
 
+        const { username, password } = parsed.data;
+        
         const userExists = await db.user.findUnique({
             where: { username: username }
         })
@@ -34,7 +31,8 @@ export async function POST(req: NextRequest) {
         if(!passwordMatch){
             return NextResponse.json({data:{},  message: "Username or password is incorrect!", status:401 })
         }
-        return NextResponse.json({data:userExists,  message: "User found." })
+ 
+        return NextResponse.json(userExists)
 
     }catch(err){
         return NextResponse.json({ message: "Something went wrong!" })

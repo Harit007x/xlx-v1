@@ -1,17 +1,22 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { db } from '../db';
 import axios from 'axios';
+import { User } from '@prisma/client';
 
 async function validateUser(
   username: string,
   password: string,
-): Promise<| { data: null }| { data: { firstname: string; userid: string; } }> {
+): Promise<| { data: null }| { data: User }> {
   if (false) {
     if (password === '123456') {
       return {
         data: {
-            firstname: 'Random',
-            userid: '1',
+          user_id: 1,
+          username: "randomUser",
+          password: "temp",
+          email: "temp@gmail.com",
+          first_name: "temp",
+          last_name: "user"
         },
       };
     }
@@ -34,8 +39,6 @@ async function validateUser(
     //   body,
     // });
     const response = await axios.post(url, body, { headers });
-
-    console.log("res = ", response.data)
 
     if (response.data.status == 401) {
       throw new Error(`HTTP error! Status: ${response.data.status}`);
@@ -66,13 +69,10 @@ export const authOptions = {
             credentials.username,
             credentials.password,
           );
-
+          
           if (user.data != null) {
 
-            return {
-              username: credentials.username,
-              password: credentials.password
-            };
+            return user.data;
           }
           // Return null if user data could not be retrieved
           return null
@@ -87,13 +87,14 @@ export const authOptions = {
   callbacks: {
     session: async ({ session, token }: any) => {
       if (session?.user) {
-        session.user.id = token.uid;
+        session.user = token.uid;
       }
       return session;
     },
     jwt: async ({ user, token }: any) => {
       if (user) {
-        token.uid = user.id;
+        const { password: newPassword, email: newEmail,  ...rest } = user
+        token.uid = rest;
       }
       return token;
     },

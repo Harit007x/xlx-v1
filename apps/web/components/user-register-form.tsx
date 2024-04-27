@@ -55,6 +55,8 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
   const form = useForm<z.infer<typeof userRegisterSchema>>({
     resolver: zodResolver(userRegisterSchema),
     defaultValues: {
+      first_name: "",
+      last_name: "",
       username: "",
       password: "",
     },
@@ -76,7 +78,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                               render={({ field }) => (
                                   <FormItem>
                                   <FormControl>
-                                      <Input placeholder="first name" {...field} />
+                                      <Input placeholder="First Name" {...field} />
                                   </FormControl>
                                   <FormMessage />
                                   </FormItem>
@@ -89,7 +91,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                               render={({ field }) => (
                                   <FormItem>
                                   <FormControl>
-                                      <Input placeholder="last name" {...field} />
+                                      <Input placeholder="Last Name" {...field} />
                                   </FormControl>
                                   <FormMessage />
                                   </FormItem>
@@ -103,7 +105,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input placeholder="username" {...field} />
+                                <Input placeholder="Username" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -115,7 +117,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input type='password' placeholder="password" {...field} />
+                                <Input type='password' placeholder="Password" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
