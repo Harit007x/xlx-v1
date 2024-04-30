@@ -22,6 +22,12 @@ import {
     Trash,
     User,
     X,
+    Home,
+    UserRound,
+    Folder,
+    Mail,
+    HelpCircleIcon,
+    ChevronDown
 } from "lucide-react"
   
   
@@ -31,6 +37,7 @@ export const Icons = {
     spinner: Loader2,
     chevronLeft: ChevronLeft,
     chevronRight: ChevronRight,
+    chevronDown: ChevronDown,
     trash: Trash,
     post: FileText,
     page: File,
@@ -47,6 +54,11 @@ export const Icons = {
     sun: SunMedium,
     moon: Moon,
     laptop: Laptop,
+    home: Home,
+    userRound: UserRound,
+    folder: Folder,
+    mail: Mail,
+    helpCircle: HelpCircleIcon,
     gitHub: ({ ...props }: LucideProps) => (
       <svg
         aria-hidden="true"

@@ -38,6 +38,46 @@ module.exports = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        blue: {
+          DEFAULT: "hsl(var(--blue))",
+          foreground: "hsl(var(--blue-foreground))",
+        },
+        blueBackground: {
+          DEFAULT: "hsl(var(--blueBackground))",
+          foreground: "hsl(var(--blueBackground-foreground))",
+        },
+        red: {
+          DEFAULT: "hsl(var(--red))",
+          foreground: "hsl(var(--red-foreground))",
+        },
+        redBackground: {
+          DEFAULT: "hsl(var(--redBackground))",
+          foreground: "hsl(var(--redBackground-foreground))",
+        },
+        green: {
+          DEFAULT: "hsl(var(--green))",
+          foreground: "hsl(var(--green-foreground))",
+        },
+        greenBackground: {
+          DEFAULT: "hsl(var(--greenBackground))",
+          foreground: "hsl(var(--greenBackground-foreground))",
+        },
+        purple: {
+          DEFAULT: "hsl(var(--purple))",
+          foreground: "hsl(var(--purple-foreground))",
+        },
+        purpleBackground: {
+          DEFAULT: "hsl(var(--purpleBackground))",
+          foreground: "hsl(var(--purpleBackground-foreground))",
+        },
+        orange: {
+          DEFAULT: "hsl(var(--orange))",
+          foreground: "hsl(var(--orange-foreground))",
+        },
+        orangeBackground: {
+          DEFAULT: "hsl(var(--orangeBackground))",
+          foreground: "hsl(var(--orangeBackground-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",

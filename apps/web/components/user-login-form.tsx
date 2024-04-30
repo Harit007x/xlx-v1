@@ -43,10 +43,9 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       redirect: false,
     });
       
-    console.log("form res =",res)
       
     if (!res?.error) {
-      router.push('/');
+      router.push('/home');
     } else {
       console.log("toasted")
       toast.error('Error Signing in', {

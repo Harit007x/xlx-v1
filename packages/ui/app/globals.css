@@ -28,6 +28,21 @@
       --destructive: 0 84.2% 60.2%;
       --destructive-foreground: 210 40% 98%;
 
+      --blue: 202 100% 50%;
+      --blueBackground: 205 100% 93%;
+
+      --red : 0 100% 59%;
+      --redBackground : 0 100% 95%;
+
+      --green: 144 90% 36%;
+      --greenBackground: 142 50% 89%;
+
+      --purple: 259 100% 71%;
+      --purpleBackground: 259 100% 95%;
+
+      --orange: 36 100% 50%;
+      --orangeBackground: 36 100% 91%;
+
       --border: 214.3 31.8% 91.4%;
       --input: 214.3 31.8% 91.4%;
       --ring: 222.2 84% 4.9%;
@@ -38,6 +53,11 @@
     .dark {
       --background: 222.2 84% 4.9%;
       --foreground: 210 40% 98%;
+      --blueBackground: 205 100% 10%;
+      --redBackground : 0 100% 10%;
+      --greenBackground: 142 50% 10%;
+      --purpleBackground: 259 100% 10%;
+      --orangeBackground: 36, 100%, 10%;
 
       --card: 222.2 84% 4.9%;
       --card-foreground: 210 40% 98%;

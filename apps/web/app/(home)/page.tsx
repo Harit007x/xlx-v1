@@ -10,7 +10,7 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userAtom } from "@repo/store";
 import { useEffect } from "react";
 
-export default function IndexPage() {
+export default function Temp() {
   const { theme, setTheme } = useTheme() || {};
   const session = useSession();
   const setUser = useSetRecoilState(userAtom);
