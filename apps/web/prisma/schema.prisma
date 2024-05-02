@@ -14,19 +14,90 @@ datasource db {
 }
 
 model User {
-  user_id       Int      @id @default(autoincrement())
-  username      String   @unique
-  password      String
-  email         String   @unique
-  first_name    String
-  last_name     String
-  preferences UserPreferences?
+  id                Int      @id @default(autoincrement())
+  username          String   @unique
+  password          String
+  email             String   @unique
+  first_name        String
+  last_name         String
+  preferences       Preferences?
+  session           Session?
+  participants      Participants?
+  Questions         Questions?
 }
 
-model UserPreferences {
-  id        Int     @id @default(autoincrement())
-  theme     String
+model Preferences {
+  id                Int     @id @default(autoincrement())
+  theme             String
 
-  user_id   Int     @unique
-  user      User    @relation(fields: [user_id], references: [user_id])
+  user_id           Int     @unique
+  user              User    @relation(fields: [user_id], references: [id])
+}     
+
+model Session {
+  id                Int     @id @default(autoincrement())
+  name              String
+  scheduled_time    DateTime
+  is_manual         Boolean
+  is_auto           Boolean
+  invitation_link   String
+
+
+  user_id           Int     @unique
+  user              User    @relation(fields: [user_id], references: [id])
+
+  room_id           Int       @unique
+  room              Room      @relation(fields: [room_id], references: [id])
+}
+
+model Room {
+  id                Int       @id @default(autoincrement())
+  name              String
+  password          String
+  is_chat_paused    Boolean
+  is_ind_paused     Boolean
+
+  participants      Participants?
+  session           Session?
+  sessionquestions  SessionQuestions?
+  Questions         Questions?
+}
+
+model Participants {
+  id                Int       @id @default(autoincrement())
+  rank              Int
+  
+  user_id           Int       @unique
+  user              User      @relation(fields: [user_id], references: [id])
+
+  room_id           Int       @unique
+  room              Room      @relation(fields: [room_id], references: [id])
+}
+
+model SessionQuestions {
+  id                Int       @id @default(autoincrement())
+  question          String
+  question_type     String
+  
+  room_id           Int       @unique
+  room              Room      @relation(fields: [room_id], references: [id])
+}
+
+// - question: string
+// - is_question_answered: boolean
+// - up_voted_count: int
+// - room_id: (fk)
+// - user_id: (fk)
+// - session_id: (fk)
+
+model Questions {
+  id                Int       @id @default(autoincrement())
+  question          String
+  up_vote_count     Int
+
+  user_id           Int     @unique
+  user              User    @relation(fields: [user_id], references: [id])
+
+  room_id           Int       @unique
+  room              Room      @relation(fields: [room_id], references: [id])
 }

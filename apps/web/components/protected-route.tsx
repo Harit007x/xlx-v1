@@ -16,7 +16,7 @@ const ProtectedRoute = ({children}: {children: React.ReactNode}) => {
     }
 
     // @ts-ignore
-    if (!session.data?.user.user_id) {
+    if (!session.data?.user.id) {
         redirect('/login');
     }
 

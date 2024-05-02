@@ -5,17 +5,17 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: 'Home',
     path: '/home',
-    icon: <Icons.home width="16" height="16" />,
+    icon: <Icons.home width="18" height="18" className="mr-2" />,
   },
   {
-    title: 'Account Info',
-    path: '/account-info',
-    icon: <Icons.userRound width="16" height="16" />,
+    title: 'Sessions',
+    path: '/sessions',
+    icon: <Icons.userRound width="18" height="18" className="mr-2" />,
   },
   {
     title: 'Projects',
     path: '/projects',
-    icon: <Icons.folder width="16" height="16" />,
+    icon: <Icons.folder width="18" height="18" className="mr-2" />,
     submenu: true,
     subMenuItems: [
       { title: 'All', path: '/projects' },
@@ -26,12 +26,12 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: 'Messages',
     path: '/messages',
-    icon: <Icons.mail width="16" height="16" />,
+    icon: <Icons.mail width="18" height="18" className="mr-2" />,
   },
   {
     title: 'Settings',
     path: '/settings',
-    icon: <Icons.settings width="16" height="16" />,
+    icon: <Icons.settings width="18" height="18" className="mr-2" />,
     submenu: true,
     subMenuItems: [
       { title: 'Account', path: '/settings/account' },
@@ -41,6 +41,6 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: 'Help',
     path: '/help',
-    icon: <Icons.helpCircle width="16" height="16" />,
+    icon: <Icons.helpCircle width="18" height="18" className="mr-2" />,
   },
 ];

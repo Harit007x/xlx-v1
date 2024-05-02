@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default async function LoginPage(){
     const session = await getServerSession(authOptions);
     // @ts-ignore
-    if (session?.user.user_id) {
+    if (session?.user.id) {
         redirect('/home');
     }
 
