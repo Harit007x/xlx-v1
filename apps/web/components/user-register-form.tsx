@@ -131,7 +131,6 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                 </Button>
             </form>
       </Form>
-      <Toaster/>
       {/* <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />

@@ -2,8 +2,6 @@
 import { 
     Button,
     Input,
-    Toaster,
-    buttonVariants
 } from '@repo/ui/shadcn';
 import {
   Form,
@@ -13,9 +11,9 @@ import {
   FormMessage,
 } from '@repo/ui/form';
 import * as React from "react"
-import { useSearchParams } from "next/navigation"
+import { redirect, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useRouter } from 'next/navigation'
@@ -23,17 +21,15 @@ import { toast } from 'sonner';
 import { cn } from '@repo/ui/utils';
 import { userLoginSchema } from '../actions/user/schema';
 import { Icons } from './icons';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '../../../packages/store/src/atoms/user';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-type FormData = z.infer<typeof userLoginSchema>
 
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false)
-  const searchParams = useSearchParams()
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onSubmit(values: z.infer<typeof userLoginSchema>) {
     setIsLoading(true)
@@ -42,8 +38,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       password: values.password,
       redirect: false,
     });
-      
-      
+    
     if (!res?.error) {
       router.push('/home');
     } else {

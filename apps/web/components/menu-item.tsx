@@ -19,7 +19,7 @@ export const MenuItem = ({ item }: { item: SideNavItem }) => {
           <>
             <button
               onClick={toggleSubMenu}
-              className={`flex flex-row items-center py-[0.6rem] px-3 rounded-lg hover-bg-blueBackground w-full justify-between hover:bg-blueBackground ${
+              className={`flex flex-row items-center py-[0.6rem] px-3 rounded-lg w-full justify-between hover:bg-muted ${
                 pathname.includes(item.path) ? 'bg-zinc-100' : ''
               }`}
             >
@@ -42,7 +42,7 @@ export const MenuItem = ({ item }: { item: SideNavItem }) => {
                       href={subItem.path}
                       className={`
                           ${subItem.path === pathname ? 'font-medium' : ''} 
-                          hover:bg-blueBackground text-sm font-normal w-[10rem] p-2 py-[0.6rem] pl-4 ml-3 rounded-lg flex justify-start items-center
+                          hover:bg-muted text-sm font-normal w-[10rem] p-2 py-[0.6rem] pl-4 ml-3 rounded-lg flex justify-start items-center
                       `}
                     >
                       <span>{subItem.title}</span>
@@ -55,8 +55,8 @@ export const MenuItem = ({ item }: { item: SideNavItem }) => {
         ) : (
           <Link
             href={item.path}
-            className={`flex flex-row bg- items-center p-2 rounded-lg hover:bg-blueBackground ${
-              item.path === pathname ? 'bg-blueBackground text-blue' : ''
+            className={`flex flex-row items-center p-2 rounded-lg  ${
+              item.path === pathname ? 'bg-foreground text-background' : 'hover:bg-muted'
             } py-[0.6rem] px-3`}
           >
             <div className="flex flex-row space-x-2 items-center ml-1">

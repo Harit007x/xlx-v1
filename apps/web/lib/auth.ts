@@ -11,7 +11,7 @@ async function validateUser(
     if (password === '123456') {
       return {
         data: {
-          user_id: 1,
+          id: 1,
           username: "randomUser",
           password: "temp",
           email: "temp@gmail.com",
@@ -69,7 +69,6 @@ export const authOptions = {
             credentials.username,
             credentials.password,
           );
-          
           if (user.data != null) {
 
             return user.data;

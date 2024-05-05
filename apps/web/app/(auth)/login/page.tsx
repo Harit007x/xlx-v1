@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+import { Metadata } from "next";
 
 import React from 'react';
 import { cn } from "@repo/ui/utils";
@@ -23,17 +23,7 @@ export default async function LoginPage(){
 
     return (
         <main className="container flex h-screen w-screen flex-col items-center justify-center">
-            <Link
-                href="/"
-                className={cn(
-                    "absolute left-4 top-4 md:left-8 md:top-8 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background"
-                )}
-            >
-                <div className="flex items-center">
-                    <Icons.chevronLeft className="mr-2 h-4 w-4" />
-                    Back
-                </div>
-            </Link>
+            <div className="absolute h-full w-full -z-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                 <div className="flex flex-col space-y-2 text-center">
                     {/* <Icons.logo className="mx-auto h-6 w-6" /> */}

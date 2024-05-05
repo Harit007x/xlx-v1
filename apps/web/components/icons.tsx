@@ -27,7 +27,8 @@ import {
     Folder,
     Mail,
     HelpCircleIcon,
-    ChevronDown
+    ChevronDown,
+    LogOut
 } from "lucide-react"
   
   
@@ -59,6 +60,7 @@ export const Icons = {
     folder: Folder,
     mail: Mail,
     helpCircle: HelpCircleIcon,
+    logout: LogOut,
     gitHub: ({ ...props }: LucideProps) => (
       <svg
         aria-hidden="true"
