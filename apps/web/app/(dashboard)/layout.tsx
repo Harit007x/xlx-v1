@@ -7,7 +7,7 @@ export default function Layout({children}: {children: React.ReactNode}){
             <main className="flex h-screen flex-col md:flex-row md:overflow-hidden">
                 <SideNav />
                 <div 
-                    className='overflow-y-auto flex-1 bg-muted'
+                    className='overflow-y-auto flex-1'
                     style={{ overflowY: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
                 >
                     {children}

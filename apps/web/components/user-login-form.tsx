@@ -20,9 +20,9 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner';
 import { cn } from '@repo/ui/utils';
 import { userLoginSchema } from '../actions/user/schema';
-import { Icons } from './icons';
 import { useSetRecoilState } from 'recoil';
 import { userAtom } from '../../../packages/store/src/atoms/user';
+import { Icons } from '../../../packages/ui/src/icons';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -68,6 +68,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
                     <FormField
                         control={form.control}
                         name="username"
+                        disabled={isLoading}
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
@@ -80,6 +81,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
                     <FormField
                         control={form.control}
                         name="password"
+                        disabled={isLoading}
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
@@ -90,7 +92,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
                         )}
                     />
                 </div>
-                <Button className="md:right-8 md:top-8 w-full" type="submit">
+                <Button className="md:right-8 md:top-8 w-full" type="submit" disabled={isLoading}>
                   {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> }
                   Sign In
                 </Button>

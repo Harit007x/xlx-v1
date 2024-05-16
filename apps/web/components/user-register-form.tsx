@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 import { cn } from '@repo/ui/utils';
 import { userRegisterSchema } from '../actions/user/schema';
 import { createUser } from '../actions/user/user-actions';
-import { Icons } from './icons';
+import { Icons } from '../../../packages/ui/src/icons';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -71,10 +71,11 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                         {/* <Label htmlFor="first_name">
                             Full Name
                         </Label> */}
-                        <div className="flex items-center gap-2 ">
+                        <div className="flex items-center gap-4 ">
                             <FormField
                               control={form.control}
                               name="first_name"
+                              disabled={isLoading}
                               render={({ field }) => (
                                   <FormItem>
                                   <FormControl>
@@ -84,10 +85,11 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                                   </FormItem>
                               )}
                             />
-                            <span className="text-muted-foreground">-</span>
+                            {/* <span className="text-muted-foreground">-</span> */}
                             <FormField
                               control={form.control}
                               name="last_name"
+                              disabled={isLoading}
                               render={({ field }) => (
                                   <FormItem>
                                   <FormControl>
@@ -102,6 +104,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                       <FormField
                         control={form.control}
                         name="username"
+                        disabled={isLoading}
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
@@ -114,6 +117,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                       <FormField
                         control={form.control}
                         name="password"
+                        disabled={isLoading}
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
@@ -125,7 +129,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
                       />
                 </div>
 
-                <Button className="md:right-8 md:top-8 w-full" type="submit">
+                <Button className="md:right-8 md:top-8 w-full" type="submit" disabled={isLoading}>
                   {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> }
                   Sign-Up with Email
                 </Button>

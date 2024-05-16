@@ -35,12 +35,15 @@ model Preferences {
 }     
 
 model Session {
-  id                Int     @id @default(autoincrement())
-  name              String
-  scheduled_time    DateTime
-  is_manual         Boolean
-  is_auto           Boolean
-  invitation_link   String
+  id                    Int     @id @default(autoincrement())
+  name                  String
+  scheduled_date_time   DateTime
+  description           String
+  is_manual             Boolean
+  is_auto               Boolean
+  invitation_link       String
+  password              String
+  tags                  String[]
 
 
   user_id           Int     @unique

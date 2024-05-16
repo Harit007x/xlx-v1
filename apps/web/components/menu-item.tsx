@@ -1,9 +1,9 @@
 'use client'
 import { useState } from "react";
 import { SideNavItem } from "../types/types";
-import { Icons } from "./icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Icons } from "../../../packages/ui/src/icons";
 
 export const MenuItem = ({ item }: { item: SideNavItem }) => {
     const originPathname = usePathname()

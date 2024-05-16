@@ -5,4 +5,10 @@ export type SideNavItem = {
     submenu?: boolean;
     subMenuItems?: SideNavItem[];
 };
-    
+
+export type SessionBoxItems = {
+    sessionName: string,
+    scheduledDateTime: string,
+    description: string,
+    tags: Array<string>
+}

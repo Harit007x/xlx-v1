@@ -1,5 +1,5 @@
-import { Icons } from "../components/icons";
-import { SideNavItem } from "../types/types";
+import { Icons } from "../../../packages/ui/src/icons";
+import { SessionBoxItems, SideNavItem } from "../types/types";
 
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
@@ -42,5 +42,46 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     title: 'Help',
     path: '/help',
     icon: <Icons.helpCircle width="18" height="18" className="mr-2" />,
+  },
+];
+
+
+export const SESSION_BOX_ITEMS: SessionBoxItems[] = [
+  
+  {
+    sessionName: "Devops",
+    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
+    tags: ['important', 'docker', 'aws']
+  },
+  {
+    sessionName: "Devops",
+    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
+    tags: ['important', 'docker', 'aws']
+  },
+  {
+    sessionName: "Devops",
+    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
+    tags: ['important', 'docker', 'aws']
+  },
+  {
+    sessionName: "Devops",
+    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
+    tags: ['important', 'docker', 'aws']
+  },
+  {
+    sessionName: "Devops",
+    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
+    tags: ['important', 'docker', 'aws']
+  },
+  {
+    sessionName: "Design",
+    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
+    tags: ['figma', 'behance', 'adobe']
   },
 ];

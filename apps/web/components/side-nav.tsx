@@ -2,13 +2,13 @@
 
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { Icons } from "./icons";
 import { SIDENAV_ITEMS } from "../lib/constants";
 import { MenuItem } from "./menu-item";
 import { Avatar, AvatarFallback, AvatarImage, Label } from "@repo/ui/shadcn";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../../../packages/store/src/atoms";
 import { signOut } from "next-auth/react";
+import { Icons } from "../../../packages/ui/src/icons";
 
 const SideNav = () => {
   const { theme, setTheme } = useTheme()

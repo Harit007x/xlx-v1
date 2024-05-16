@@ -2,9 +2,9 @@
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { Icons } from './icons'
 import { useSetRecoilState } from 'recoil'
 import { userAtom } from '../../../packages/store/src/atoms'
+import { Icons } from '../../../packages/ui/src/icons'
 
 const ProtectedRoute = ({children}: {children: React.ReactNode}) => {
     const session = useSession()

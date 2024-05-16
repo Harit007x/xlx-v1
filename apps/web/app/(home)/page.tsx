@@ -10,6 +10,10 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userAtom } from "@repo/store";
 import { useEffect } from "react";
 
+
+// Not using this page, but after deleting it, it throws an error 404 not found for not found page it self.
+
+
 export default function Temp() {
   const { theme, setTheme } = useTheme() || {};
   const session = useSession();

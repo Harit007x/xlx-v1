@@ -28,7 +28,12 @@ import {
     Mail,
     HelpCircleIcon,
     ChevronDown,
-    LogOut
+    LogOut,
+    Link2,
+    ListFilter,
+    Clipboard,
+    ClipboardCheck,
+    CircleX,
 } from "lucide-react"
   
   
@@ -61,6 +66,11 @@ export const Icons = {
     mail: Mail,
     helpCircle: HelpCircleIcon,
     logout: LogOut,
+    link2: Link2,
+    listFilter: ListFilter,
+    clipBoard: Clipboard,
+    clipboardCheck: ClipboardCheck,
+    circleX: CircleX,
     gitHub: ({ ...props }: LucideProps) => (
       <svg
         aria-hidden="true"
