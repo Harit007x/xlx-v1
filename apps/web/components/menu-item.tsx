@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icons } from "../../../packages/ui/src/icons";
 
-export const MenuItem = ({ item }: { item: SideNavItem }) => {
+export const MenuItem = ({ item, onClick }: { item: SideNavItem, onClick: () => void }) => {
     const originPathname = usePathname()
     const pathname = originPathname+''
     const [subMenuOpen, setSubMenuOpen] = useState(false);

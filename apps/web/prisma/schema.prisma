@@ -21,8 +21,8 @@ model User {
   first_name        String
   last_name         String
   preferences       Preferences?
-  session           Session?
-  participants      Participants?
+  session           Session[]       // [] brackets denote a one-to-many relationship
+  participants      Participants?   // ? denotes an optional field, meaning it can be null or absent
   Questions         Questions?
 }
 
@@ -35,33 +35,30 @@ model Preferences {
 }     
 
 model Session {
-  id                    Int     @id @default(autoincrement())
+  id                    Int         @id @default(autoincrement())
   name                  String
-  scheduled_date_time   DateTime
+  schedule_date_time    DateTime    @default(now())
   description           String
-  is_manual             Boolean
   is_auto               Boolean
   invitation_link       String
   password              String
-  tags                  String[]
+  tags                  Json[]
 
-
-  user_id           Int     @unique
+  user_id           Int     
   user              User    @relation(fields: [user_id], references: [id])
 
-  room_id           Int       @unique
+  room_id           Int       
   room              Room      @relation(fields: [room_id], references: [id])
 }
 
 model Room {
   id                Int       @id @default(autoincrement())
   name              String
-  password          String
-  is_chat_paused    Boolean
-  is_ind_paused     Boolean
+  is_chat_paused    Boolean   @default(false)
+  is_ind_paused     Boolean   @default(false)
 
   participants      Participants?
-  session           Session?
+  session           Session[]
   sessionquestions  SessionQuestions?
   Questions         Questions?
 }

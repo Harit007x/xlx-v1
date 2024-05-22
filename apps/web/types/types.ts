@@ -6,9 +6,13 @@ export type SideNavItem = {
     subMenuItems?: SideNavItem[];
 };
 
-export type SessionBoxItems = {
-    sessionName: string,
-    scheduledDateTime: string,
-    description: string,
-    tags: Array<string>
+export type TSessionBoxItems = {
+    id?: number;
+    name: string;
+    schedule_date_time: Date;
+    description: string;
+    tags: any;
+    onClick?: () => void;
+    is_auto?: boolean
+    password?: string
 }

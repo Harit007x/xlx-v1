@@ -34,6 +34,7 @@ import {
     Clipboard,
     ClipboardCheck,
     CircleX,
+    Calendar
 } from "lucide-react"
   
   
@@ -71,6 +72,7 @@ export const Icons = {
     clipBoard: Clipboard,
     clipboardCheck: ClipboardCheck,
     circleX: CircleX,
+    calender: Calendar,
     gitHub: ({ ...props }: LucideProps) => (
       <svg
         aria-hidden="true"

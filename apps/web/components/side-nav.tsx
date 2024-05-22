@@ -9,6 +9,7 @@ import { useRecoilValue } from "recoil";
 import { userAtom } from "../../../packages/store/src/atoms";
 import { signOut } from "next-auth/react";
 import { Icons } from "../../../packages/ui/src/icons";
+import { SideNavItem } from "../types/types";
 
 const SideNav = () => {
   const { theme, setTheme } = useTheme()
@@ -43,8 +44,8 @@ const SideNav = () => {
                         }
                     </div>
                     <div className="flex flex-col space-y-1 md:px-6 ">
-                        {SIDENAV_ITEMS.map((item:any, idx:any) => {
-                            return <MenuItem key={idx} item={item} />;
+                        {SIDENAV_ITEMS.map((item:SideNavItem, idx:any) => {
+                            return <MenuItem key={idx} item={item} onClick={() => console.log("side nav = ", item.title)}/>;
                         })}
                     </div>
                 </div>

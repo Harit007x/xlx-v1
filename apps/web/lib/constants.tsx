@@ -1,5 +1,5 @@
 import { Icons } from "../../../packages/ui/src/icons";
-import { SessionBoxItems, SideNavItem } from "../types/types";
+import { TSessionBoxItems, SideNavItem } from "../types/types";
 
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
@@ -46,42 +46,83 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
 ];
 
 
-export const SESSION_BOX_ITEMS: SessionBoxItems[] = [
+export const SESSION_BOX_ITEMS: TSessionBoxItems[] = [
   
   {
-    sessionName: "Devops",
-    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    id: 1,
+    name: "Devops",
+    schedule_date_time: new Date("2022-03-25"),
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
-    tags: ['important', 'docker', 'aws']
+    tags: [
+      { value: 'chocolate', label: 'Chocolate' },
+      { value: 'strawberry', label: 'Strawberry' }
+    ],
+    is_auto: true,
+    password: "random@231"
   },
   {
-    sessionName: "Devops",
-    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    id: 2,
+    name: "Database",
+    schedule_date_time: new Date("2022-03-25"),
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
-    tags: ['important', 'docker', 'aws']
+    tags: [
+      { value: 'indexing', label: 'Indexing' },
+      { value: 'normalizing', label: 'Normalizing' },
+      { value: 'postgres', label: 'Postgres' }
+    ],
+    is_auto: true,
+    password: "random@231"
   },
   {
-    sessionName: "Devops",
-    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    id: 3,
+    name: "Gaming",
+    schedule_date_time: new Date("2022-03-25"),
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
-    tags: ['important', 'docker', 'aws']
+    tags: [
+      { value: 'csgo', label: 'Csgo' },
+      { value: 'valorant', label: 'Valorant' },
+      { value: 'nfs', label: 'Nfs' },
+    ],
+    is_auto: true,
+    password: "random@231"
   },
   {
-    sessionName: "Devops",
-    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    id: 4,
+    name: "Data Structures",
+    schedule_date_time: new Date("2022-03-25"),
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
-    tags: ['important', 'docker', 'aws']
+    tags: [
+      { value: 'sorting', label: 'Sorting' },
+      { value: 'arrays', label: 'Arrays' },
+      { value: 'strings', label: 'Strings' },
+    ],
+    is_auto: true,
+    password: "random@231"
   },
   {
-    sessionName: "Devops",
-    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    id: 5,
+    name: "Web3",
+    schedule_date_time: new Date("2022-03-25"),
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
-    tags: ['important', 'docker', 'aws']
+    tags: [
+      { value: 'ethereum', label: 'Ethereum' },
+      { value: 'solana', label: 'Solana' },
+      { value: 'contracts', label: 'Contracts' },
+    ],
+    is_auto: true,
+    password: "random@231"
   },
   {
-    sessionName: "Design",
-    scheduledDateTime: 'Tue - 10/05/2024 : 10:00AM',
+    id: 6,
+    name: "Design",
+    schedule_date_time: new Date("2022-03-25"),
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has the industry's standard dummy text ever since the 1500s.",
-    tags: ['figma', 'behance', 'adobe']
+    tags: [
+      { value: 'figma', label: 'Figma' },
+      { value: 'behance', label: 'Behance' },
+      { value: 'adobe', label: 'Adobe' },
+    ],
+    is_auto: true,
+    password: "random@231"
   },
 ];

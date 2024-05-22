@@ -12,3 +12,5 @@ export * from "./scroll-area";
 export * from "./textarea";
 export * from "./switch";
 export * from "./sheet";
+export * from "./popover";
+export * from "./calendar";

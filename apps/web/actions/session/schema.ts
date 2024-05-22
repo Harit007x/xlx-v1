@@ -8,15 +8,17 @@ export const sessionSchema = z.object({
     description: z.string()
         .min(1, 'Description is required')
         .min(4, 'Description must be at least 6 characters')
-        .max(10),
-    schedule_date_time: z.string()
-        .refine((dateTime) => dateTime.trim() !== '', {
-            message: 'Schedule Date Time is required',
-        }),
-    tags: z.array(z.string())
-        .min(1, 'At least one tag is required'),
-    is_auto: z.boolean().default(false).optional(),
+        .max(250),
+    schedule_date_time: z.date({
+        required_error: 'Schedule date and time is required',
+        invalid_type_error: 'Invalid date format',
+    }),
+    is_auto: z.boolean().default(false),
     password: z.string()
         .min(1, 'Password is required')
-        .min(6, 'Password must be at least 6 characters')
+        .min(6, 'Password must be at least 6 characters'),
+    tags: z.array(z.object({
+        value: z.string(),
+        label: z.string(),
+        })).optional(),
 });

@@ -13,11 +13,20 @@ import {
   Input,
 } from '@repo/ui/shadcn'
 import { SESSION_BOX_ITEMS } from '../../../lib/constants'
-import { SessionBoxItems } from '../../../types/types'
+import { TSessionBoxItems } from '../../../types/types'
 import { SessionForm } from '../../../components/session-form'
 import { Icons } from '../../../../../packages/ui/src/icons'
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
+
 const Sessions = () => {
   const [toggleOpen, setToggleOpen] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [sessionData, setSessionData] = useState<TSessionBoxItems|null>(null);
 
   return (
     <div className='flex flex-col h-screen'>
@@ -65,7 +74,10 @@ const Sessions = () => {
               </div>
               <Button 
                 className="gap-1"
-                onClick={() => setToggleOpen(!toggleOpen)}
+                onClick={() => {
+                  setToggleOpen(!toggleOpen)
+                  setIsEdit(false)
+                }}
               >
                 <Icons.add className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Session</span>
@@ -74,7 +86,7 @@ const Sessions = () => {
           {/* <ScrollArea className="flex-1">
             <div className='flex flex-col gap-2 p-4'>
               {
-                SESSION_BOX_ITEMS.map((item: SessionBoxItems, index: number) => {
+                SESSION_BOX_ITEMS.map((item: TSessionBoxItems, index: number) => {
                   return (
                     <SessionBox
                       key={index}
@@ -92,14 +104,19 @@ const Sessions = () => {
             <ScrollArea className="flex-1">
               <div className='flex flex-col gap-2 px-4 pb-4'>
                 {
-                  SESSION_BOX_ITEMS.map((item: SessionBoxItems, index: number) => {
+                  SESSION_BOX_ITEMS.map((item: TSessionBoxItems, index: number) => {
                     return (
                       <SessionBox
-                        key={index}
-                        sessionName={item.sessionName}
-                        scheduledDateTime={item.scheduledDateTime}
+                        key={item.id}
+                        name={item.name}
+                        schedule_date_time={item.schedule_date_time}
                         description={item.description}
                         tags={item.tags}
+                        onClick={()=> {
+                          setSessionData(item)
+                          setToggleOpen(true)
+                          setIsEdit(true)
+                        }}
                       />
                     )
                   })
@@ -140,6 +157,9 @@ const Sessions = () => {
       <SessionForm
           toggleOpen={toggleOpen}
           setToggleOpen={setToggleOpen}
+          sessionData={sessionData}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
       />
     </div>
   )
