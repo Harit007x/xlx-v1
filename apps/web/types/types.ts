@@ -13,6 +13,6 @@ export type TSessionBoxItems = {
     description: string;
     tags: any;
     onClick?: () => void;
-    is_auto?: boolean
-    password?: string
+    is_auto?: boolean;
+    password?: string;
 }

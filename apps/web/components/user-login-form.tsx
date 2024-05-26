@@ -21,7 +21,6 @@ import { toast } from 'sonner';
 import { cn } from '@repo/ui/utils';
 import { userLoginSchema } from '../actions/user/schema';
 import { useSetRecoilState } from 'recoil';
-import { userAtom } from '../../../packages/store/src/atoms/user';
 import { Icons } from '../../../packages/ui/src/icons';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}

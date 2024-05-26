@@ -4,4 +4,6 @@ import { ActionState } from '../../lib/create-safe-action';
 import { Session } from '@prisma/client';
 
 export type InputTypeSession = z.infer<typeof sessionSchema>;
-export type ReturnTypeSession = ActionState<InputTypeSession,Session>;
+export type CreateReturnTypeSession = ActionState<InputTypeSession,Session>;
+export type GetReturnTypeSingleSession = ActionState<InputTypeSession,Session>;
+export type GetReturnTypeSession = ActionState<InputTypeSession,Session[]>;

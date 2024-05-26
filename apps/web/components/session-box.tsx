@@ -5,7 +5,7 @@ import { Icons } from '../../../packages/ui/src/icons'
 
 const SessionBox = (props: TSessionBoxItems) => {
   return (
-    <main className='flex flex-col p-4 gap-3 border border-foreground/10 rounded-lg hover:bg-secondary' onClick={props.onClick}>
+    <main className='flex flex-col p-4 gap-3 border border-foreground/10 rounded-lg hover:bg-secondary hover:cursor-pointer' onClick={props.onClick}>
         
         <div className='flex flex-col gap-2'>
 
