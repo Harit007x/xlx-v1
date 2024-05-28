@@ -1,15 +1,15 @@
 'use client'
 
-import { useTheme } from "next-themes";
-import Link from "next/link";
-import { SIDENAV_ITEMS } from "../lib/constants";
-import { MenuItem } from "./menu-item";
-import { Avatar, AvatarFallback, AvatarImage, Label } from "@repo/ui/shadcn";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../../../packages/store/src/atoms";
-import { signOut } from "next-auth/react";
-import { Icons } from "../../../packages/ui/src/icons";
-import { SideNavItem } from "../types/types";
+import { useTheme } from "next-themes"
+import Link from "next/link"
+import { SIDENAV_ITEMS } from "../lib/constants"
+import { MenuItem } from "./menu-item"
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from "@repo/ui/shadcn"
+import { useRecoilValue } from "recoil"
+import { userAtom } from "../../../packages/store/src/atoms"
+import { signOut } from "next-auth/react"
+import { Icons } from "../../../packages/ui/src/icons"
+import { SideNavItem } from "../types/types"
 
 const SideNav = () => {
   const { theme, setTheme } = useTheme()
@@ -55,10 +55,19 @@ const SideNav = () => {
                             <AvatarImage src="1.jpeg"/>
                             <AvatarFallback>TS</AvatarFallback>
                         </Avatar>
-                        <div className="flex-col">
-                            <div className="font-semibold">{user?.first_name} {user?.last_name}</div>
-                            <div>{user?.username}</div>
-                        </div>
+                        {
+                            user
+                            ?
+                                <div className="flex-col gap-3">
+                                    <div className="font-semibold">{user?.first_name} {user?.last_name}</div>
+                                    <div>{user?.username}</div>
+                                </div>
+                            :
+                                <div className="flex flex-col gap-2">
+                                    <Skeleton className="h-4 w-[100px]" />
+                                    <Skeleton className="h-4 w-[130px]" />
+                                </div>
+                        }
                     </div>
 
                     <Icons.logout 

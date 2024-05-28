@@ -36,6 +36,7 @@ import { cn } from '@repo/ui/utils';
 import { format } from 'date-fns';
 import { TimePickerDemo } from '@repo/ui/date-time-picker';
 import { MultipleSelector } from '@repo/ui/multi-select';
+import { CopyButton } from '@repo/ui/copy-button';
 
 interface ISessionFormProps{
   toggleOpen: boolean
@@ -183,28 +184,10 @@ export function SessionForm(props: ISessionFormProps) {
                             )}
                           />
                         </div>
-                        {/* <div className="flex flex-col space-y-1.5">
-                          <FormField
-                            control={form.control}
-                            name="schedule_date_time"
-                            render={({ field }) => (
-                                <FormItem>
-                                  <div className="space-y-0.5">
-                                    <FormLabel className="text-base">
-                                      Scheduled Date Time
-                                    </FormLabel>
-                                  </div>
-                                <FormControl>
-                                    <Input placeholder="Date Time" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                          />
-                        </div> */}
+                        
                         <div className="flex flex-col w-full">
                           
-                        <FormField
+                          <FormField
                             control={form.control}
                             name="schedule_date_time"
                             render={({ field }) => (
@@ -247,94 +230,96 @@ export function SessionForm(props: ISessionFormProps) {
                               </FormItem>
                             )}
                           />
-
-                          {/* <FormField
+                        </div>
+                        <div className="flex flex-col space-y-1.5">
+                          <FormField
                             control={form.control}
-                            name="schedule_date_time"
+                            name="tags"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel htmlFor="schedule_date_time">Schedule_date Time</FormLabel>
+                                <FormLabel>Tags</FormLabel>
                                 <FormControl>
-                                  <DateTimePicker
-                                    granularity="second"
-                                    jsDate={field.value}
-                                    onJsDateChange={field.onChange}
+                                  <MultipleSelector
+                                    {...field}
+                                    creatable
+                                    defaultOptions={options}
+                                    placeholder="Select or create custom tags"
+                                    emptyIndicator={
+                                      <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                                        no results found.
+                                      </p>
+                                    }
                                   />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
-                          /> */}
+                          />
                         </div>
-                        <div className="flex flex-col space-y-1.5">
-                        <FormField
-                          control={form.control}
-                          name="tags"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Tags</FormLabel>
-                              <FormControl>
-                                <MultipleSelector
-                                  {...field}
-                                  creatable
-                                  defaultOptions={options}
-                                  placeholder="Select or create custom tags"
-                                  emptyIndicator={
-                                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                                      no results found.
-                                    </p>
-                                  }
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        </div>
+                        {props.isEdit &&
+                          <div className="flex gap-3 space-y-1.5">
+                            <FormField
+                              control={form.control}
+                              name="invitation_link"
+                              render={({ field }) => (
+                                  <FormItem className='w-full'>
+                                    <div className="space-y-0.5">
+                                      <FormLabel className="text-base">
+                                        Invitation Link
+                                      </FormLabel>
+                                    </div>
+                                    <FormControl>
+                                      <Input placeholder="invitation_link" disabled {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                              )}
+                            />
+                            <CopyButton className="self-end" textToCopy={props.sessionData?.invitation_link}/>
+                          </div>
+                        }
                         <div className="flex flex-col space-y-1.5">
                           <FormField
                             control={form.control}
                             name="password"
                             render={({ field }) => (
-                                <FormItem>
+                              <FormItem>
                                   <div className="space-y-0.5">
                                     <FormLabel className="text-base">
                                       Session Password
                                     </FormLabel>
                                   </div>
                                 <FormControl>
-                                    <Input placeholder="Password" type='password' {...field} />
+                                    <Input placeholder="Password" disabled={props.isEdit} type='password' {...field} />
                                 </FormControl>
                                 <FormMessage />
-                                </FormItem>
-                            )}
-                          />
-                        </div>
-                        <div className="flex flex-col space-y-1.5">
-                          <FormField
-                            control={form.control}
-                            name="is_auto"
-                            render={({ field }) => (
-                              <FormItem>
-                                <div className="space-y-0.5">
-                                  <FormLabel className="text-base">
-                                    Auto Start
-                                  </FormLabel>
-                                  <FormDescription>
-                                    If enabled, the session will automatically start at the scheduled time.
-                                  </FormDescription>
-                                </div>
-                                <FormControl>
-                                  <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                  />
-                                </FormControl>
-                                <FormMessage/>
                               </FormItem>
                             )}
                           />
                         </div>
+                        <FormField
+                          control={form.control}
+                          name="is_auto"
+                          render={({ field }) => (
+                            <FormItem>
+                              <div className="space-y-0.5">
+                                <FormLabel className="text-base">
+                                  Auto Start
+                                </FormLabel>
+                                <FormDescription>
+                                  If enabled, the session will automatically start at the scheduled time.
+                                </FormDescription>
+                              </div>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                />
+                              </FormControl>
+                              <FormMessage/>
+                            </FormItem>
+                          )}
+                        />
                       </div>
                     </CardContent>
                   <CardFooter className="flex justify-end gap-4">

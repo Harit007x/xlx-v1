@@ -12,6 +12,7 @@ export type TSessionBoxItems = {
     schedule_date_time: Date;
     description: string;
     tags: any;
+    invitation_link: string;
     onClick?: () => void;
     is_auto?: boolean;
     password?: string;

@@ -4,6 +4,8 @@ import { TSessionBoxItems } from '../types/types'
 import { Icons } from '../../../packages/ui/src/icons'
 
 const SessionBox = (props: TSessionBoxItems) => {
+  const locale = 'en-US'; // or 'en-GB' or any other locale you prefer
+  const options:any = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
   return (
     <main className='flex flex-col p-4 gap-3 border border-foreground/10 rounded-lg hover:bg-secondary hover:cursor-pointer' onClick={props.onClick}>
         
@@ -11,7 +13,7 @@ const SessionBox = (props: TSessionBoxItems) => {
 
             <p className='font-bold text-md'>{props.name}</p>
             
-            <p className='text-sm font-font-semibold'>{props.schedule_date_time.toLocaleString()}</p>
+            <p className='text-sm font-font-semibold'>{props.schedule_date_time.toLocaleString(locale, options)}</p>
     
             <p className='text-sm text-muted-foreground'>{props.description}</p>
         

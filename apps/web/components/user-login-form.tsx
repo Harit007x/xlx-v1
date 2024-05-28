@@ -11,23 +11,20 @@ import {
   FormMessage,
 } from '@repo/ui/form';
 import * as React from "react"
-import { redirect, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signIn, useSession } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner';
 import { cn } from '@repo/ui/utils';
 import { userLoginSchema } from '../actions/user/schema';
-import { useSetRecoilState } from 'recoil';
 import { Icons } from '../../../packages/ui/src/icons';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter();
-
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onSubmit(values: z.infer<typeof userLoginSchema>) {
@@ -38,11 +35,13 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       redirect: false,
     });
     
+    console.log("form resposne =", res)
+
     if (!res?.error) {
       router.push('/home');
     } else {
-      console.log("toasted")
-      toast.error('Error Signing in', {
+      setIsLoading(false)
+      toast.error('Username or password is incorrect.', {
         action: {
           label: 'Close',
           onClick: () => console.log('Closed Toast'),

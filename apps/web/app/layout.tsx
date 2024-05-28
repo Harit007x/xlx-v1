@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { Toaster } from "@repo/ui/shadcn";
+import SessionChange from "../components/session-change";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>  
-          {children}
-          <Toaster/>
+        <Providers>
+            <SessionChange/>
+            {children}
+            <Toaster/>
         </Providers>
       </body>
     </html>

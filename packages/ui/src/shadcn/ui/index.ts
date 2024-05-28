@@ -14,3 +14,4 @@ export * from "./switch";
 export * from "./sheet";
 export * from "./popover";
 export * from "./calendar";
+export * from "./skeleton";

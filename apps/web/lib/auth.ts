@@ -39,7 +39,7 @@ async function validateUser(
     //   body,
     // });
     const response = await axios.post(url, body, { headers });
-
+    
     if (response.data.status == 401) {
       throw new Error(`HTTP error! Status: ${response.data.status}`);
     }

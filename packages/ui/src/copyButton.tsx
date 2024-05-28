@@ -3,19 +3,25 @@
 import { useState } from "react";
 import { Button } from "./shadcn/ui/button";
 import { Icons } from "./icons";
+import { toast } from "sonner";
 
 interface CopyButtonProps {
-    textToCopy: string;
+    textToCopy: any;
+    className: string;
 }
 
-const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy }) => {
+export const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, className }) => {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
+  const handleCopy = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     try {
       await navigator.clipboard.writeText(textToCopy);
       setCopied(true);
-      setTimeout(() => setCopied(false), 3000); // Reset copied state after 2 seconds
+
+      toast.success('Link copied');
+
+      setTimeout(() => setCopied(false), 3000);
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
@@ -23,13 +29,13 @@ const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy }) => {
 
   return (
     <Button 
+      type="button"
       size={'icon'}
-      className={`hover:bg-secondary bg-secondary text-foreground  ${copied && "bg-foreground hover:bg-foreground text-background"}`}
+      className={`hover:bg-secondary bg-background text-foreground border border-secondary ${className}`}
       onClick={handleCopy}
+      disabled={copied}
     >
-      {copied ? <Icons.clipboardCheck/> : <Icons.clipBoard/>}
+      {copied ? <Icons.check className="h-4 w-4"/> : <Icons.clipBoard className="h-4 w-4"/>}
     </Button>
   );
 };
-
-export {CopyButton}

@@ -13,6 +13,7 @@ export const sessionSchema = z.object({
         required_error: 'Schedule date and time is required',
         invalid_type_error: 'Invalid date format',
     }),
+    invitation_link: z.string().optional(),
     is_auto: z.boolean().default(false),
     password: z.string()
         .min(1, 'Password is required')

@@ -32,10 +32,10 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
               <Tabs defaultValue="all">
                 <TabsList className="ml-auto">
                   <TabsTrigger value="all" className="text-zinc-600 dark:text-zinc-200">
-                    All mail
+                    Upcoming
                   </TabsTrigger>
                   <TabsTrigger value="unread" className="text-zinc-600 dark:text-zinc-200">
-                    Unread
+                    Scheduled
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
@@ -78,6 +78,7 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
                     schedule_date_time={item.schedule_date_time}
                     description={item.description}
                     tags={item.tags}
+                    invitation_link={item.invitation_link}
                     onClick={() => {
                       setSessionData(item);
                       setToggleOpen(true);
