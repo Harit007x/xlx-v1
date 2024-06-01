@@ -1,8 +1,7 @@
 'use server'
-
-import { db } from "../../db";
 import { InputTypeRegisterUser, ReturnTypeRegisterUser } from "./types";
 import { hash } from 'bcrypt';
+import { db } from "@repo/xlx";
 
 export const getUserDetails = async (username?: string) => {
    

@@ -2,13 +2,18 @@
 import React, { useState } from 'react';
 import { 
   Button, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
-  ScrollArea, Tabs, TabsList, TabsTrigger, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Label, Input,
+  ScrollArea, Tabs, TabsList, TabsTrigger
 } from '@repo/ui/shadcn';
 import { TSessionBoxItems } from '../../types/types';
 import SessionBox from '../session-box';
 import { Icons } from '@repo/ui/icons';
 import { SessionForm } from '../session-form';
-
+import Link from 'next/link';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod"
+import { verifySessionSchema } from '../../actions';
+import JoinSessionForm from './join-session';
 
 interface SessionsProps {
   sessionList: TSessionBoxItems[] | undefined;
@@ -17,7 +22,20 @@ interface SessionsProps {
 export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
   const [toggleOpen, setToggleOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+
   const [sessionData, setSessionData] = useState<TSessionBoxItems | undefined>(undefined);
+
+  const form = useForm<z.infer<typeof verifySessionSchema>>({
+    resolver: zodResolver(verifySessionSchema),
+    defaultValues: {
+      room_id: '',
+      password: ''
+    },
+  })
+
+  const onJoinSession = (e:any) => {
+    console.log('hello =', e)
+  }
 
   return (
     <div className='flex flex-col h-screen'>
@@ -56,6 +74,11 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+            <Link
+              href="/live-session"
+            >
+              live sessions
+            </Link>
             <Button
               className="gap-1"
               onClick={() => {
@@ -89,31 +112,7 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
               </div>
             </ScrollArea>
 
-            <div className='w-1/2'>
-              <Card className='h-[21.5rem]'>
-                <CardHeader>
-                  <CardTitle>Join Session</CardTitle>
-                  <CardDescription>Enter the session id and password to join the session.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form>
-                    <div className="grid w-full items-center gap-4">
-                      <div className="flex flex-col space-y-1.5">
-                        <Label htmlFor="session-id">Session ID</Label>
-                        <Input id="session-id" placeholder="Enter Session ID" />
-                      </div>
-                      <div className="flex flex-col space-y-1.5">
-                        <Label htmlFor="password">Password</Label>
-                        <Input id="password" placeholder="Enter Password" />
-                      </div>
-                    </div>
-                  </form>
-                </CardContent>
-                <CardFooter className="">
-                  <Button className='w-full'>Join Session</Button>
-                </CardFooter>
-              </Card>
-            </div>
+            <JoinSessionForm/>
           </div>
         </div>
       </main>

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Login to your account",
 }
 
-export default async function LoginPage(){
+const Page = async () => {
     const session = await getServerSession(authOptions);
     // @ts-ignore
     if (session?.user.id) {
@@ -49,3 +49,4 @@ export default async function LoginPage(){
         </main>
     )
 }
+export default Page

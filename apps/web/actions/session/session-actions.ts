@@ -1,9 +1,11 @@
 'use server'
-import { db } from "../../db";
-import { GetReturnTypeSession, InputTypeSession, CreateReturnTypeSession, GetReturnTypeSingleSession } from "./types";
+import { GetReturnTypeSession, InputTypeSession, CreateReturnTypeSession, GetReturnTypeSingleSession, VerifyTypeSession } from "./types";
 import { revalidatePath } from "next/cache";
+import { customAlphabet, nanoid } from "nanoid";
+import { db } from "@repo/xlx";
 
 export const createSession = async (data: InputTypeSession, user_id: number): Promise<CreateReturnTypeSession> => {
+    const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
 
     try {
         const user = await db.user.findUnique({
@@ -11,7 +13,6 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
                 id: user_id
             }
         })
-
 
         if(!user){
             return {error: 'User not found.'}
@@ -25,10 +26,11 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
             tags,
             password
         } = data
-
+        
         const room = await db.room.create({
             data: {
                 name,
+                room_id: nanoid(),
                 is_chat_paused: false,
                 is_ind_paused: false
             }
@@ -84,14 +86,27 @@ export const getSessionDetails = async (user_id: number): Promise<GetReturnTypeS
         const session = await db.session.findMany({
             where: {
                 user_id: user_id
+            },
+            include: {
+                room: {
+                    select: {
+                        room_id: true,
+                        name: true
+                    }
+                }
             }
         })
+
+        const sessionsWithJoinId = session.map((session) => ({
+            ...session,
+            joining_id: session.room.room_id 
+        }));
 
         if(!session){
             return {error: 'Sessions not found.'}
         }
 
-        return { data: session, message: 'Sessions fetched successfully.'}
+        return { data: sessionsWithJoinId, message: 'Sessions fetched successfully.'}
     }  catch(err) {
         console.log(err);
         return { error: 'Failed to fetch sessions.' };
@@ -153,5 +168,25 @@ export const updateSession = async (data: InputTypeSession, session_id: number|u
     } catch (err) {
         console.log(err)
         return { error: 'Failed to update the session.' }
+    }
+}
+
+export const verifySession = async (room_id: string): Promise<VerifyTypeSession> => {
+
+    try {
+        const session = await db.room.findUnique({
+            where: {
+                room_id: room_id
+            }
+        })
+
+        if(!session){
+            return {error: 'Wrong session credentials.'}
+        }
+
+        return { data: {"is_verified": true}, message: 'Session verified successfully.'}
+    }  catch(err) {
+        console.log(err);
+        return { error: 'Failed to verify session details.' };
     }
 }

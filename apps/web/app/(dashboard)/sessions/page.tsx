@@ -3,9 +3,9 @@ import React from 'react'
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../lib/auth";
 import { getSessionDetails } from '../../../actions/session/session-actions'
-import { SessionsClient } from '../../../components/session/session-client'
+import { SessionsClient } from '../../../components/sessions/sessions-client'
 
-const Sessions = async () => {
+const Page = async () => {
   const session = await getServerSession(authOptions);
 
   const response = await getSessionDetails(session?.user.id)
@@ -15,4 +15,4 @@ const Sessions = async () => {
   )
 }
 
-export default Sessions
+export default Page

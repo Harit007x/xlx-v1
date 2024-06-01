@@ -18,9 +18,45 @@ export default function Temp() {
             "px-4"
             )}
         >
-            Login
+          Login
         </Link>
+        {/* {inbox.map((message:any, idx:any)=>{
+        return(
+          <p key={idx}>
+            {message}
+          </p>
+        )
+      })}
+      
+      message
+      <input 
+        className="bg-blue-400"
+        // style={{backgroundColor:'gray'}}
+        type="text"
+        name="message"
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <h1 className="text-3xl font-bold underline">
+        Hello world!
+      </h1>
+      <Button onClick={() => {handleSendMessage()}}>
+        Send
+      </Button>
+      <br/>
 
+      roomname
+      <input 
+        style={{backgroundColor:'gray'}}
+        type="text"
+        name="room" 
+        onChange={(e) => setRoomName(e.target.value)}
+      />
+
+      <Button
+        onClick={()=> handleRoomName()}
+      >
+        jOIN ROOM
+      </Button> */}
     </main>
   )
 }

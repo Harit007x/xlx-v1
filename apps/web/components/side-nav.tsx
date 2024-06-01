@@ -51,7 +51,7 @@ const SideNav = () => {
                 </div>
                 <div className="flex items-center justify-between gap-2 p-5 antialiased text-sm">
                     <div className="flex items-center gap-3">
-                        <Avatar>
+                        <Avatar className="h-10 w-10">
                             <AvatarImage src="1.jpeg"/>
                             <AvatarFallback>TS</AvatarFallback>
                         </Avatar>

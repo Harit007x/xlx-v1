@@ -1,48 +1,47 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "first_name" TEXT NOT NULL,
+    "last_name" TEXT NOT NULL,
 
-  - The primary key for the `Preferences` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `preference_id` on the `Preferences` table. All the data in the column will be lost.
-  - The primary key for the `Session` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `session_id` on the `Session` table. All the data in the column will be lost.
-  - The primary key for the `User` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `user_id` on the `User` table. All the data in the column will be lost.
-  - A unique constraint covering the columns `[room_id]` on the table `Session` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `room_id` to the `Session` table without a default value. This is not possible if the table is not empty.
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
-*/
--- DropForeignKey
-ALTER TABLE "Preferences" DROP CONSTRAINT "Preferences_user_id_fkey";
+-- CreateTable
+CREATE TABLE "Preferences" (
+    "id" SERIAL NOT NULL,
+    "theme" TEXT NOT NULL,
+    "user_id" INTEGER NOT NULL,
 
--- DropForeignKey
-ALTER TABLE "Session" DROP CONSTRAINT "Session_user_id_fkey";
+    CONSTRAINT "Preferences_pkey" PRIMARY KEY ("id")
+);
 
--- AlterTable
-ALTER TABLE "Preferences" DROP CONSTRAINT "Preferences_pkey",
-DROP COLUMN "preference_id",
-ADD COLUMN     "id" SERIAL NOT NULL,
-ADD CONSTRAINT "Preferences_pkey" PRIMARY KEY ("id");
+-- CreateTable
+CREATE TABLE "Session" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "schedule_date_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "description" TEXT NOT NULL,
+    "is_auto" BOOLEAN NOT NULL,
+    "invitation_link" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "tags" JSONB[],
+    "user_id" INTEGER NOT NULL,
+    "room_id" INTEGER NOT NULL,
 
--- AlterTable
-ALTER TABLE "Session" DROP CONSTRAINT "Session_pkey",
-DROP COLUMN "session_id",
-ADD COLUMN     "id" SERIAL NOT NULL,
-ADD COLUMN     "room_id" INTEGER NOT NULL,
-ADD CONSTRAINT "Session_pkey" PRIMARY KEY ("id");
-
--- AlterTable
-ALTER TABLE "User" DROP CONSTRAINT "User_pkey",
-DROP COLUMN "user_id",
-ADD COLUMN     "id" SERIAL NOT NULL,
-ADD CONSTRAINT "User_pkey" PRIMARY KEY ("id");
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Room" (
     "id" SERIAL NOT NULL,
+    "room_id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "is_chat_paused" BOOLEAN NOT NULL,
-    "is_ind_paused" BOOLEAN NOT NULL,
+    "is_chat_paused" BOOLEAN NOT NULL DEFAULT false,
+    "is_ind_paused" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Room_pkey" PRIMARY KEY ("id")
 );
@@ -79,6 +78,18 @@ CREATE TABLE "Questions" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Preferences_user_id_key" ON "Preferences"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Room_room_id_key" ON "Room"("room_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Participants_user_id_key" ON "Participants"("user_id");
 
 -- CreateIndex
@@ -92,9 +103,6 @@ CREATE UNIQUE INDEX "Questions_user_id_key" ON "Questions"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Questions_room_id_key" ON "Questions"("room_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Session_room_id_key" ON "Session"("room_id");
 
 -- AddForeignKey
 ALTER TABLE "Preferences" ADD CONSTRAINT "Preferences_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

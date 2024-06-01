@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hash } from 'bcrypt';
 import * as z from "zod";
-import { db } from '../../../db';
+import { db } from '@repo/xlx';
 
 const userSchema = z.object({
     username: z.string()

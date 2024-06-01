@@ -2,7 +2,7 @@ import { cn } from "@repo/ui/utils"
 import Link from "next/link"
 import { UserRegisterForm } from "../../../components/user-register-form";
 
-export default function RegisterPage() {
+const Page = () => {
 
     return (
         <main className="container flex h-screen w-screen flex-col items-center justify-center">
@@ -52,3 +52,4 @@ export default function RegisterPage() {
         </main>
     )
 }
+export default Page

@@ -12,13 +12,16 @@ export default withAuth(
         const isAuthPage =
           req.nextUrl.pathname.startsWith("/login") ||
           req.nextUrl.pathname.startsWith("/register")
-        
+
         if (isAuthPage) {
           if (isAuth) {
-            console.log("redirect after login", req.url)
             return NextResponse.redirect(new URL("/sessions", req.url))
           }
           return null
+        }else if(req.nextUrl.pathname === "/"){
+          if (isAuth) {
+            return NextResponse.redirect(new URL("/sessions", req.url))
+          }
         }
     
         if (!isAuth) {

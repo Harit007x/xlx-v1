@@ -53,6 +53,7 @@ model Session {
 
 model Room {
   id                Int       @id @default(autoincrement())
+  room_id           String    @unique
   name              String
   is_chat_paused    Boolean   @default(false)
   is_ind_paused     Boolean   @default(false)

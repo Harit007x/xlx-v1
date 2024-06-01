@@ -15,3 +15,4 @@ export * from "./sheet";
 export * from "./popover";
 export * from "./calendar";
 export * from "./skeleton";
+export * from "./input-otp";

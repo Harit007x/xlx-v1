@@ -1,5 +1,4 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { db } from '../db';
 import axios from 'axios';
 import { User } from '@prisma/client';
 

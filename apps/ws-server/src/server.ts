@@ -1,4 +1,18 @@
 import { Server } from "socket.io";
+import pkg from '@repo/xlx';
+
+const {db} = pkg
+const temp = async () => {
+    const user = await db.user.findUnique({
+        where: {
+            id: 1
+        }
+    })
+    console.log("user =", user)
+
+}
+temp()
+
 
 const io = new Server(8000, {
     cors: {
