@@ -23,7 +23,8 @@ model User {
   preferences       Preferences?
   session           Session[]       // [] brackets denote a one-to-many relationship
   participants      Participants?   // ? denotes an optional field, meaning it can be null or absent
-  Questions         Questions?
+  questions         Questions?
+  sessionmessages   SessionMessages[]
 }
 
 model Preferences {
@@ -49,19 +50,22 @@ model Session {
 
   room_id           Int       
   room              Room      @relation(fields: [room_id], references: [id])
+
+  // @@index([user_id])
+  // @@index([room_id])
 }
 
 model Room {
   id                Int       @id @default(autoincrement())
-  room_id           String    @unique
+  room_code         String    @unique
   name              String
   is_chat_paused    Boolean   @default(false)
   is_ind_paused     Boolean   @default(false)
 
   participants      Participants?
   session           Session[]
-  sessionquestions  SessionQuestions?
-  Questions         Questions?
+  sessionmessages   SessionMessages[]
+  questions         Questions?
 }
 
 model Participants {
@@ -75,19 +79,25 @@ model Participants {
   room              Room      @relation(fields: [room_id], references: [id])
 }
 
-model SessionQuestions {
+model SessionMessages {
   id                Int       @id @default(autoincrement())
-  question          String
-  question_type     String
+  message           String
+  created_at        DateTime  @default(now())
   
-  room_id           Int       @unique
+  user_id           Int
+  user              User      @relation(fields: [user_id], references: [id])
+
+  room_id           Int
   room              Room      @relation(fields: [room_id], references: [id])
+
+  // @@index([user_id])
+  // @@index([room_id])
 }
 
 // - question: string
 // - is_question_answered: boolean
 // - up_voted_count: int
-// - room_id: (fk)
+// - room_code: (fk)
 // - user_id: (fk)
 // - session_id: (fk)
 

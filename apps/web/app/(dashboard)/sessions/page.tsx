@@ -7,7 +7,6 @@ import { SessionsClient } from '../../../components/sessions/sessions-client'
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
-
   const response = await getSessionDetails(session?.user.id)
 
   return (

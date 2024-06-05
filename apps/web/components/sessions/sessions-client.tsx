@@ -25,18 +25,6 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
 
   const [sessionData, setSessionData] = useState<TSessionBoxItems | undefined>(undefined);
 
-  const form = useForm<z.infer<typeof verifySessionSchema>>({
-    resolver: zodResolver(verifySessionSchema),
-    defaultValues: {
-      room_id: '',
-      password: ''
-    },
-  })
-
-  const onJoinSession = (e:any) => {
-    console.log('hello =', e)
-  }
-
   return (
     <div className='flex flex-col h-screen'>
       <main className='flex flex-col h-screen'>

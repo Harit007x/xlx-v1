@@ -7,7 +7,6 @@ import { userAtom } from '../../../packages/store/src/atoms'
 import { Icons } from '@repo/ui/icons'
 
 const SessionChange = () => {
-    console.log("on session change")
     const session = useSession()
     const setUser = useSetRecoilState(userAtom);
     useEffect(()=>{

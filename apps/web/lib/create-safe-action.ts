@@ -14,6 +14,7 @@ export type ActionState<TInput, TOutput> = {
   fieldErrors?: FieldErrors<TInput>;
   error?: string | null;
   message?: string;
+  count?: number;
   data?: TOutput;
 };
 

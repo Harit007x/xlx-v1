@@ -1,5 +1,5 @@
 'use server'
-import { GetReturnTypeSession, InputTypeSession, CreateReturnTypeSession, GetReturnTypeSingleSession, VerifyTypeSession } from "./types";
+import { GetReturnTypeSession, InputTypeSession, CreateReturnTypeSession, GetReturnTypeSingleSession, VerifyTypeSession, GetSessionMessages } from "./types";
 import { revalidatePath } from "next/cache";
 import { customAlphabet, nanoid } from "nanoid";
 import { db } from "@repo/xlx";
@@ -30,7 +30,7 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
         const room = await db.room.create({
             data: {
                 name,
-                room_id: nanoid(),
+                room_code: nanoid(),
                 is_chat_paused: false,
                 is_ind_paused: false
             }
@@ -90,7 +90,7 @@ export const getSessionDetails = async (user_id: number): Promise<GetReturnTypeS
             include: {
                 room: {
                     select: {
-                        room_id: true,
+                        room_code: true,
                         name: true
                     }
                 }
@@ -99,7 +99,7 @@ export const getSessionDetails = async (user_id: number): Promise<GetReturnTypeS
 
         const sessionsWithJoinId = session.map((session) => ({
             ...session,
-            joining_id: session.room.room_id 
+            joining_id: session.room.room_code 
         }));
 
         if(!session){
@@ -171,22 +171,75 @@ export const updateSession = async (data: InputTypeSession, session_id: number|u
     }
 }
 
-export const verifySession = async (room_id: string): Promise<VerifyTypeSession> => {
+export const verifySession = async (room_code: string): Promise<VerifyTypeSession> => {
 
     try {
-        const session = await db.room.findUnique({
+        const room = await db.room.findUnique({
             where: {
-                room_id: room_id
+                room_code: room_code
             }
         })
 
-        if(!session){
+        if(!room){
             return {error: 'Wrong session credentials.'}
         }
 
-        return { data: {"is_verified": true}, message: 'Session verified successfully.'}
+        return { data: room, message: 'Session verified successfully.'}
     }  catch(err) {
         console.log(err);
         return { error: 'Failed to verify session details.' };
+    }
+}
+
+export const getSessionMessages = async (room_code: string, limit?: number, offset?: number): Promise<GetSessionMessages> => {
+    try {
+        console.log("incoming data = ", room_code, limit, offset)
+        const room = await db.room.findUnique({
+            where:{
+                room_code: room_code
+            }
+        })
+
+        if(!room){
+            return {error: 'room not found.'}
+        }
+
+        const sessionMessages = await db.sessionMessages.findMany({
+            where:{
+                room_id: room.id
+            },
+            include: {
+                user: {
+                    select: {
+                        first_name: true,
+                        last_name: true
+                    }
+                }
+            },
+            orderBy: {
+                created_at: 'desc'
+            },
+        })
+
+        const annotate = sessionMessages.map((message) => ({
+            ...message,
+            initials: `${message.user.first_name.slice(0,1)}${message.user.last_name.slice(0,1)}`,
+            user_name: `${message.user.first_name} ${message.user.last_name}`
+        }))
+        
+        if(offset === undefined){
+            return {error: 'offset not found.'}
+        }
+
+        if(limit === undefined){
+            return {error: 'limit not found.'}
+        }
+
+        const paginatedMessages = annotate.slice(offset, offset + limit);
+        revalidatePath(`/live-session/${room_code}`)
+        return { data: paginatedMessages.reverse(), count: annotate.length, message: 'Session messages fetched successfully.'}
+    }  catch(err) {
+        console.log(err);
+        return { error: 'Failed to fetch session messages.' };
     }
 }

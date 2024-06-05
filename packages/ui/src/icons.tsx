@@ -43,9 +43,13 @@ import {
     Medal,
     SendHorizonal,
     MessageCircle,
+    MessageCircleOff,
+    MessageSquareQuote,
+    MessageSquareOff,
     MessageCircleMore,
     MessageCircleQuestion,
     BarChart2,
+    Phone,
 } from "lucide-react"
   
   
@@ -92,9 +96,13 @@ export const Icons = {
     medal: Medal,
     send: SendHorizonal,
     messageCircle: MessageCircle,
+    messageCircleOff: MessageCircleOff,
+    messageSquareQuote: MessageSquareQuote,
+    messageSquareOff: MessageSquareOff,
     messageCircleMore: MessageCircleMore,
     messageCircleQuestion: MessageCircleQuestion,
     barChart2: BarChart2,
+    phone: Phone,
     gitHub: ({ ...props }: LucideProps) => (
       <svg
         aria-hidden="true"

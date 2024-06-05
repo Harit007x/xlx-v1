@@ -27,7 +27,7 @@ export const sessionSchema = z.object({
 
 const roomIDRegex = new RegExp(REGEXP_ONLY_DIGITS_AND_CHARS)
 export const verifySessionSchema = z.object({
-    room_id: z.string()
+    room_code: z.string()
         .min(10, "Session Id must be 10 characters.")
         .refine((val) => roomIDRegex.test(val), {
         message: "Session Id must only contain alphanumeric characters.",
@@ -35,4 +35,14 @@ export const verifySessionSchema = z.object({
     password: z.string()
         .min(1, 'Password is required')
         .min(6, 'Password must be at least 6 characters'),
+});
+
+export const sessionMessagesSchema = z.object({
+    id: z.number(),
+    created_at: z.date(),
+    initials: z.string(),
+    user_name: z.string(),
+    message: z.string(),
+    room_id: z.number(),
+    user_id: z.number()
 });

@@ -17,7 +17,7 @@ const JoinSessionForm = () => {
   const form = useForm<z.infer<typeof verifySessionSchema>>({
     resolver: zodResolver(verifySessionSchema),
     defaultValues: {
-      room_id: '',
+      room_code: '',
       password: ''
     },
   })
@@ -26,10 +26,10 @@ const JoinSessionForm = () => {
     setIsLoading(true)
     console.log('hello =', formData)
 
-    const response = await verifySession(formData.room_id)
+    const response = await verifySession(formData.room_code)
     console.log("rs =", response)
-    if(response.data?.is_verified){
-      router.push('live-session/assfdddd')
+    if(response.data?.id){
+      router.push(`live-session/${response.data.room_code}`)
     }
   }
   
@@ -46,7 +46,7 @@ const JoinSessionForm = () => {
               <div className="grid w-full items-center gap-4">
                 {/* <FormField
                   control={form.control}
-                  name="room_id"
+                  name="room_code"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Session Id</FormLabel>
@@ -77,7 +77,7 @@ const JoinSessionForm = () => {
                 <div className="flex flex-col space-y-1.5">
                   <FormField
                     control={form.control}
-                    name="room_id"
+                    name="room_code"
                     render={({ field }) => (
                       <FormItem>
                           <div className="space-y-0.5">
@@ -86,7 +86,11 @@ const JoinSessionForm = () => {
                             </FormLabel>
                           </div>
                         <FormControl>
-                            <Input placeholder="Enter session id"  {...field} />
+                            <Input 
+                              placeholder="Enter session id"
+                              disabled={isLoading}
+                              {...field}
+                            />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -105,7 +109,12 @@ const JoinSessionForm = () => {
                             </FormLabel>
                           </div>
                         <FormControl>
-                            <Input placeholder="Enter session password"  type='password' {...field} />
+                            <Input 
+                              placeholder="Enter session password"
+                              type='password'
+                              disabled={isLoading}
+                              {...field}
+                            />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -124,6 +133,7 @@ const JoinSessionForm = () => {
               <Button 
                 type='submit'
                 className='w-full'
+                disabled={isLoading}
               >
                 {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> }
                 Join Session
