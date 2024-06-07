@@ -34,7 +34,7 @@ const JoinSessionForm = () => {
   }
   
   return (
-    <div className='w-1/2'>
+    <div className='flex-1 smd:block min-w-[20rem] hidden'>
       <Card className='h-fit'>
         <CardHeader>
           <CardTitle>Join Session</CardTitle>

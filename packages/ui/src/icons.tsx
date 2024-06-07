@@ -50,12 +50,13 @@ import {
     MessageCircleQuestion,
     BarChart2,
     Phone,
+    Menu,
 } from "lucide-react"
   
   
 export const Icons = {
     logo: Command,
-    close: X,
+    x: X,
     spinner: Loader2,
     chevronLeft: ChevronLeft,
     chevronRight: ChevronRight,
@@ -103,6 +104,7 @@ export const Icons = {
     messageCircleQuestion: MessageCircleQuestion,
     barChart2: BarChart2,
     phone: Phone,
+    menu: Menu,
     gitHub: ({ ...props }: LucideProps) => (
       <svg
         aria-hidden="true"

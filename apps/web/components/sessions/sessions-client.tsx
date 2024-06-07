@@ -26,10 +26,20 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
   const [sessionData, setSessionData] = useState<TSessionBoxItems | undefined>(undefined);
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='h-screen'>
       <main className='flex flex-col h-screen'>
-        <div className='p-4'>
+        <div className='flex gap-4 p-4'>
           <p className='text-2xl font-bold'>Sessions</p>
+          <Button
+              className="gap-1 md:hidden"
+              size={"sm"}
+              onClick={() => {
+                setToggleOpen(!toggleOpen)
+                setIsEdit(false)
+              }}
+            >
+              <Icons.add className="h-3.5 w-3.5" />
+            </Button>
         </div>
 
         <div className='flex flex-col overflow-hidden gap-2'>
@@ -62,16 +72,11 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <Link
-              href="/live-session"
-            >
-              live sessions
-            </Link>
             <Button
-              className="gap-1"
+              className="gap-1 hidden md:flex"
               onClick={() => {
-                setToggleOpen(!toggleOpen);
-                setIsEdit(false);
+                setToggleOpen(!toggleOpen)
+                setIsEdit(false)
               }}
             >
               <Icons.add className="h-3.5 w-3.5" />
@@ -79,27 +84,28 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
             </Button>
           </div>
 
-          <div className='flex overflow-hidden mr-4'>
-            <ScrollArea className="flex-1">
-              <div className='flex flex-col gap-2 px-4 pb-4'>
-                {sessionList?.map((item: TSessionBoxItems) => (
-                  <SessionBox
-                    key={item.id}
-                    name={item.name}
-                    schedule_date_time={item.schedule_date_time}
-                    description={item.description}
-                    tags={item.tags}
-                    invitation_link={item.invitation_link}
-                    onClick={() => {
-                      setSessionData(item);
-                      setToggleOpen(true);
-                      setIsEdit(true);
-                    }}
-                  />
-                ))}
-              </div>
-            </ScrollArea>
-
+          <div className='flex overflow-hidden md:mr-4'>
+            <div className='flex flex-1 overflow-hidden'>
+              <ScrollArea className='flex-1'>
+                <div className='flex flex-col gap-2 px-4 pb-4 min-w-[22rem]'>
+                  {sessionList?.map((item: TSessionBoxItems) => (
+                    <SessionBox
+                      key={item.id}
+                      name={item.name}
+                      schedule_date_time={item.schedule_date_time}
+                      description={item.description}
+                      tags={item.tags}
+                      invitation_link={item.invitation_link}
+                      onClick={() => {
+                        setSessionData(item)
+                        setToggleOpen(true)
+                        setIsEdit(true)
+                      }}
+                    />
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
             <JoinSessionForm/>
           </div>
         </div>

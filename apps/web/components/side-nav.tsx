@@ -15,10 +15,10 @@ const SideNav = () => {
   const { theme, setTheme } = useTheme()
   const user = useRecoilValue(userAtom)
   return (
-    <main className='flex h-screen'>
+    <main className='h-screen'>
         <div 
           style={{ overflowY: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
-          className="md:w-[18rem] min-w-fit max-w-[22rem] flex-1 border-r hidden md:flex h-screen overflow-y-auto"
+          className="md:w-60 max-w-[22rem] flex-1 border-r hidden md:flex h-screen overflow-y-auto"
         >
             <div className="flex flex-col w-full justify-between">
                 <div className="space-y-6">

@@ -370,7 +370,7 @@ export const DateTimePicker = React.forwardRef<
       </Popover>
       <DateField {...fieldProps} value={currentValue()} />
       <div className={cn('-ml-2 mr-2 h-5 w-5', !showClearButton && 'hidden')}>
-        <Icons.close
+        <Icons.x
           className={cn('h-5 w-5 cursor-pointer text-primary/30', !jsDatetime && 'hidden')}
           onClick={() => setJsDatetime(null)}
         />

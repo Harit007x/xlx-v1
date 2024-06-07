@@ -20,6 +20,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
   const user = useRecoilValue(userAtom);
   const { socket } = useSocket();
   const [scrollDown, setScrollDown] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inbox, setInbox] = useState<SessionMessagesSchema[] | undefined>(props.messages.data);
   const inboxDivRef = useRef<HTMLDivElement>(null);
   const form = useForm({
@@ -32,7 +33,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
     if (socket) {
 
       socket.on('message', (message, room, user_id) => {
-        // console.log("Received message:", message);
+        console.log("Received message:", message);
         setScrollDown(prev => !prev); // Toggle scrollDown
         setInbox((inbox: any) => [...inbox, message]);
       });
@@ -93,6 +94,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
   }, [fetchOlderMessages]);
 
   const handleSendMessage = async (formData: any) => {
+    setIsLoading(true)
     if (formData.message !== "") {
       if (socket) {
         // console.log("Sending message:", formData.message);
@@ -102,6 +104,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
         message: ""
       });
     }
+    setIsLoading(false)
   };
 
   return (
@@ -164,7 +167,12 @@ export const ChatContainer = (props: IChatContainerProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="flex gap-2">
+              <Button
+                type="submit"
+                className="flex gap-2"
+                disabled={isLoading}
+              >
+                {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> }
                 Send
               </Button>
             </div>
