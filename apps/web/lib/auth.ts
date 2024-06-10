@@ -6,21 +6,21 @@ async function validateUser(
   username: string,
   password: string,
 ): Promise<| { data: null }| { data: User }> {
-  if (false) {
-    if (password === '123456') {
-      return {
-        data: {
-          id: 1,
-          username: "randomUser",
-          password: "temp",
-          email: "temp@gmail.com",
-          first_name: "temp",
-          last_name: "user"
-        },
-      };
-    }
-    return { data: null };
-  }
+  // if (false) {
+  //   if (password === '123456') {
+  //     return {
+  //       data: {
+  //         id: 1,
+  //         username: "randomUser",
+  //         password: "temp",
+  //         email: "temp@gmail.com",
+  //         first_name: "temp",
+  //         last_name: "user"
+  //       },
+  //     };
+  //   }
+  //   return { data: null };
+  // }
   const url = 'http://localhost:3000/api/login';
   const headers = {
     'Client-Service': process.env.APPX_CLIENT_SERVICE || '',

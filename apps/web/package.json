@@ -10,6 +10,7 @@
     "debug": "NODE_OPTIONS='--inspect' next dev"
   },
   "dependencies": {
+    "@repo/eslint-config": "*",
     "@repo/ui": "*",
     "@repo/xlx": "*",
     "axios": "^1.6.8",

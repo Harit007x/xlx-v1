@@ -25,10 +25,10 @@ export default withAuth(
         }
     
         if (!isAuth) {
-          let from = req.nextUrl.pathname;
-          if (req.nextUrl.search) {
-            from += req.nextUrl.search;
-          }
+          // let from = req.nextUrl.pathname;
+          // if (req.nextUrl.search) {
+          //   from += req.nextUrl.search;
+          // }
           console.log("loggedIn nahi hai", req.url)
           return NextResponse.redirect(
             new URL(`/login`, req.url)

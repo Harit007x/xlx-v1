@@ -1,15 +1,15 @@
 'use client'
-import { Icons } from "@repo/ui/icons";
-import { Avatar, AvatarFallback, AvatarImage, Button, Input } from "@repo/ui/shadcn";
-import { useEffect, useRef, useState } from "react";
-import { userAtom } from "../../../../packages/store/src/atoms";
-import { useRecoilValue } from "recoil"
-import { GetSessionMessages, SessionMessagesSchema } from "../../actions";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/form";
-import { useForm } from "react-hook-form";
-import { format } from 'date-fns';
-import { getSessionMessages } from "../../actions/session/session-actions";
-import { useSocket } from "../../app/socketContext";
+import { Icons } from '@repo/ui/icons'
+import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@repo/ui/shadcn'
+import { useEffect, useRef, useState } from 'react'
+import { userAtom } from '../../../../packages/store/src/atoms'
+import { useRecoilValue } from 'recoil'
+import { GetSessionMessages, SessionMessagesSchema } from '../../actions'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form'
+import { useForm } from 'react-hook-form'
+import { format } from 'date-fns'
+import { getSessionMessages } from '../../actions/session/session-actions'
+import { useSocket } from '../../app/socketContext'
 
 interface IChatContainerProps {
   room_id: string
@@ -17,95 +17,94 @@ interface IChatContainerProps {
 }
 
 export const ChatContainer = (props: IChatContainerProps) => {
-  const user = useRecoilValue(userAtom);
-  const { socket } = useSocket();
-  const [scrollDown, setScrollDown] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [inbox, setInbox] = useState<SessionMessagesSchema[] | undefined>(props.messages.data);
-  const inboxDivRef = useRef<HTMLDivElement>(null);
+  const user = useRecoilValue(userAtom)
+  const { socket } = useSocket()
+  const [scrollDown, setScrollDown] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [inbox, setInbox] = useState<SessionMessagesSchema[] | undefined>(props.messages.data)
+  const inboxDivRef = useRef<HTMLDivElement>(null)
   const form = useForm({
     defaultValues: {
-      message: ""
-    }
-  });
+      message: '',
+    },
+  })
 
   useEffect(() => {
     if (socket) {
-
-      socket.on('message', (message, room, user_id) => {
-        console.log("Received message:", message);
-        setScrollDown(prev => !prev); // Toggle scrollDown
-        setInbox((inbox: any) => [...inbox, message]);
-      });
+      socket.on('message', (message) => {
+        console.log('Received message:', message)
+        setScrollDown((prev) => !prev)
+        setInbox((inbox: any) => [...inbox, message])
+      })
     }
-  }, [socket]);
+  }, [socket])
 
   useEffect(() => {
     requestAnimationFrame(() => {
       if (inboxDivRef.current) {
         console.log('not called')
-        inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight;
+        inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight
       }
-    });
-  }, [scrollDown]);
+    })
+  }, [scrollDown])
 
   const fetchOlderMessages = async () => {
     try {
       if (inbox?.length !== props.messages.count) {
-        const previousScrollHeight = inboxDivRef.current?.scrollHeight || 0;
-        const result = await getSessionMessages(props.room_id, 10, inbox?.length);
+        const previousScrollHeight = inboxDivRef.current?.scrollHeight || 0
+        const result = await getSessionMessages(props.room_id, 10, inbox?.length)
         // console.log('messages fetched =', result.data)
         if (result.error) {
-          console.error(result.error);
+          console.error(result.error)
         } else {
           setInbox((prevInbox) => {
             // @ts-ignore
-            const newInbox = [...result.data, ...prevInbox];
+            const newInbox = [...result.data, ...prevInbox]
             requestAnimationFrame(() => {
               if (inboxDivRef.current) {
-                inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight - previousScrollHeight;
+                inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight - previousScrollHeight
               }
-            });
-            return newInbox;
-          });
+            })
+            return newInbox
+          })
         }
       }
     } catch (err) {
-      console.error("Failed to fetch older messages", err);
+      console.error('Failed to fetch older messages', err)
     }
-  };
+  }
 
   useEffect(() => {
     const handleScroll = () => {
       if (inboxDivRef.current && inboxDivRef.current.scrollTop === 0) {
-        fetchOlderMessages();
+        fetchOlderMessages()
       }
-    };
+    }
 
     if (inboxDivRef.current) {
-      inboxDivRef.current.addEventListener('scroll', handleScroll);
+      inboxDivRef.current.addEventListener('scroll', handleScroll)
     }
 
     return () => {
       if (inboxDivRef.current) {
-        inboxDivRef.current.removeEventListener('scroll', handleScroll);
+        inboxDivRef.current.removeEventListener('scroll', handleScroll)
       }
-    };
-  }, [fetchOlderMessages]);
+    }
+  }, [fetchOlderMessages])
 
   const handleSendMessage = async (formData: any) => {
     setIsLoading(true)
-    if (formData.message !== "") {
+    if (formData.message !== '') {
       if (socket) {
         // console.log("Sending message:", formData.message);
-        socket.emit("message", formData.message, props.room_id, user?.user_id);
+        socket.emit('message', formData.message, props.room_id, user?.user_id)
       }
       form.reset({
-        message: ""
-      });
+        message: '',
+      })
     }
     setIsLoading(false)
-  };
+  }
 
   return (
     <div className="lg:col-span-2 flex h-[88vh] flex-col border border-foreground/10 rounded-md">
@@ -118,12 +117,12 @@ export const ChatContainer = (props: IChatContainerProps) => {
       </header>
       <div className="flex-1 overflow-y-auto p-4" ref={inboxDivRef}>
         <div className="space-y-4">
-          {inbox?.map((message: SessionMessagesSchema, idx: any) => (
+          {inbox?.map((message: SessionMessagesSchema) => (
             <div key={message.id}>
               {message.user_id === user?.user_id ? (
                 <div className="flex items-start gap-3 justify-end">
                   <div className="flex flex-col gap-1">
-                    <div className="text-sm self-end">
+                    <div className="text-xs self-end">
                       <span>{format(new Date(message.created_at), 'hh:mm a')}</span>
                     </div>
                     <div className="rounded-lg text-sm text-white font-medium bg-blue-500 p-4 dark:bg-blue-500">
@@ -138,7 +137,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
                     <AvatarFallback>{message.initials}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col gap-1">
-                    <div className="text-sm">
+                    <div className="text-xs">
                       {message.user_name} • <span>{format(new Date(message.created_at), 'hh:mm a')}</span>
                     </div>
                     <div className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
@@ -167,12 +166,8 @@ export const ChatContainer = (props: IChatContainerProps) => {
                   </FormItem>
                 )}
               />
-              <Button
-                type="submit"
-                className="flex gap-2"
-                disabled={isLoading}
-              >
-                {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> }
+              <Button type="submit" className="flex gap-2" disabled={isLoading}>
+                {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                 Send
               </Button>
             </div>
@@ -180,7 +175,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
         </Form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChatContainer;
+export default ChatContainer

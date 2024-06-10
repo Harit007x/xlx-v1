@@ -1,50 +1,54 @@
-'use client';
-import React, { useState } from 'react';
-import { 
-  Button, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
-  ScrollArea, Tabs, TabsList, TabsTrigger
-} from '@repo/ui/shadcn';
-import { TSessionBoxItems } from '../../types/types';
-import SessionBox from '../session-box';
-import { Icons } from '@repo/ui/icons';
-import { SessionForm } from '../session-form';
-import Link from 'next/link';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { verifySessionSchema } from '../../actions';
-import JoinSessionForm from './join-session';
+'use client'
+import React, { useState } from 'react'
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  ScrollArea,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@repo/ui/shadcn'
+import { TSessionBoxItems } from '../../types/types'
+import SessionBox from '../session-box'
+import { Icons } from '@repo/ui/icons'
+import { SessionForm } from '../session-form'
+import JoinSessionForm from './join-session'
 
 interface SessionsProps {
-  sessionList: TSessionBoxItems[] | undefined;
+  sessionList: TSessionBoxItems[] | undefined
 }
 
 export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
-  const [toggleOpen, setToggleOpen] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [toggleOpen, setToggleOpen] = useState<boolean>(false)
+  const [isEdit, setIsEdit] = useState<boolean>(false)
 
-  const [sessionData, setSessionData] = useState<TSessionBoxItems | undefined>(undefined);
+  const [sessionData, setSessionData] = useState<TSessionBoxItems | undefined>(undefined)
 
   return (
-    <div className='h-screen'>
-      <main className='flex flex-col h-screen'>
-        <div className='flex gap-4 p-4'>
-          <p className='text-2xl font-bold'>Sessions</p>
+    <div className="h-screen">
+      <main className="flex flex-col h-screen">
+        <div className="flex gap-4 p-4">
+          <p className="text-2xl font-bold">Sessions</p>
           <Button
-              className="gap-1 md:hidden"
-              size={"sm"}
-              onClick={() => {
-                setToggleOpen(!toggleOpen)
-                setIsEdit(false)
-              }}
-            >
-              <Icons.add className="h-3.5 w-3.5" />
-            </Button>
+            className="gap-1 md:hidden"
+            size={'sm'}
+            onClick={() => {
+              setToggleOpen(!toggleOpen)
+              setIsEdit(false)
+            }}
+          >
+            <Icons.add className="h-3.5 w-3.5" />
+          </Button>
         </div>
 
-        <div className='flex flex-col overflow-hidden gap-2'>
-          <div className='flex justify-between items-center px-4 pb-4'>
-            <div className='flex justify-between items-center gap-4'>
+        <div className="flex flex-col overflow-hidden gap-2">
+          <div className="flex justify-between items-center px-4 pb-4">
+            <div className="flex justify-between items-center gap-4">
               <Tabs defaultValue="all">
                 <TabsList className="ml-auto">
                   <TabsTrigger value="all" className="text-zinc-600 dark:text-zinc-200">
@@ -84,10 +88,10 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
             </Button>
           </div>
 
-          <div className='flex overflow-hidden md:mr-4'>
-            <div className='flex flex-1 overflow-hidden'>
-              <ScrollArea className='flex-1'>
-                <div className='flex flex-col gap-2 px-4 pb-4 min-w-[22rem]'>
+          <div className="flex overflow-hidden md:mr-4">
+            <div className="flex flex-1 overflow-hidden">
+              <ScrollArea className="flex-1">
+                <div className="flex flex-col gap-2 px-4 pb-4 min-w-[22rem]">
                   {sessionList?.map((item: TSessionBoxItems) => (
                     <SessionBox
                       key={item.id}
@@ -106,7 +110,7 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
                 </div>
               </ScrollArea>
             </div>
-            <JoinSessionForm/>
+            <JoinSessionForm />
           </div>
         </div>
       </main>
@@ -118,5 +122,5 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
         setIsEdit={setIsEdit}
       />
     </div>
-  );
-};
+  )
+}

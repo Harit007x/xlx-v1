@@ -46,3 +46,16 @@ export const sessionMessagesSchema = z.object({
     room_id: z.number(),
     user_id: z.number()
 });
+
+export const questionsSchema = z.object({
+    id: z.number(),
+    is_disabled: z.boolean(),
+    is_answered: z.boolean(),
+    created_at: z.date(),
+    user_name: z.string(),
+    question: z.string(),
+    up_vote_count: z.number(),
+    down_vote_count: z.number(),
+    room_id: z.number(),
+    user_id: z.number()
+});

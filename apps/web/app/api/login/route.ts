@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { compare, hash } from 'bcrypt';
+import { compare } from 'bcrypt';
 import { userLoginSchema } from '../../../actions/user/schema';
 import { db } from '@repo/xlx';
 

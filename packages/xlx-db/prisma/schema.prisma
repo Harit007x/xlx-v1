@@ -14,101 +14,116 @@ datasource db {
 }
 
 model User {
-  id                Int      @id @default(autoincrement())
-  username          String   @unique
-  password          String
-  email             String   @unique
-  first_name        String
-  last_name         String
-  preferences       Preferences?
-  session           Session[]       // [] brackets denote a one-to-many relationship
-  participants      Participants?   // ? denotes an optional field, meaning it can be null or absent
-  questions         Questions?
-  sessionmessages   SessionMessages[]
+  id              Int               @id @default(autoincrement())
+  username        String            @unique
+  password        String
+  email           String            @unique
+  first_name      String
+  last_name       String
+  preferences     Preferences?
+  session         Session[] // [] brackets denote a one-to-many relationship
+  participants    Participants? // ? denotes an optional field, meaning it can be null or absent
+  questions       Questions[]
+  sessionmessages SessionMessages[]
+  questionaction  QuestionActions[]
 }
 
 model Preferences {
-  id                Int     @id @default(autoincrement())
-  theme             String
+  id    Int    @id @default(autoincrement())
+  theme String
 
-  user_id           Int     @unique
-  user              User    @relation(fields: [user_id], references: [id])
-}     
+  user_id Int  @unique
+  user    User @relation(fields: [user_id], references: [id])
+}
 
 model Session {
-  id                    Int         @id @default(autoincrement())
-  name                  String
-  schedule_date_time    DateTime    @default(now())
-  description           String
-  is_auto               Boolean
-  invitation_link       String
-  password              String
-  tags                  Json[]
+  id                 Int      @id @default(autoincrement())
+  name               String
+  schedule_date_time DateTime @default(now())
+  description        String
+  is_auto            Boolean
+  invitation_link    String
+  password           String
+  tags               Json[]
 
-  user_id           Int     
-  user              User    @relation(fields: [user_id], references: [id])
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
 
-  room_id           Int       
-  room              Room      @relation(fields: [room_id], references: [id])
+  room_id Int
+  room    Room @relation(fields: [room_id], references: [id])
 
   // @@index([user_id])
   // @@index([room_id])
 }
 
 model Room {
-  id                Int       @id @default(autoincrement())
-  room_code         String    @unique
-  name              String
-  is_chat_paused    Boolean   @default(false)
-  is_ind_paused     Boolean   @default(false)
+  id             Int     @id @default(autoincrement())
+  room_code      String  @unique
+  name           String
+  is_chat_paused Boolean @default(false)
+  is_ind_paused  Boolean @default(false)
 
-  participants      Participants?
-  session           Session[]
-  sessionmessages   SessionMessages[]
-  questions         Questions?
+  participants    Participants?
+  session         Session[]
+  sessionmessages SessionMessages[]
+  questions       Questions[]
 }
 
 model Participants {
-  id                Int       @id @default(autoincrement())
-  rank              Int
-  
-  user_id           Int       @unique
-  user              User      @relation(fields: [user_id], references: [id])
+  id   Int @id @default(autoincrement())
+  rank Int
 
-  room_id           Int       @unique
-  room              Room      @relation(fields: [room_id], references: [id])
+  user_id Int  @unique
+  user    User @relation(fields: [user_id], references: [id])
+
+  room_id Int  @unique
+  room    Room @relation(fields: [room_id], references: [id])
 }
 
 model SessionMessages {
-  id                Int       @id @default(autoincrement())
-  message           String
-  created_at        DateTime  @default(now())
-  
-  user_id           Int
-  user              User      @relation(fields: [user_id], references: [id])
+  id         Int      @id @default(autoincrement())
+  message    String
+  created_at DateTime @default(now())
 
-  room_id           Int
-  room              Room      @relation(fields: [room_id], references: [id])
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+
+  room_id Int
+  room    Room @relation(fields: [room_id], references: [id])
 
   // @@index([user_id])
   // @@index([room_id])
 }
 
-// - question: string
-// - is_question_answered: boolean
-// - up_voted_count: int
-// - room_code: (fk)
-// - user_id: (fk)
-// - session_id: (fk)
-
 model Questions {
-  id                Int       @id @default(autoincrement())
-  question          String
-  up_vote_count     Int
+  id              Int      @id @default(autoincrement())
+  is_answered     Boolean  @default(false)
+  question        String
+  up_vote_count   Int
+  down_vote_count Int
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now())
 
-  user_id           Int     @unique
-  user              User    @relation(fields: [user_id], references: [id])
+  questionaction QuestionActions[]
 
-  room_id           Int       @unique
-  room              Room      @relation(fields: [room_id], references: [id])
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+
+  room_id Int
+  room    Room @relation(fields: [room_id], references: [id])
+}
+
+model QuestionActions {
+  id            Int      @id @default(autoincrement())
+  did_up_vote   Boolean  @default(false)
+  did_down_vote Boolean  @default(false)
+  created_at    DateTime @default(now())
+
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+
+  questions_id Int
+  question     Questions @relation(fields: [questions_id], references: [id])
+
+  @@unique([user_id, questions_id])
 }

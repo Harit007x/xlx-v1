@@ -1,5 +1,5 @@
-import { Icons } from "../../../packages/ui/src/icons";
-import { TSessionBoxItems, SideNavItem } from "../types/types";
+import { Icons } from '../../../packages/ui/src/icons'
+import { SideNavItem } from '../types/types'
 
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
@@ -43,11 +43,10 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     path: '/help',
     icon: <Icons.helpCircle width="18" height="18" className="mr-2" />,
   },
-];
-
+]
 
 // export const SESSION_BOX_ITEMS: TSessionBoxItems[] = [
-  
+
 //   {
 //     id: 1,
 //     name: "Devops",

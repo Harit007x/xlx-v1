@@ -37,16 +37,16 @@ export async function POST(req: NextRequest) {
         const {username, password} = body
         const hashedPassword = await hash(password, 10);
 
-        const user = await db.user.create({
-            data: {
-                username,
-                password: hashedPassword
-            }
-        });
+        // const user = await db.user.create({
+        //     data: {
+        //         username,
+        //         password: hashedPassword
+        //     }
+        // });
         
-        const { password: newPassword, ...rest } = user
+        // const { password: newPassword, ...rest } = user
 
-        return NextResponse.json({useR: rest, message: "User Created." })
+        return NextResponse.json({useR: {}, message: "User Created." })
 
     }catch(err){
         return NextResponse.json({ message: "Something went wrong!" })
