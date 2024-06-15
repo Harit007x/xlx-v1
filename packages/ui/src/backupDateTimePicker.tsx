@@ -1,13 +1,6 @@
-'use client';
+'use client'
 
-import React, {
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import {
   AriaDatePickerProps,
   AriaTimeFieldProps,
@@ -23,7 +16,7 @@ import {
   useDateSegment,
   useLocale,
   useTimeField,
-} from 'react-aria';
+} from 'react-aria'
 import {
   CalendarState,
   DateFieldState,
@@ -34,7 +27,7 @@ import {
   useDateFieldState,
   useDatePickerState,
   useTimeFieldState,
-} from 'react-stately';
+} from 'react-stately'
 import {
   CalendarDate,
   createCalendar,
@@ -45,31 +38,30 @@ import {
   toCalendarDateTime,
   isToday as _isToday,
   toCalendarDate,
-} from '@internationalized/date';
-import { DateSegment as IDateSegment } from '@react-stately/datepicker';
-import { Button, Popover, PopoverContent, PopoverTrigger } from './shadcn/ui';
-import { Icons } from './icons';
-import { Icon } from '@radix-ui/react-select';
-import { cn } from '../lib/utils';
+} from '@internationalized/date'
+import { DateSegment as IDateSegment } from '@react-stately/datepicker'
+import { Button, Popover, PopoverContent, PopoverTrigger } from './shadcn/ui'
+import { Icons } from './icons'
+import { cn } from '../lib/utils'
 
 function Calendar(props: CalendarProps<DateValue>) {
-  const prevButtonRef = React.useRef<HTMLButtonElement | null>(null);
-  const nextButtonRef = React.useRef<HTMLButtonElement | null>(null);
+  const prevButtonRef = React.useRef<HTMLButtonElement | null>(null)
+  const nextButtonRef = React.useRef<HTMLButtonElement | null>(null)
 
-  const { locale } = useLocale();
+  const { locale } = useLocale()
   const state = useCalendarState({
     ...props,
     locale,
     createCalendar,
-  });
+  })
   const {
     calendarProps,
     prevButtonProps: _prevButtonProps,
     nextButtonProps: _nextButtonProps,
     title,
-  } = useCalendar(props, state);
-  const { buttonProps: prevButtonProps } = useButton(_prevButtonProps, prevButtonRef);
-  const { buttonProps: nextButtonProps } = useButton(_nextButtonProps, nextButtonRef);
+  } = useCalendar(props, state)
+  const { buttonProps: prevButtonProps } = useButton(_prevButtonProps, prevButtonRef)
+  const { buttonProps: nextButtonProps } = useButton(_nextButtonProps, nextButtonRef)
 
   return (
     <div {...calendarProps} className="space-y-4">
@@ -94,29 +86,26 @@ function Calendar(props: CalendarProps<DateValue>) {
       </div>
       <CalendarGrid state={state} />
     </div>
-  );
+  )
 }
 
 interface CalendarGridProps {
-  state: CalendarState;
+  state: CalendarState
 }
 
 function CalendarGrid({ state, ...props }: CalendarGridProps) {
-  const { locale } = useLocale();
-  const { gridProps, headerProps, weekDays } = useCalendarGrid(props, state);
+  const { locale } = useLocale()
+  const { gridProps, headerProps, weekDays } = useCalendarGrid(props, state)
 
   // Get the number of weeks in the month so we can render the proper number of rows.
-  const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
+  const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale)
 
   return (
     <table {...gridProps} className={cn(gridProps.className, 'w-full border-collapse space-y-1')}>
       <thead {...headerProps}>
         <tr className="flex">
           {weekDays.map((day, index) => (
-            <th
-              className="w-9 rounded-md text-[0.8rem] font-normal text-muted-foreground"
-              key={index}
-            >
+            <th className="w-9 rounded-md text-[0.8rem] font-normal text-muted-foreground" key={index}>
               {day}
             </th>
           ))}
@@ -127,37 +116,38 @@ function CalendarGrid({ state, ...props }: CalendarGridProps) {
           <tr className="mt-2 flex w-full" key={weekIndex}>
             {state
               .getDatesInWeek(weekIndex)
-              .map((date, i) =>
-                date ? <CalendarCell key={i} state={state} date={date} /> : <td key={i} />,
-              )}
+              .map((date, i) => (date ? <CalendarCell key={i} state={state} date={date} /> : <td key={i} />))}
           </tr>
         ))}
       </tbody>
     </table>
-  );
+  )
 }
 
 interface CalendarCellProps {
-  state: CalendarState;
-  date: CalendarDate;
+  state: CalendarState
+  date: CalendarDate
 }
 
 function CalendarCell({ state, date }: CalendarCellProps) {
-  const ref = React.useRef<HTMLButtonElement | null>(null);
-  const { cellProps, buttonProps, isSelected, isOutsideVisibleRange, isDisabled, formattedDate } =
-    useCalendarCell({ date }, state, ref);
+  const ref = React.useRef<HTMLButtonElement | null>(null)
+  const { cellProps, buttonProps, isSelected, isOutsideVisibleRange, isDisabled, formattedDate } = useCalendarCell(
+    { date },
+    state,
+    ref
+  )
 
   const isToday = useMemo(() => {
-    const timezone = getLocalTimeZone();
-    return _isToday(date, timezone);
-  }, [date]);
+    const timezone = getLocalTimeZone()
+    return _isToday(date, timezone)
+  }, [date])
 
   return (
     <td
       {...cellProps}
       className={cn(
         cellProps.className,
-        'relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md',
+        'relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md'
       )}
     >
       <Button
@@ -172,26 +162,26 @@ function CalendarCell({ state, date }: CalendarCellProps) {
           isSelected &&
             'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
           isOutsideVisibleRange && 'text-muted-foreground opacity-50',
-          isDisabled && 'text-muted-foreground opacity-50',
+          isDisabled && 'text-muted-foreground opacity-50'
         )}
       >
         {formattedDate}
       </Button>
     </td>
-  );
+  )
 }
 
 interface DateSegmentProps {
-  segment: IDateSegment;
-  state: DateFieldState;
+  segment: IDateSegment
+  state: DateFieldState
 }
 
 function DateSegment({ segment, state }: DateSegmentProps) {
-  const ref = useRef(null);
+  const ref = useRef(null)
 
   const {
     segmentProps: { ...segmentProps },
-  } = useDateSegment(segment, state, ref);
+  } = useDateSegment(segment, state, ref)
 
   return (
     <div
@@ -200,24 +190,24 @@ function DateSegment({ segment, state }: DateSegmentProps) {
       className={cn(
         'focus:rounded-[2px] focus:bg-accent focus:text-accent-foreground focus:outline-none',
         segment.type !== 'literal' && 'px-[1px]',
-        segment.isPlaceholder && 'text-muted-foreground',
+        segment.isPlaceholder && 'text-muted-foreground'
       )}
     >
       {segment.text}
     </div>
-  );
+  )
 }
 
 function DateField(props: AriaDatePickerProps<DateValue>) {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null)
 
-  const { locale } = useLocale();
+  const { locale } = useLocale()
   const state = useDateFieldState({
     ...props,
     locale,
     createCalendar,
-  });
-  const { fieldProps } = useDateField(props, state, ref);
+  })
+  const { fieldProps } = useDateField(props, state, ref)
 
   return (
     <div
@@ -225,7 +215,7 @@ function DateField(props: AriaDatePickerProps<DateValue>) {
       ref={ref}
       className={cn(
         'inline-flex h-10 flex-1 items-center rounded-l-md border-input bg-transparent px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-        props.isDisabled && 'cursor-not-allowed opacity-50',
+        props.isDisabled && 'cursor-not-allowed opacity-50'
       )}
     >
       {state.segments.map((segment, i) => (
@@ -233,21 +223,20 @@ function DateField(props: AriaDatePickerProps<DateValue>) {
       ))}
       {state.isInvalid && <span aria-hidden="true">🚫</span>}
     </div>
-  );
+  )
 }
 
 function TimeField(props: AriaTimeFieldProps<TimeValue>) {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null)
 
-  const { locale } = useLocale();
+  const { locale } = useLocale()
   const state = useTimeFieldState({
     ...props,
     locale,
-  });
+  })
   const {
     fieldProps: { ...fieldProps },
-    labelProps,
-  } = useTimeField(props, state, ref);
+  } = useTimeField(props, state, ref)
 
   return (
     <div
@@ -255,47 +244,46 @@ function TimeField(props: AriaTimeFieldProps<TimeValue>) {
       ref={ref}
       className={cn(
         'inline-flex h-10 w-full flex-1 rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-        props.isDisabled && 'cursor-not-allowed opacity-50',
+        props.isDisabled && 'cursor-not-allowed opacity-50'
       )}
     >
       {state.segments.map((segment, i) => (
         <DateSegment key={i} segment={segment} state={state} />
       ))}
     </div>
-  );
+  )
 }
 
-export const TimePicker = React.forwardRef<
-  HTMLDivElement,
-  Omit<TimeFieldStateOptions<TimeValue>, 'locale'>
->((props, forwardedRef) => {
-  return <TimeField {...props} />;
-});
+export const TimePicker = React.forwardRef<HTMLDivElement, Omit<TimeFieldStateOptions<TimeValue>, 'locale'>>(
+  (props) => {
+    return <TimeField {...props} />
+  }
+)
 
-TimePicker.displayName = 'TimePicker';
+TimePicker.displayName = 'TimePicker'
 
 export type DateTimePickerRef = {
-  divRef: HTMLDivElement | null;
-  buttonRef: HTMLButtonElement | null;
-  contentRef: HTMLDivElement | null;
-  jsDate: Date | null;
-  state: DatePickerState;
-};
+  divRef: HTMLDivElement | null
+  buttonRef: HTMLButtonElement | null
+  contentRef: HTMLDivElement | null
+  jsDate: Date | null
+  state: DatePickerState
+}
 
 export const DateTimePicker = React.forwardRef<
   DateTimePickerRef,
   DatePickerStateOptions<DateValue> & {
-    jsDate?: Date | null;
-    onJsDateChange?: (date: Date) => void;
-    showClearButton?: boolean;
+    jsDate?: Date | null
+    onJsDateChange?: (date: Date) => void
+    showClearButton?: boolean
   }
 >(({ jsDate, onJsDateChange, showClearButton = true, ...props }, ref) => {
-  const divRef = useRef<HTMLDivElement | null>(null);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const [jsDatetime, setJsDatetime] = useState(jsDate || null);
+  const divRef = useRef<HTMLDivElement | null>(null)
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const contentRef = useRef<HTMLDivElement | null>(null)
+  const [jsDatetime, setJsDatetime] = useState(jsDate || null)
 
-  const state = useDatePickerState(props);
+  const state = useDatePickerState(props)
 
   useImperativeHandle(ref, () => ({
     divRef: divRef.current,
@@ -303,29 +291,29 @@ export const DateTimePicker = React.forwardRef<
     contentRef: contentRef.current,
     jsDate: jsDatetime,
     state,
-  }));
+  }))
   const {
     groupProps,
     fieldProps,
     buttonProps: _buttonProps,
     dialogProps,
     calendarProps,
-  } = useDatePicker(props, state, divRef);
-  const { buttonProps } = useButton(_buttonProps, buttonRef);
+  } = useDatePicker(props, state, divRef)
+  const { buttonProps } = useButton(_buttonProps, buttonRef)
 
   const currentValue = useCallback(() => {
     if (!jsDatetime) {
-      return null;
+      return null
     }
 
-    const parsed = fromDate(jsDatetime, getLocalTimeZone());
+    const parsed = fromDate(jsDatetime, getLocalTimeZone())
 
     if (state.hasTime) {
-      return toCalendarDateTime(parsed);
+      return toCalendarDateTime(parsed)
     }
 
-    return toCalendarDate(parsed);
-  }, [jsDatetime, state.hasTime]);
+    return toCalendarDate(parsed)
+  }, [jsDatetime, state.hasTime])
 
   useEffect(() => {
     /**
@@ -333,18 +321,18 @@ export const DateTimePicker = React.forwardRef<
      * This is controlled by react-aria.
      **/
     if (state.value) {
-      const date = parseDateTime(state.value.toString()).toDate(getLocalTimeZone());
-      setJsDatetime(date);
-      onJsDateChange?.(date);
+      const date = parseDateTime(state.value.toString()).toDate(getLocalTimeZone())
+      setJsDatetime(date)
+      onJsDateChange?.(date)
     }
-  }, [state.value, onJsDateChange]);
+  }, [state.value, onJsDateChange])
   return (
     <div
       {...groupProps}
       ref={divRef}
       className={cn(
         groupProps.className,
-        'flex items-center rounded-md border ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+        'flex items-center rounded-md border ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2'
       )}
     >
       <Popover open={props.isOpen} onOpenChange={props.onOpenChange}>
@@ -355,7 +343,7 @@ export const DateTimePicker = React.forwardRef<
             className="border-r"
             disabled={props.isDisabled}
             onClick={() => {
-              state.setOpen(true);
+              state.setOpen(true)
             }}
           >
             <Icons.calender className="h-5 w-5" />
@@ -376,5 +364,5 @@ export const DateTimePicker = React.forwardRef<
         />
       </div>
     </div>
-  );
-});
+  )
+})

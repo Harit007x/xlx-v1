@@ -2,7 +2,7 @@
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
-import { userAtom } from '../../../packages/store/src/atoms'
+import { userAtom } from '@repo/store'
 
 const SessionChange = () => {
   const session = useSession()

@@ -21,3 +21,7 @@
 
 ## To create fresh next.js project with turbo repo
 > npx create-turbo@latest
+
+## Docker Commands
+> docker system prune --all
+

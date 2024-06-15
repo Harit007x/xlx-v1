@@ -4,7 +4,7 @@ import ControlDock from '../../../../components/sessions/control-dock'
 import QuestionsContainer from '../../../../components/sessions/questions-container'
 import { SocketProvider } from '../../../socketContext'
 
-export const LiveSession = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: { id: string } }) => {
   const room_id: string = params.id
   const messageResponse = await getSessionMessages(room_id, 10, 0)
   const questionsResponse = await getSessionQuestions(room_id, 10, 0)
@@ -24,4 +24,4 @@ export const LiveSession = async ({ params }: { params: { id: string } }) => {
   )
 }
 
-export default LiveSession
+export default Page

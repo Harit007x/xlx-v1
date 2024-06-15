@@ -11,8 +11,8 @@
     "moduleResolution": "NodeNext"
   },
   "ts-node": {
-    "esm": true, /* ... Line to be added ... */
-  } ,
+    "esm": true /* ... Line to be added ... */
+  },
   "include": ["src"],
   "exclude": ["node_modules"],
   "lib": ["esnext"]

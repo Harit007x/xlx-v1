@@ -7,7 +7,7 @@ import { Icons } from '../../../packages/ui/src/icons'
 
 export const MenuItem = ({ item }: { item: SideNavItem }) => {
   const originPathname = usePathname()
-  const pathname = originPathname + ''
+  const pathname = `${originPathname}`
   const [subMenuOpen, setSubMenuOpen] = useState(false)
   const toggleSubMenu = () => {
     setSubMenuOpen(!subMenuOpen)

@@ -60,7 +60,7 @@ export const Icons = {
   spinner: Loader2,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
-  ChevronUp: ChevronUp,
+  ChevronUp,
   chevronDown: ChevronDown,
   trash: Trash,
   post: FileText,

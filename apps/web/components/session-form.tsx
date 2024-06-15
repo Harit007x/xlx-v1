@@ -29,7 +29,7 @@ import { TSessionBoxItems } from '../types/types'
 import { useEffect, useState } from 'react'
 import { createSession, updateSession } from '../actions/session/session-actions'
 import { useRecoilValue } from 'recoil'
-import { userAtom } from '../../../packages/store/src/atoms/user'
+import { userAtom } from '@repo/store'
 import { Icons } from '@repo/ui/icons'
 import { cn } from '@repo/ui/utils'
 import { format } from 'date-fns'
@@ -293,7 +293,7 @@ export function SessionForm(props: ISessionFormProps) {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-4">
-                  {props.isEdit == false && (
+                  {props.isEdit === false && (
                     <>
                       <SheetClose asChild>
                         <Button variant={'ghost'} className="w-fit">

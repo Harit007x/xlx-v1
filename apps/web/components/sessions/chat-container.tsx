@@ -2,7 +2,7 @@
 import { Icons } from '@repo/ui/icons'
 import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@repo/ui/shadcn'
 import { useEffect, useRef, useState } from 'react'
-import { userAtom } from '../../../../packages/store/src/atoms'
+import { userAtom } from '@repo/store'
 import { useRecoilValue } from 'recoil'
 import { GetSessionMessages, SessionMessagesSchema } from '../../actions'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form'

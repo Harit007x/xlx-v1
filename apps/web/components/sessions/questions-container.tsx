@@ -11,14 +11,14 @@ import {
 import { Icons } from '@repo/ui/icons'
 import { useRecoilValue } from 'recoil'
 import { useEffect, useRef, useState } from 'react'
-import { userAtom } from '../../../../packages/store/src/atoms'
+import { userAtom } from '@repo/store'
 import { GetSessionQuestions, SessionQuestionsSchema } from '../../actions'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form'
 import { useForm } from 'react-hook-form'
 import { format } from 'date-fns'
 import { useSocket } from '../../app/socketContext'
 import { getSessionQuestions } from '../../actions/session/session-actions'
-import clsx from 'clsx'
+// import clsx from 'clsx'
 
 interface IQuestionsContainerProps {
   room_id: string
@@ -148,8 +148,8 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
     question_id: number,
     user_id: number,
     up_vote: boolean,
-    down_vote: boolean,
-    up_vote_count: number
+    down_vote: boolean
+    // up_vote_count: number
   ) => {
     if (socket) {
       socket.emit('question-action', props.room_id, question_id, user_id, up_vote, down_vote)
@@ -204,9 +204,7 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
                         variant="ghost"
                         className="rounded-full h-7 w-7 bg-background border border-foreground/10"
                         disabled={question.is_disabled}
-                        onClick={() =>
-                          handleActions(question.id, question.user_id, true, false, question.up_vote_count + 1)
-                        }
+                        onClick={() => handleActions(question.id, question.user_id, true, false)}
                       >
                         <Icons.ChevronUp className="h-4 w-4" />
                       </Button>
@@ -230,9 +228,7 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
                         variant="ghost"
                         className="rounded-full h-7 w-7 bg-background border border-foreground/10"
                         disabled={question.is_disabled}
-                        onClick={() =>
-                          handleActions(question.id, question.user_id, false, true, question.up_vote_count + 1)
-                        }
+                        onClick={() => handleActions(question.id, question.user_id, false, true)}
                       >
                         <Icons.chevronDown className="h-4 w-4" />
                       </Button>
