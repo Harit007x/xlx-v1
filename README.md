@@ -1,7 +1,7 @@
+Spin up dev environment
 
+1. docker compose build
 
-1. docker network create web_network
+2. docker compose up
 
-2. COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml build
-
-3. docker-compose -f docker-compose.yml up
+3. docker compose watch (in new terminal) 

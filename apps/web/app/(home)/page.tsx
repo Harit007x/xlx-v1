@@ -1,7 +1,7 @@
-'use client'
-import { buttonVariants } from '@repo/ui/shadcn'
-import { cn } from '@repo/ui/utils'
-import Link from 'next/link'
+'use client';
+import { buttonVariants } from '@repo/ui/shadcn';
+import { cn } from '@repo/ui/utils';
+import Link from 'next/link';
 
 // Not using this page, but after deleting it, it throws an error 404 not found for not found page it self.
 
@@ -50,5 +50,5 @@ export default function Temp() {
         jOIN ROOM
       </Button> */}
     </main>
-  )
+  );
 }

@@ -1,21 +1,21 @@
-'use client'
-import { Icons } from '@repo/ui/icons'
-import { Button } from '@repo/ui/shadcn'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import { toast } from 'sonner'
-import clsx from 'clsx'
+'use client';
+import { Icons } from '@repo/ui/icons';
+import { Button } from '@repo/ui/shadcn';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
+import clsx from 'clsx';
 
 const ControlDock = () => {
-  const router = useRouter()
-  const [pollDisabled, setPollDisabled] = useState(false)
-  const [messageDisabled, setMessageDisabled] = useState(false)
-  const [qnaDisabled, setQnaDisabled] = useState(false)
+  const router = useRouter();
+  const [pollDisabled, setPollDisabled] = useState(false);
+  const [messageDisabled, setMessageDisabled] = useState(false);
+  const [qnaDisabled, setQnaDisabled] = useState(false);
 
   const handleExit = () => {
-    router.push('/sessions')
-    toast.success('Exited from session')
-  }
+    router.push('/sessions');
+    toast.success('Exited from session');
+  };
 
   return (
     <div className="flex justify-center w-full h-fit mt-4">
@@ -73,7 +73,7 @@ const ControlDock = () => {
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ControlDock
+export default ControlDock;

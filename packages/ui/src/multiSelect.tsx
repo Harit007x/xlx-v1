@@ -8,7 +8,6 @@ import { Command, CommandGroup, CommandItem, CommandList } from './shadcn/ui/com
 import { cn } from '../lib/utils';
 import { Badge } from './shadcn/ui';
 
-
 export interface Option {
   value: string;
   label: string;

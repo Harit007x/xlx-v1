@@ -1,7 +1,7 @@
-'use server'
-import { InputTypeRegisterUser, ReturnTypeRegisterUser } from './types'
-import { hash } from 'bcrypt'
-import { db } from '@repo/xlx'
+'use server';
+import { InputTypeRegisterUser, ReturnTypeRegisterUser } from './types';
+import { hash } from 'bcrypt';
+import { db } from '@repo/xlx';
 
 export const getUserDetails = async (username?: string) => {
   try {
@@ -9,12 +9,12 @@ export const getUserDetails = async (username?: string) => {
       where: {
         username,
       },
-    })
-    return { data: user, message: 'User fetched.' }
+    });
+    return { data: user, message: 'User fetched.' };
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
-}
+};
 
 export const createUser = async (data: InputTypeRegisterUser): Promise<ReturnTypeRegisterUser> => {
   try {
@@ -22,14 +22,14 @@ export const createUser = async (data: InputTypeRegisterUser): Promise<ReturnTyp
       where: {
         username: data.username,
       },
-    })
+    });
 
     if (userExists) {
-      return { error: 'Username is already taken.' }
+      return { error: 'Username is already taken.' };
     }
 
-    const { username, password, first_name, last_name } = data
-    const hashedPassword = await hash(password, 10)
+    const { username, password, first_name, last_name } = data;
+    const hashedPassword = await hash(password, 10);
 
     const user = await db.user.create({
       data: {
@@ -39,11 +39,11 @@ export const createUser = async (data: InputTypeRegisterUser): Promise<ReturnTyp
         password: hashedPassword,
         email: username,
       },
-    })
+    });
 
-    return { data: user, message: 'Signed up successfully.' }
+    return { data: user, message: 'Signed up successfully.' };
   } catch (err) {
-    console.log(err)
-    return { error: 'Failed to signup.' }
+    console.log(err);
+    return { error: 'Failed to signup.' };
   }
-}
+};

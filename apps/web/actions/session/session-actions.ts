@@ -1,4 +1,4 @@
-'use server'
+'use server';
 import {
   GetReturnTypeSession,
   InputTypeSession,
@@ -7,26 +7,26 @@ import {
   VerifyTypeSession,
   GetSessionMessages,
   GetSessionQuestions,
-} from './types'
-import { revalidatePath } from 'next/cache'
-import { customAlphabet } from 'nanoid'
-import { db } from '@repo/xlx'
+} from './types';
+import { revalidatePath } from 'next/cache';
+import { customAlphabet } from 'nanoid';
+import { db } from '@repo/xlx';
 
 export const createSession = async (data: InputTypeSession, user_id: number): Promise<CreateReturnTypeSession> => {
-  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10)
+  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
 
   try {
     const user = await db.user.findUnique({
       where: {
         id: user_id,
       },
-    })
+    });
 
     if (!user) {
-      return { error: 'User not found.' }
+      return { error: 'User not found.' };
     }
 
-    const { name, description, schedule_date_time, is_auto, tags, password } = data
+    const { name, description, schedule_date_time, is_auto, tags, password } = data;
 
     const room = await db.room.create({
       data: {
@@ -35,7 +35,7 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
         is_chat_paused: false,
         is_ind_paused: false,
       },
-    })
+    });
 
     const session = await db.session.create({
       data: {
@@ -49,15 +49,15 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
         user_id: user.id,
         room_id: room.id,
       },
-    })
+    });
 
-    revalidatePath('/sessions')
-    return { data: session, message: 'Session created successfully.' }
+    revalidatePath('/sessions');
+    return { data: session, message: 'Session created successfully.' };
   } catch (err) {
-    console.log(err)
-    return { error: 'Failed to schedule a session.' }
+    console.log(err);
+    return { error: 'Failed to schedule a session.' };
   }
-}
+};
 
 export const getSingleSession = async (session_id: number): Promise<GetReturnTypeSingleSession> => {
   try {
@@ -65,18 +65,18 @@ export const getSingleSession = async (session_id: number): Promise<GetReturnTyp
       where: {
         id: session_id,
       },
-    })
+    });
 
     if (!session) {
-      return { error: 'Sessions not found.' }
+      return { error: 'Sessions not found.' };
     }
 
-    return { data: session, message: 'Session fetched successfully.' }
+    return { data: session, message: 'Session fetched successfully.' };
   } catch (err) {
-    console.log(err)
-    return { error: 'Failed to fetch sessions.' }
+    console.log(err);
+    return { error: 'Failed to fetch sessions.' };
   }
-}
+};
 
 export const getSessionDetails = async (user_id: number): Promise<GetReturnTypeSession> => {
   try {
@@ -92,23 +92,23 @@ export const getSessionDetails = async (user_id: number): Promise<GetReturnTypeS
           },
         },
       },
-    })
+    });
 
     const sessionsWithJoinId = session.map((session) => ({
       ...session,
       joining_id: session.room.room_code,
-    }))
+    }));
 
     if (!session) {
-      return { error: 'Sessions not found.' }
+      return { error: 'Sessions not found.' };
     }
 
-    return { data: sessionsWithJoinId, message: 'Sessions fetched successfully.' }
+    return { data: sessionsWithJoinId, message: 'Sessions fetched successfully.' };
   } catch (err) {
-    console.log(err)
-    return { error: 'Failed to fetch sessions.' }
+    console.log(err);
+    return { error: 'Failed to fetch sessions.' };
   }
-}
+};
 
 export const updateSession = async (
   data: InputTypeSession,
@@ -120,28 +120,28 @@ export const updateSession = async (
       where: {
         id: user_id,
       },
-    })
+    });
 
     if (!user) {
-      return { error: 'User not found.' }
+      return { error: 'User not found.' };
     }
 
     const session = await db.session.findUnique({
       where: {
         id: session_id,
       },
-    })
+    });
 
     if (!session) {
-      return { error: 'Session not found.' }
+      return { error: 'Session not found.' };
     }
 
     // Check if the user is the owner of the session
     if (session.user_id !== user.id) {
-      return { error: 'User is not authorized to update this session.' }
+      return { error: 'User is not authorized to update this session.' };
     }
 
-    const { name, description, schedule_date_time, is_auto, tags, password } = data
+    const { name, description, schedule_date_time, is_auto, tags, password } = data;
 
     const updatedSession = await db.session.update({
       where: {
@@ -156,14 +156,14 @@ export const updateSession = async (
         password,
         tags,
       },
-    })
-    revalidatePath('/sessions')
-    return { data: updatedSession, message: 'Session updated successfully.' }
+    });
+    revalidatePath('/sessions');
+    return { data: updatedSession, message: 'Session updated successfully.' };
   } catch (err) {
-    console.log(err)
-    return { error: 'Failed to update the session.' }
+    console.log(err);
+    return { error: 'Failed to update the session.' };
   }
-}
+};
 
 export const verifySession = async (room_code: string): Promise<VerifyTypeSession> => {
   try {
@@ -171,18 +171,18 @@ export const verifySession = async (room_code: string): Promise<VerifyTypeSessio
       where: {
         room_code,
       },
-    })
+    });
 
     if (!room) {
-      return { error: 'Wrong session credentials.' }
+      return { error: 'Wrong session credentials.' };
     }
 
-    return { data: room, message: 'Session verified successfully.' }
+    return { data: room, message: 'Session verified successfully.' };
   } catch (err) {
-    console.log(err)
-    return { error: 'Failed to verify session details.' }
+    console.log(err);
+    return { error: 'Failed to verify session details.' };
   }
-}
+};
 
 export const getSessionMessages = async (
   room_code: string,
@@ -194,10 +194,10 @@ export const getSessionMessages = async (
       where: {
         room_code,
       },
-    })
+    });
 
     if (!room) {
-      return { error: 'room not found.' }
+      return { error: 'room not found.' };
     }
 
     const sessionMessages = await db.sessionMessages.findMany({
@@ -215,33 +215,33 @@ export const getSessionMessages = async (
       orderBy: {
         created_at: 'desc',
       },
-    })
+    });
 
     const annotate = sessionMessages.map((message) => ({
       ...message,
       initials: `${message.user.first_name.slice(0, 1)}${message.user.last_name.slice(0, 1)}`,
       user_name: `${message.user.first_name} ${message.user.last_name}`,
-    }))
+    }));
 
     if (offset === undefined) {
-      return { error: 'offset not found.' }
+      return { error: 'offset not found.' };
     }
 
     if (limit === undefined) {
-      return { error: 'limit not found.' }
+      return { error: 'limit not found.' };
     }
 
-    const paginatedMessages = annotate.slice(offset, offset + limit)
+    const paginatedMessages = annotate.slice(offset, offset + limit);
     return {
       data: paginatedMessages.reverse(),
       count: annotate.length,
       message: 'Session messages fetched successfully.',
-    }
+    };
   } catch (err) {
-    console.log(err)
-    return { error: 'Failed to fetch session messages.' }
+    console.log(err);
+    return { error: 'Failed to fetch session messages.' };
   }
-}
+};
 
 export const getSessionQuestions = async (
   room_code: string,
@@ -253,10 +253,10 @@ export const getSessionQuestions = async (
       where: {
         room_code,
       },
-    })
+    });
 
     if (!room) {
-      return { error: 'room not found.' }
+      return { error: 'room not found.' };
     }
 
     const sessionQuestions = await db.questions.findMany({
@@ -284,38 +284,38 @@ export const getSessionQuestions = async (
           created_at: 'desc', // or 'desc' depending on your requirement
         },
       ],
-    })
+    });
 
     const annotate = sessionQuestions.map((question: any) => {
-      console.log('lol =', question)
-      const userActionExists = question.questionaction.some((action: any) => action.user_id === question.user_id)
+      console.log('lol =', question);
+      const userActionExists = question.questionaction.some((action: any) => action.user_id === question.user_id);
       return {
         ...question,
         initials: `${question.user.first_name.slice(0, 1)}${question.user.last_name.slice(0, 1)}`,
         user_name: `${question.user.first_name} ${question.user.last_name}`,
         is_disabled: userActionExists,
-      }
-    })
+      };
+    });
 
     if (offset === undefined) {
-      return { error: 'offset not found.' }
+      return { error: 'offset not found.' };
     }
 
     if (limit === undefined) {
-      return { error: 'limit not found.' }
+      return { error: 'limit not found.' };
     }
 
-    const paginatedMessages = annotate.slice(offset, offset + limit)
+    const paginatedMessages = annotate.slice(offset, offset + limit);
     return {
       data: paginatedMessages.reverse(),
       count: annotate.length,
       message: 'Session questions fetched successfully.',
-    }
+    };
   } catch (err) {
-    console.log(err)
-    return { error: 'Failed to fetch session messages.' }
+    console.log(err);
+    return { error: 'Failed to fetch session messages.' };
   }
-}
+};
 
 // export const upVoteDownVote = async (question_id: number, user_id: number, up_vote: boolean, down_vote: boolean, up_vote_count: number): Promise<any> => {
 //     try {

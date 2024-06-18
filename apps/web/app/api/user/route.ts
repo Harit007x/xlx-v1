@@ -1,32 +1,32 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
 // import { hash } from 'bcrypt';
-import * as z from 'zod'
-import { db } from '@repo/xlx'
+import * as z from 'zod';
+import { db } from '@repo/xlx';
 
 const userSchema = z.object({
   username: z.string().min(1, 'Username is required').min(4, 'Username must be at least 4 characters').max(10),
   password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters').max(10),
-})
+});
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
+    const body = await req.json();
 
     try {
-      userSchema.parse(body)
+      userSchema.parse(body);
     } catch (validationError: any) {
-      const errorDetails = JSON.parse(validationError.message) // Parse JSON string
-      const errorMessage = errorDetails[0].message
-      return NextResponse.json({ message: errorMessage })
+      const errorDetails = JSON.parse(validationError.message); // Parse JSON string
+      const errorMessage = errorDetails[0].message;
+      return NextResponse.json({ message: errorMessage });
     }
 
     const userExists = await db.user.findUnique({
       where: {
         username: body.username,
       },
-    })
+    });
 
     if (userExists) {
-      return NextResponse.json({ message: 'Username already exists.' })
+      return NextResponse.json({ message: 'Username already exists.' });
     }
 
     // const {username, password} = body
@@ -41,15 +41,15 @@ export async function POST(req: NextRequest) {
 
     // const { password: newPassword, ...rest } = user
 
-    return NextResponse.json({ useR: {}, message: 'User Created.' })
+    return NextResponse.json({ useR: {}, message: 'User Created.' });
   } catch (err) {
-    return NextResponse.json({ message: 'Something went wrong!' })
+    return NextResponse.json({ message: 'Something went wrong!' });
   }
 }
 
 export async function GET(req: NextRequest) {
   try {
-    const body = await req.json()
+    const body = await req.json();
 
     // const { username, password } = userSchema.parse(body);
 
@@ -57,12 +57,12 @@ export async function GET(req: NextRequest) {
       where: {
         username: body.username,
       },
-    })
+    });
 
     if (userExists) {
-      return NextResponse.json({ message: 'Username found.' })
+      return NextResponse.json({ message: 'Username found.' });
     }
   } catch (err) {
-    return NextResponse.json({ message: 'Something went wrong!' })
+    return NextResponse.json({ message: 'Something went wrong!' });
   }
 }

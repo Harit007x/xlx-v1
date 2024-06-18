@@ -9,7 +9,9 @@
     "lint:check": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
     "format:fix": "prettier --write \"**/*.{ts,tsx,json}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,json}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,json}\"",
+    "dev:docker": "npm run prisma:docker && cd apps/web && npm run dev",
+    "prisma:docker": "cd packages/xlx-db && npx prisma migrate dev"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
@@ -33,8 +35,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "prisma": {
-    "schema": "./packages/xlx-db/prisma/schema.prisma"
-  }
+  ]
 }

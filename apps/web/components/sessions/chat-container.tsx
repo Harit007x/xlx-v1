@@ -1,15 +1,15 @@
-'use client'
-import { Icons } from '@repo/ui/icons'
-import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@repo/ui/shadcn'
-import { useEffect, useRef, useState } from 'react'
-import { userAtom } from '@repo/store'
-import { useRecoilValue } from 'recoil'
-import { GetSessionMessages, SessionMessagesSchema } from '../../actions'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form'
-import { useForm } from 'react-hook-form'
-import { format } from 'date-fns'
-import { getSessionMessages } from '../../actions/session/session-actions'
-import { useSocket } from '../../app/socketContext'
+'use client';
+import { Icons } from '@repo/ui/icons';
+import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@repo/ui/shadcn';
+import { useEffect, useRef, useState } from 'react';
+import { userAtom } from '@repo/store';
+import { useRecoilValue } from 'recoil';
+import { GetSessionMessages, SessionMessagesSchema } from '../../actions';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form';
+import { useForm } from 'react-hook-form';
+import { format } from 'date-fns';
+import { getSessionMessages } from '../../actions/session/session-actions';
+import { useSocket } from '../../app/socketContext';
 
 interface IChatContainerProps {
   room_id: string
@@ -17,94 +17,94 @@ interface IChatContainerProps {
 }
 
 export const ChatContainer = (props: IChatContainerProps) => {
-  const user = useRecoilValue(userAtom)
-  const { socket } = useSocket()
-  const [scrollDown, setScrollDown] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [inbox, setInbox] = useState<SessionMessagesSchema[] | undefined>(props.messages.data)
-  const inboxDivRef = useRef<HTMLDivElement>(null)
+  const user = useRecoilValue(userAtom);
+  const { socket } = useSocket();
+  const [scrollDown, setScrollDown] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [inbox, setInbox] = useState<SessionMessagesSchema[] | undefined>(props.messages.data);
+  const inboxDivRef = useRef<HTMLDivElement>(null);
   const form = useForm({
     defaultValues: {
       message: '',
     },
-  })
+  });
 
   useEffect(() => {
     if (socket) {
       socket.on('message', (message) => {
-        console.log('Received message:', message)
-        setScrollDown((prev) => !prev)
-        setInbox((inbox: any) => [...inbox, message])
-      })
+        console.log('Received message:', message);
+        setScrollDown((prev) => !prev);
+        setInbox((inbox: any) => [...inbox, message]);
+      });
     }
-  }, [socket])
+  }, [socket]);
 
   useEffect(() => {
     requestAnimationFrame(() => {
       if (inboxDivRef.current) {
-        console.log('not called')
-        inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight
+        console.log('not called');
+        inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight;
       }
-    })
-  }, [scrollDown])
+    });
+  }, [scrollDown]);
 
   const fetchOlderMessages = async () => {
     try {
       if (inbox?.length !== props.messages.count) {
-        const previousScrollHeight = inboxDivRef.current?.scrollHeight || 0
-        const result = await getSessionMessages(props.room_id, 10, inbox?.length)
+        const previousScrollHeight = inboxDivRef.current?.scrollHeight || 0;
+        const result = await getSessionMessages(props.room_id, 10, inbox?.length);
         // console.log('messages fetched =', result.data)
         if (result.error) {
-          console.error(result.error)
+          console.error(result.error);
         } else {
           setInbox((prevInbox) => {
             // @ts-ignore
-            const newInbox = [...result.data, ...prevInbox]
+            const newInbox = [...result.data, ...prevInbox];
             requestAnimationFrame(() => {
               if (inboxDivRef.current) {
-                inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight - previousScrollHeight
+                inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight - previousScrollHeight;
               }
-            })
-            return newInbox
-          })
+            });
+            return newInbox;
+          });
         }
       }
     } catch (err) {
-      console.error('Failed to fetch older messages', err)
+      console.error('Failed to fetch older messages', err);
     }
-  }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
       if (inboxDivRef.current && inboxDivRef.current.scrollTop === 0) {
-        fetchOlderMessages()
+        fetchOlderMessages();
       }
-    }
+    };
 
     if (inboxDivRef.current) {
-      inboxDivRef.current.addEventListener('scroll', handleScroll)
+      inboxDivRef.current.addEventListener('scroll', handleScroll);
     }
 
     return () => {
       if (inboxDivRef.current) {
-        inboxDivRef.current.removeEventListener('scroll', handleScroll)
+        inboxDivRef.current.removeEventListener('scroll', handleScroll);
       }
-    }
-  }, [fetchOlderMessages])
+    };
+  }, [fetchOlderMessages]);
 
   const handleSendMessage = async (formData: any) => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (formData.message !== '') {
       if (socket) {
         // console.log("Sending message:", formData.message);
-        socket.emit('message', formData.message, props.room_id, user?.user_id)
+        socket.emit('message', formData.message, props.room_id, user?.user_id);
       }
       form.reset({
         message: '',
-      })
+      });
     }
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   return (
     <div className="lg:col-span-2 flex h-[88vh] flex-col border border-foreground/10 rounded-md">
@@ -175,7 +175,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
         </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChatContainer
+export default ChatContainer;

@@ -1,4 +1,4 @@
-import { atom } from 'recoil'
+import { atom } from 'recoil';
 
 export interface useSessionData {
   user_id: number
@@ -10,4 +10,4 @@ export interface useSessionData {
 export const userAtom = atom<null | useSessionData>({
   key: 'userAtom',
   default: null,
-})
+});

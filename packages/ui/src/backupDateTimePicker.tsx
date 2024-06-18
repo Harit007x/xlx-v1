@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import {
   AriaDatePickerProps,
   AriaTimeFieldProps,
@@ -16,7 +16,7 @@ import {
   useDateSegment,
   useLocale,
   useTimeField,
-} from 'react-aria'
+} from 'react-aria';
 import {
   CalendarState,
   DateFieldState,
@@ -27,7 +27,7 @@ import {
   useDateFieldState,
   useDatePickerState,
   useTimeFieldState,
-} from 'react-stately'
+} from 'react-stately';
 import {
   CalendarDate,
   createCalendar,
@@ -38,30 +38,30 @@ import {
   toCalendarDateTime,
   isToday as _isToday,
   toCalendarDate,
-} from '@internationalized/date'
-import { DateSegment as IDateSegment } from '@react-stately/datepicker'
-import { Button, Popover, PopoverContent, PopoverTrigger } from './shadcn/ui'
-import { Icons } from './icons'
-import { cn } from '../lib/utils'
+} from '@internationalized/date';
+import { DateSegment as IDateSegment } from '@react-stately/datepicker';
+import { Button, Popover, PopoverContent, PopoverTrigger } from './shadcn/ui';
+import { Icons } from './icons';
+import { cn } from '../lib/utils';
 
 function Calendar(props: CalendarProps<DateValue>) {
-  const prevButtonRef = React.useRef<HTMLButtonElement | null>(null)
-  const nextButtonRef = React.useRef<HTMLButtonElement | null>(null)
+  const prevButtonRef = React.useRef<HTMLButtonElement | null>(null);
+  const nextButtonRef = React.useRef<HTMLButtonElement | null>(null);
 
-  const { locale } = useLocale()
+  const { locale } = useLocale();
   const state = useCalendarState({
     ...props,
     locale,
     createCalendar,
-  })
+  });
   const {
     calendarProps,
     prevButtonProps: _prevButtonProps,
     nextButtonProps: _nextButtonProps,
     title,
-  } = useCalendar(props, state)
-  const { buttonProps: prevButtonProps } = useButton(_prevButtonProps, prevButtonRef)
-  const { buttonProps: nextButtonProps } = useButton(_nextButtonProps, nextButtonRef)
+  } = useCalendar(props, state);
+  const { buttonProps: prevButtonProps } = useButton(_prevButtonProps, prevButtonRef);
+  const { buttonProps: nextButtonProps } = useButton(_nextButtonProps, nextButtonRef);
 
   return (
     <div {...calendarProps} className="space-y-4">
@@ -86,7 +86,7 @@ function Calendar(props: CalendarProps<DateValue>) {
       </div>
       <CalendarGrid state={state} />
     </div>
-  )
+  );
 }
 
 interface CalendarGridProps {
@@ -94,11 +94,11 @@ interface CalendarGridProps {
 }
 
 function CalendarGrid({ state, ...props }: CalendarGridProps) {
-  const { locale } = useLocale()
-  const { gridProps, headerProps, weekDays } = useCalendarGrid(props, state)
+  const { locale } = useLocale();
+  const { gridProps, headerProps, weekDays } = useCalendarGrid(props, state);
 
   // Get the number of weeks in the month so we can render the proper number of rows.
-  const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale)
+  const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
 
   return (
     <table {...gridProps} className={cn(gridProps.className, 'w-full border-collapse space-y-1')}>
@@ -121,7 +121,7 @@ function CalendarGrid({ state, ...props }: CalendarGridProps) {
         ))}
       </tbody>
     </table>
-  )
+  );
 }
 
 interface CalendarCellProps {
@@ -130,17 +130,17 @@ interface CalendarCellProps {
 }
 
 function CalendarCell({ state, date }: CalendarCellProps) {
-  const ref = React.useRef<HTMLButtonElement | null>(null)
+  const ref = React.useRef<HTMLButtonElement | null>(null);
   const { cellProps, buttonProps, isSelected, isOutsideVisibleRange, isDisabled, formattedDate } = useCalendarCell(
     { date },
     state,
     ref
-  )
+  );
 
   const isToday = useMemo(() => {
-    const timezone = getLocalTimeZone()
-    return _isToday(date, timezone)
-  }, [date])
+    const timezone = getLocalTimeZone();
+    return _isToday(date, timezone);
+  }, [date]);
 
   return (
     <td
@@ -168,7 +168,7 @@ function CalendarCell({ state, date }: CalendarCellProps) {
         {formattedDate}
       </Button>
     </td>
-  )
+  );
 }
 
 interface DateSegmentProps {
@@ -177,11 +177,11 @@ interface DateSegmentProps {
 }
 
 function DateSegment({ segment, state }: DateSegmentProps) {
-  const ref = useRef(null)
+  const ref = useRef(null);
 
   const {
     segmentProps: { ...segmentProps },
-  } = useDateSegment(segment, state, ref)
+  } = useDateSegment(segment, state, ref);
 
   return (
     <div
@@ -195,19 +195,19 @@ function DateSegment({ segment, state }: DateSegmentProps) {
     >
       {segment.text}
     </div>
-  )
+  );
 }
 
 function DateField(props: AriaDatePickerProps<DateValue>) {
-  const ref = useRef<HTMLDivElement | null>(null)
+  const ref = useRef<HTMLDivElement | null>(null);
 
-  const { locale } = useLocale()
+  const { locale } = useLocale();
   const state = useDateFieldState({
     ...props,
     locale,
     createCalendar,
-  })
-  const { fieldProps } = useDateField(props, state, ref)
+  });
+  const { fieldProps } = useDateField(props, state, ref);
 
   return (
     <div
@@ -223,20 +223,20 @@ function DateField(props: AriaDatePickerProps<DateValue>) {
       ))}
       {state.isInvalid && <span aria-hidden="true">🚫</span>}
     </div>
-  )
+  );
 }
 
 function TimeField(props: AriaTimeFieldProps<TimeValue>) {
-  const ref = useRef<HTMLDivElement | null>(null)
+  const ref = useRef<HTMLDivElement | null>(null);
 
-  const { locale } = useLocale()
+  const { locale } = useLocale();
   const state = useTimeFieldState({
     ...props,
     locale,
-  })
+  });
   const {
     fieldProps: { ...fieldProps },
-  } = useTimeField(props, state, ref)
+  } = useTimeField(props, state, ref);
 
   return (
     <div
@@ -251,16 +251,16 @@ function TimeField(props: AriaTimeFieldProps<TimeValue>) {
         <DateSegment key={i} segment={segment} state={state} />
       ))}
     </div>
-  )
+  );
 }
 
 export const TimePicker = React.forwardRef<HTMLDivElement, Omit<TimeFieldStateOptions<TimeValue>, 'locale'>>(
   (props) => {
-    return <TimeField {...props} />
+    return <TimeField {...props} />;
   }
-)
+);
 
-TimePicker.displayName = 'TimePicker'
+TimePicker.displayName = 'TimePicker';
 
 export type DateTimePickerRef = {
   divRef: HTMLDivElement | null
@@ -274,16 +274,16 @@ export const DateTimePicker = React.forwardRef<
   DateTimePickerRef,
   DatePickerStateOptions<DateValue> & {
     jsDate?: Date | null
-    onJsDateChange?: (date: Date) => void
+    onJsDateChange?:(date: Date) => void
     showClearButton?: boolean
   }
 >(({ jsDate, onJsDateChange, showClearButton = true, ...props }, ref) => {
-  const divRef = useRef<HTMLDivElement | null>(null)
-  const buttonRef = useRef<HTMLButtonElement | null>(null)
-  const contentRef = useRef<HTMLDivElement | null>(null)
-  const [jsDatetime, setJsDatetime] = useState(jsDate || null)
+  const divRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [jsDatetime, setJsDatetime] = useState(jsDate || null);
 
-  const state = useDatePickerState(props)
+  const state = useDatePickerState(props);
 
   useImperativeHandle(ref, () => ({
     divRef: divRef.current,
@@ -291,29 +291,29 @@ export const DateTimePicker = React.forwardRef<
     contentRef: contentRef.current,
     jsDate: jsDatetime,
     state,
-  }))
+  }));
   const {
     groupProps,
     fieldProps,
     buttonProps: _buttonProps,
     dialogProps,
     calendarProps,
-  } = useDatePicker(props, state, divRef)
-  const { buttonProps } = useButton(_buttonProps, buttonRef)
+  } = useDatePicker(props, state, divRef);
+  const { buttonProps } = useButton(_buttonProps, buttonRef);
 
   const currentValue = useCallback(() => {
     if (!jsDatetime) {
-      return null
+      return null;
     }
 
-    const parsed = fromDate(jsDatetime, getLocalTimeZone())
+    const parsed = fromDate(jsDatetime, getLocalTimeZone());
 
     if (state.hasTime) {
-      return toCalendarDateTime(parsed)
+      return toCalendarDateTime(parsed);
     }
 
-    return toCalendarDate(parsed)
-  }, [jsDatetime, state.hasTime])
+    return toCalendarDate(parsed);
+  }, [jsDatetime, state.hasTime]);
 
   useEffect(() => {
     /**
@@ -321,11 +321,11 @@ export const DateTimePicker = React.forwardRef<
      * This is controlled by react-aria.
      **/
     if (state.value) {
-      const date = parseDateTime(state.value.toString()).toDate(getLocalTimeZone())
-      setJsDatetime(date)
-      onJsDateChange?.(date)
+      const date = parseDateTime(state.value.toString()).toDate(getLocalTimeZone());
+      setJsDatetime(date);
+      onJsDateChange?.(date);
     }
-  }, [state.value, onJsDateChange])
+  }, [state.value, onJsDateChange]);
   return (
     <div
       {...groupProps}
@@ -343,7 +343,7 @@ export const DateTimePicker = React.forwardRef<
             className="border-r"
             disabled={props.isDisabled}
             onClick={() => {
-              state.setOpen(true)
+              state.setOpen(true);
             }}
           >
             <Icons.calender className="h-5 w-5" />
@@ -364,5 +364,5 @@ export const DateTimePicker = React.forwardRef<
         />
       </div>
     </div>
-  )
-})
+  );
+});

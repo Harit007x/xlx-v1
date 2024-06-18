@@ -1,43 +1,43 @@
-'use client'
-import { Button, Input } from '@repo/ui/shadcn'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form'
-import * as React from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { signIn } from 'next-auth/react'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import { cn } from '@repo/ui/utils'
-import { userLoginSchema } from '../actions/user/schema'
-import { Icons } from '../../../packages/ui/src/icons'
+'use client';
+import { Button, Input } from '@repo/ui/shadcn';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form';
+import * as React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { cn } from '@repo/ui/utils';
+import { userLoginSchema } from '../actions/user/schema';
+import { Icons } from '../../../packages/ui/src/icons';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onSubmit(values: z.infer<typeof userLoginSchema>) {
-    setIsLoading(true)
+    setIsLoading(true);
     const res = await signIn('credentials', {
       username: values.username,
       password: values.password,
       redirect: false,
-    })
+    });
 
-    console.log('form resposne =', res)
+    console.log('form resposne =', res);
 
     if (!res?.error) {
-      router.push('/home')
+      router.push('/home');
     } else {
-      setIsLoading(false)
+      setIsLoading(false);
       toast.error('Username or password is incorrect.', {
         action: {
           label: 'Close',
           onClick: () => console.log('Closed Toast'),
         },
-      })
+      });
     }
   }
 
@@ -47,7 +47,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       username: '',
       password: '',
     },
-  })
+  });
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -98,5 +98,5 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
         </div>
       </div> */}
     </div>
-  )
+  );
 }

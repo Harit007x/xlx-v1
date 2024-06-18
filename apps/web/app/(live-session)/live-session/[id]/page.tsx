@@ -1,13 +1,13 @@
-import { getSessionMessages, getSessionQuestions } from '../../../../actions/session/session-actions'
-import ChatContainer from '../../../../components/sessions/chat-container'
-import ControlDock from '../../../../components/sessions/control-dock'
-import QuestionsContainer from '../../../../components/sessions/questions-container'
-import { SocketProvider } from '../../../socketContext'
+import { getSessionMessages, getSessionQuestions } from '../../../../actions/session/session-actions';
+import ChatContainer from '../../../../components/sessions/chat-container';
+import ControlDock from '../../../../components/sessions/control-dock';
+import QuestionsContainer from '../../../../components/sessions/questions-container';
+import { SocketProvider } from '../../../socketContext';
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const room_id: string = params.id
-  const messageResponse = await getSessionMessages(room_id, 10, 0)
-  const questionsResponse = await getSessionQuestions(room_id, 10, 0)
+  const room_id: string = params.id;
+  const messageResponse = await getSessionMessages(room_id, 10, 0);
+  const questionsResponse = await getSessionQuestions(room_id, 10, 0);
 
   return (
     <SocketProvider room_id={room_id}>
@@ -21,7 +21,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <ControlDock />
       </main>
     </SocketProvider>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

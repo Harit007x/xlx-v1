@@ -1,6 +1,6 @@
-import React from 'react'
-import makeAnimated from 'react-select/animated'
-import CreatableSelect from 'react-select/creatable'
+import React from 'react';
+import makeAnimated from 'react-select/animated';
+import CreatableSelect from 'react-select/creatable';
 
 // interface IReactSelectProps{
 //     components: any,
@@ -47,10 +47,10 @@ const customStyles = {
       color: 'white',
     },
   }),
-}
+};
 
 export const CustomReactSelect = ({ ...props }) => {
-  const animatedComponents = makeAnimated()
+  const animatedComponents = makeAnimated();
 
-  return <CreatableSelect {...props} isMulti components={animatedComponents} styles={customStyles} />
-}
+  return <CreatableSelect {...props} isMulti components={animatedComponents} styles={customStyles} />;
+};

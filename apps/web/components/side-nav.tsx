@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import { useTheme } from 'next-themes'
-import Link from 'next/link'
-import { SIDENAV_ITEMS } from '../lib/constants'
-import { MenuItem } from './menu-item'
-import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@repo/ui/shadcn'
-import { useRecoilValue } from 'recoil'
-import { userAtom } from '@repo/store'
-import { signOut } from 'next-auth/react'
-import { Icons } from '../../../packages/ui/src/icons'
-import { SideNavItem } from '../types/types'
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
+import { SIDENAV_ITEMS } from '../lib/constants';
+import { MenuItem } from './menu-item';
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@repo/ui/shadcn';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '@repo/store';
+import { signOut } from 'next-auth/react';
+import { Icons } from '../../../packages/ui/src/icons';
+import { SideNavItem } from '../types/types';
 
 const SideNav = () => {
-  const { theme, setTheme } = useTheme()
-  const user = useRecoilValue(userAtom)
+  const { theme, setTheme } = useTheme();
+  const user = useRecoilValue(userAtom);
   return (
     <main className="h-screen">
       <div
@@ -44,7 +44,7 @@ const SideNav = () => {
             </div>
             <div className="flex flex-col space-y-1 md:px-6 ">
               {SIDENAV_ITEMS.map((item: SideNavItem, idx: any) => {
-                return <MenuItem key={idx} item={item} />
+                return <MenuItem key={idx} item={item} />;
               })}
             </div>
           </div>
@@ -74,7 +74,7 @@ const SideNav = () => {
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default SideNav
+export default SideNav;

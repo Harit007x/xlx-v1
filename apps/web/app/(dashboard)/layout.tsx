@@ -1,5 +1,5 @@
-import { Icons } from '@repo/ui/icons'
-import SideNav from '../../components/side-nav'
+import { Icons } from '@repo/ui/icons';
+import SideNav from '../../components/side-nav';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,5 +12,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </div>
     </main>
-  )
+  );
 }

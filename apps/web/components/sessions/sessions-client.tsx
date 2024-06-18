@@ -1,5 +1,5 @@
-'use client'
-import React, { useState } from 'react'
+'use client';
+import React, { useState } from 'react';
 import {
   Button,
   DropdownMenu,
@@ -12,22 +12,22 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
-} from '@repo/ui/shadcn'
-import { TSessionBoxItems } from '../../types/types'
-import SessionBox from '../session-box'
-import { Icons } from '@repo/ui/icons'
-import { SessionForm } from '../session-form'
-import JoinSessionForm from './join-session'
+} from '@repo/ui/shadcn';
+import { TSessionBoxItems } from '../../types/types';
+import SessionBox from '../session-box';
+import { Icons } from '@repo/ui/icons';
+import { SessionForm } from '../session-form';
+import JoinSessionForm from './join-session';
 
 interface SessionsProps {
   sessionList: TSessionBoxItems[] | undefined
 }
 
 export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
-  const [toggleOpen, setToggleOpen] = useState<boolean>(false)
-  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const [toggleOpen, setToggleOpen] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const [sessionData, setSessionData] = useState<TSessionBoxItems | undefined>(undefined)
+  const [sessionData, setSessionData] = useState<TSessionBoxItems | undefined>(undefined);
 
   return (
     <div className="h-screen">
@@ -38,8 +38,8 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
             className="gap-1 md:hidden"
             size={'sm'}
             onClick={() => {
-              setToggleOpen(!toggleOpen)
-              setIsEdit(false)
+              setToggleOpen(!toggleOpen);
+              setIsEdit(false);
             }}
           >
             <Icons.add className="h-3.5 w-3.5" />
@@ -79,8 +79,8 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
             <Button
               className="gap-1 hidden md:flex"
               onClick={() => {
-                setToggleOpen(!toggleOpen)
-                setIsEdit(false)
+                setToggleOpen(!toggleOpen);
+                setIsEdit(false);
               }}
             >
               <Icons.add className="h-3.5 w-3.5" />
@@ -101,9 +101,9 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
                       tags={item.tags}
                       invitation_link={item.invitation_link}
                       onClick={() => {
-                        setSessionData(item)
-                        setToggleOpen(true)
-                        setIsEdit(true)
+                        setSessionData(item);
+                        setToggleOpen(true);
+                        setIsEdit(true);
                       }}
                     />
                   ))}
@@ -122,5 +122,5 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
         setIsEdit={setIsEdit}
       />
     </div>
-  )
-}
+  );
+};

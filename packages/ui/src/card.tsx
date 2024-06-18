@@ -21,5 +21,5 @@ export function Card({
       </h2>
       <p>{children}</p>
     </a>
-  )
+  );
 }

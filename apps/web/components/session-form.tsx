@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
   Button,
   Input,
@@ -18,24 +18,24 @@ import {
   Calendar,
   PopoverTrigger,
   PopoverContent,
-} from '@repo/ui/shadcn'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/form'
-import * as React from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import { sessionSchema } from '../actions/session/schema'
-import { TSessionBoxItems } from '../types/types'
-import { useEffect, useState } from 'react'
-import { createSession, updateSession } from '../actions/session/session-actions'
-import { useRecoilValue } from 'recoil'
-import { userAtom } from '@repo/store'
-import { Icons } from '@repo/ui/icons'
-import { cn } from '@repo/ui/utils'
-import { format } from 'date-fns'
-import { TimePickerDemo } from '@repo/ui/date-time-picker'
-import { MultipleSelector } from '@repo/ui/multi-select'
-import { CopyButton } from '@repo/ui/copy-button'
+} from '@repo/ui/shadcn';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/form';
+import * as React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { sessionSchema } from '../actions/session/schema';
+import { TSessionBoxItems } from '../types/types';
+import { useEffect, useState } from 'react';
+import { createSession, updateSession } from '../actions/session/session-actions';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '@repo/store';
+import { Icons } from '@repo/ui/icons';
+import { cn } from '@repo/ui/utils';
+import { format } from 'date-fns';
+import { TimePickerDemo } from '@repo/ui/date-time-picker';
+import { MultipleSelector } from '@repo/ui/multi-select';
+import { CopyButton } from '@repo/ui/copy-button';
 
 interface ISessionFormProps {
   toggleOpen: boolean
@@ -46,18 +46,18 @@ interface ISessionFormProps {
 }
 
 export function SessionForm(props: ISessionFormProps) {
-  const user: any = useRecoilValue(userAtom)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isModified, setIsModified] = useState<boolean>(false)
-  const [sessionId, setSessionId] = useState<number | undefined>(undefined)
+  const user: any = useRecoilValue(userAtom);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModified, setIsModified] = useState<boolean>(false);
+  const [sessionId, setSessionId] = useState<number | undefined>(undefined);
   const onSubmit = async (formData: z.infer<typeof sessionSchema>) => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (props.isEdit) {
-      const res = await updateSession(formData, sessionId, user.user_id)
-      console.log('update res =', res)
+      const res = await updateSession(formData, sessionId, user.user_id);
+      console.log('update res =', res);
     } else {
-      const res = await createSession(formData, user.user_id)
-      console.log('submit res =', res)
+      const res = await createSession(formData, user.user_id);
+      console.log('submit res =', res);
     }
 
     // if (!res?.error) {
@@ -72,15 +72,15 @@ export function SessionForm(props: ISessionFormProps) {
     //     },
     //   });
     // }
-    props.setToggleOpen(false)
-    setIsLoading(false)
-  }
+    props.setToggleOpen(false);
+    setIsLoading(false);
+  };
 
   const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
     { value: 'vanilla', label: 'Vanilla' },
-  ]
+  ];
 
   const form = useForm<z.infer<typeof sessionSchema>>({
     resolver: zodResolver(sessionSchema),
@@ -92,17 +92,17 @@ export function SessionForm(props: ISessionFormProps) {
       password: '',
       tags: [],
     },
-  })
+  });
 
   useEffect(() => {
     if (props.sessionData && props.isEdit && props.toggleOpen) {
-      console.log('set form ')
-      form.reset(props.sessionData)
-      setIsModified(false)
-      setSessionId(props.sessionData?.id)
+      console.log('set form ');
+      form.reset(props.sessionData);
+      setIsModified(false);
+      setSessionId(props.sessionData?.id);
     }
     if (!props.toggleOpen || !props.isEdit) {
-      console.log('unset form')
+      console.log('unset form');
       form.reset({
         name: '',
         description: '',
@@ -110,17 +110,17 @@ export function SessionForm(props: ISessionFormProps) {
         is_auto: false,
         password: '',
         tags: [],
-      })
+      });
     }
-  }, [props.sessionData, props.toggleOpen])
+  }, [props.sessionData, props.toggleOpen]);
 
   useEffect(() => {
     const subscription = form.watch(() => {
-      setIsModified(true)
-    })
+      setIsModified(true);
+    });
 
-    return () => subscription.unsubscribe()
-  }, [form.watch])
+    return () => subscription.unsubscribe();
+  }, [form.watch]);
 
   return (
     <Sheet open={props.toggleOpen} onOpenChange={props.setToggleOpen}>
@@ -326,5 +326,5 @@ export function SessionForm(props: ISessionFormProps) {
         </Form>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

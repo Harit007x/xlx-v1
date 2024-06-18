@@ -1,6 +1,6 @@
-import CredentialsProvider from 'next-auth/providers/credentials'
-import axios from 'axios'
-import { User } from '@prisma/client'
+import CredentialsProvider from 'next-auth/providers/credentials';
+import axios from 'axios';
+import { User } from '@prisma/client';
 
 async function validateUser(username: string, password: string): Promise<{ data: null } | { data: User }> {
   // if (false) {
@@ -18,15 +18,15 @@ async function validateUser(username: string, password: string): Promise<{ data:
   //   }
   //   return { data: null };
   // }
-  const url = 'http://localhost:3000/api/login'
+  const url = 'http://localhost:3000/api/login';
   const headers = {
     'Client-Service': '',
     'Auth-Key': 'AUTH_SECRET',
     'Content-Type': 'application/x-www-form-urlencoded',
-  }
-  const body = new URLSearchParams()
-  body.append('username', username)
-  body.append('password', password)
+  };
+  const body = new URLSearchParams();
+  body.append('username', username);
+  body.append('password', password);
 
   try {
     // const response = await fetch(url, {
@@ -34,19 +34,19 @@ async function validateUser(username: string, password: string): Promise<{ data:
     //   headers,
     //   body,
     // });
-    const response = await axios.post(url, body, { headers })
+    const response = await axios.post(url, body, { headers });
 
     if (response.data.status === 401) {
-      throw new Error(`HTTP error! Status: ${response.data.status}`)
+      throw new Error(`HTTP error! Status: ${response.data.status}`);
     }
 
-    return response as any // Or process data as needed
+    return response as any; // Or process data as needed
   } catch (error) {
-    console.error('Error validating user:', error)
+    console.error('Error validating user:', error);
   }
   return {
     data: null,
-  }
+  };
 }
 
 export const authOptions = {
@@ -61,16 +61,16 @@ export const authOptions = {
       async authorize(credentials: any): Promise<any> {
         try {
           //@ts-ignore
-          const user = await validateUser(credentials.username, credentials.password)
+          const user = await validateUser(credentials.username, credentials.password);
           if (user.data !== null) {
-            return user.data
+            return user.data;
           }
           // Return null if user data could not be retrieved
-          return null
+          return null;
         } catch (e) {
-          console.error('error = ', e)
+          console.error('error = ', e);
         }
-        return null
+        return null;
       },
     }),
   ],
@@ -78,19 +78,19 @@ export const authOptions = {
   callbacks: {
     session: async ({ session, token }: any) => {
       if (session?.user) {
-        session.user = token.uid
+        session.user = token.uid;
       }
-      return session
+      return session;
     },
     jwt: async ({ user, token }: any) => {
       if (user) {
         // const { password: newPassword, email: newEmail,  ...rest } = user;
-        token.uid = user
+        token.uid = user;
       }
-      return token
+      return token;
     },
   },
   pages: {
     signIn: '/login',
   },
-}
+};

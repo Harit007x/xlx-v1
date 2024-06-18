@@ -1,12 +1,12 @@
-'use client'
-import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
-import { useSetRecoilState } from 'recoil'
-import { userAtom } from '@repo/store'
+'use client';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '@repo/store';
 
 const SessionChange = () => {
-  const session = useSession()
-  const setUser = useSetRecoilState(userAtom)
+  const session = useSession();
+  const setUser = useSetRecoilState(userAtom);
   useEffect(() => {
     setUser({
       // @ts-ignore
@@ -17,8 +17,8 @@ const SessionChange = () => {
       first_name: session?.data?.user?.first_name,
       // @ts-ignore
       last_name: session?.data?.user?.last_name,
-    })
-  }, [session])
+    });
+  }, [session]);
   // if (session.status === 'loading') {
   //     return(
   //         <main className="fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center ">
@@ -26,7 +26,7 @@ const SessionChange = () => {
   //         </main>
   //     )
   // }
-  return null
-}
+  return null;
+};
 
-export default SessionChange
+export default SessionChange;

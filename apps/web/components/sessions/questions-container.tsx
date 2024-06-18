@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
   Button,
   Input,
@@ -7,17 +7,17 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuContent,
-} from '@repo/ui/shadcn'
-import { Icons } from '@repo/ui/icons'
-import { useRecoilValue } from 'recoil'
-import { useEffect, useRef, useState } from 'react'
-import { userAtom } from '@repo/store'
-import { GetSessionQuestions, SessionQuestionsSchema } from '../../actions'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form'
-import { useForm } from 'react-hook-form'
-import { format } from 'date-fns'
-import { useSocket } from '../../app/socketContext'
-import { getSessionQuestions } from '../../actions/session/session-actions'
+} from '@repo/ui/shadcn';
+import { Icons } from '@repo/ui/icons';
+import { useRecoilValue } from 'recoil';
+import { useEffect, useRef, useState } from 'react';
+import { userAtom } from '@repo/store';
+import { GetSessionQuestions, SessionQuestionsSchema } from '../../actions';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form';
+import { useForm } from 'react-hook-form';
+import { format } from 'date-fns';
+import { useSocket } from '../../app/socketContext';
+import { getSessionQuestions } from '../../actions/session/session-actions';
 // import clsx from 'clsx'
 
 interface IQuestionsContainerProps {
@@ -26,37 +26,37 @@ interface IQuestionsContainerProps {
 }
 
 const QuestionsContainer = (props: IQuestionsContainerProps) => {
-  const user = useRecoilValue(userAtom)
-  const { socket } = useSocket()
-  const [scrollDown, setScrollDown] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [inbox, setInbox] = useState<SessionQuestionsSchema[] | undefined>(props.questions.data)
-  const inboxDivRef = useRef<HTMLDivElement>(null)
+  const user = useRecoilValue(userAtom);
+  const { socket } = useSocket();
+  const [scrollDown, setScrollDown] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [inbox, setInbox] = useState<SessionQuestionsSchema[] | undefined>(props.questions.data);
+  const inboxDivRef = useRef<HTMLDivElement>(null);
   const form = useForm({
     defaultValues: {
       question: '',
     },
-  })
+  });
 
   useEffect(() => {
     if (socket) {
       socket.on('question', (question) => {
-        console.log('Received question:', question)
-        setScrollDown((prev) => !prev)
-        setInbox((inbox: any) => [...inbox, question])
-      })
+        console.log('Received question:', question);
+        setScrollDown((prev) => !prev);
+        setInbox((inbox: any) => [...inbox, question]);
+      });
 
       socket.on('question-action', (question) => {
-        console.log('question action:', question)
-        setScrollDown((prev) => !prev)
+        console.log('question action:', question);
+        setScrollDown((prev) => !prev);
         setInbox((inbox: any) => {
-          const updatedInbox = inbox.map((q: any) => (q.id === question.id ? question : q))
+          const updatedInbox = inbox.map((q: any) => (q.id === question.id ? question : q));
           updatedInbox.sort((a: any, b: any) => {
-            return b.up_vote_count - a.up_vote_count
-          })
-          return updatedInbox
-        })
-      })
+            return b.up_vote_count - a.up_vote_count;
+          });
+          return updatedInbox;
+        });
+      });
     }
 
     // socket.on('question-action', async (question) => {
@@ -68,81 +68,81 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
 
     return () => {
       if (socket) {
-        socket.off('question')
-        socket.off('question-action')
+        socket.off('question');
+        socket.off('question-action');
       }
-    }
-  }, [socket])
+    };
+  }, [socket]);
 
-  console.log('update or not =', inbox)
+  console.log('update or not =', inbox);
 
   useEffect(() => {
     requestAnimationFrame(() => {
       if (inboxDivRef.current) {
-        console.log('not called')
-        inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight
+        console.log('not called');
+        inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight;
       }
-    })
-  }, [scrollDown])
+    });
+  }, [scrollDown]);
 
   const fetchOlderMessages = async () => {
     try {
       if (inbox?.length !== props.questions.count) {
-        const previousScrollHeight = inboxDivRef.current?.scrollHeight || 0
-        const result = await getSessionQuestions(props.room_id, 10, inbox?.length)
+        const previousScrollHeight = inboxDivRef.current?.scrollHeight || 0;
+        const result = await getSessionQuestions(props.room_id, 10, inbox?.length);
         // console.log('messages fetched =', result.data)
         if (result.error) {
-          console.error(result.error)
+          console.error(result.error);
         } else {
           setInbox((prevInbox) => {
             // @ts-ignore
-            const newInbox = [...result.data, ...prevInbox]
+            const newInbox = [...result.data, ...prevInbox];
             requestAnimationFrame(() => {
               if (inboxDivRef.current) {
-                inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight - previousScrollHeight
+                inboxDivRef.current.scrollTop = inboxDivRef.current.scrollHeight - previousScrollHeight;
               }
-            })
-            return newInbox
-          })
+            });
+            return newInbox;
+          });
         }
       }
     } catch (err) {
-      console.error('Failed to fetch older messages', err)
+      console.error('Failed to fetch older messages', err);
     }
-  }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
       if (inboxDivRef.current && inboxDivRef.current.scrollTop === 0) {
-        fetchOlderMessages()
+        fetchOlderMessages();
       }
-    }
+    };
 
     if (inboxDivRef.current) {
-      inboxDivRef.current.addEventListener('scroll', handleScroll)
+      inboxDivRef.current.addEventListener('scroll', handleScroll);
     }
 
     return () => {
       if (inboxDivRef.current) {
-        inboxDivRef.current.removeEventListener('scroll', handleScroll)
+        inboxDivRef.current.removeEventListener('scroll', handleScroll);
       }
-    }
-  }, [fetchOlderMessages])
+    };
+  }, [fetchOlderMessages]);
 
   const handleAskQuestion = async (formData: any) => {
-    setIsLoading(true)
-    console.log('formda =', formData)
+    setIsLoading(true);
+    console.log('formda =', formData);
     if (formData.question !== '') {
       if (socket) {
         // console.log("Sending question:", formData.question);
-        socket.emit('question', formData.question, props.room_id, user?.user_id)
+        socket.emit('question', formData.question, props.room_id, user?.user_id);
       }
       form.reset({
         question: '',
-      })
+      });
     }
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   const handleActions = async (
     question_id: number,
@@ -152,9 +152,9 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
     // up_vote_count: number
   ) => {
     if (socket) {
-      socket.emit('question-action', props.room_id, question_id, user_id, up_vote, down_vote)
+      socket.emit('question-action', props.room_id, question_id, user_id, up_vote, down_vote);
     }
-  }
+  };
 
   return (
     <div className="flex h-[88vh] min-w-[30vw] flex-col border border-foreground/10 rounded-md">
@@ -236,7 +236,7 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
                   )}
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
@@ -265,7 +265,7 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
         </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default QuestionsContainer
+export default QuestionsContainer;

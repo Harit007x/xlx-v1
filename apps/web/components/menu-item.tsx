@@ -1,17 +1,17 @@
-'use client'
-import { useState } from 'react'
-import { SideNavItem } from '../types/types'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Icons } from '../../../packages/ui/src/icons'
+'use client';
+import { useState } from 'react';
+import { SideNavItem } from '../types/types';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Icons } from '../../../packages/ui/src/icons';
 
 export const MenuItem = ({ item }: { item: SideNavItem }) => {
-  const originPathname = usePathname()
-  const pathname = `${originPathname}`
-  const [subMenuOpen, setSubMenuOpen] = useState(false)
+  const originPathname = usePathname();
+  const pathname = `${originPathname}`;
+  const [subMenuOpen, setSubMenuOpen] = useState(false);
   const toggleSubMenu = () => {
-    setSubMenuOpen(!subMenuOpen)
-  }
+    setSubMenuOpen(!subMenuOpen);
+  };
 
   return (
     <main>
@@ -47,7 +47,7 @@ export const MenuItem = ({ item }: { item: SideNavItem }) => {
                   >
                     <span>{subItem.title}</span>
                   </Link>
-                )
+                );
               })}
             </div>
           )}
@@ -66,5 +66,5 @@ export const MenuItem = ({ item }: { item: SideNavItem }) => {
         </Link>
       )}
     </main>
-  )
-}
+  );
+};

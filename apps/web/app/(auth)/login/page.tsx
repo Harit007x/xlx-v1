@@ -1,22 +1,22 @@
-import { Metadata } from 'next'
+import { Metadata } from 'next';
 
-import React from 'react'
-import { UserLoginForm } from '../../../components/user-login-form'
-import Link from 'next/link'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../../../lib/auth'
-import { redirect } from 'next/navigation'
+import React from 'react';
+import { UserLoginForm } from '../../../components/user-login-form';
+import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../lib/auth';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Login',
   description: 'Login to your account',
-}
+};
 
 const Page = async () => {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
   // @ts-ignore
   if (session?.user.id) {
-    redirect('/home')
+    redirect('/home');
   }
 
   return (
@@ -38,6 +38,6 @@ const Page = async () => {
         </p>
       </div>
     </main>
-  )
-}
-export default Page
+  );
+};
+export default Page;

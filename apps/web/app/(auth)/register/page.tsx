@@ -1,6 +1,6 @@
-import { cn } from '@repo/ui/utils'
-import Link from 'next/link'
-import { UserRegisterForm } from '../../../components/user-register-form'
+import { cn } from '@repo/ui/utils';
+import Link from 'next/link';
+import { UserRegisterForm } from '../../../components/user-register-form';
 
 const Page = () => {
   return (
@@ -39,6 +39,6 @@ const Page = () => {
         </div>
       </div>
     </main>
-  )
-}
-export default Page
+  );
+};
+export default Page;

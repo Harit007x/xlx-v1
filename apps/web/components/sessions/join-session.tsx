@@ -1,35 +1,35 @@
-import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Input } from '@repo/ui/shadcn'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/form'
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { verifySessionSchema } from '../../actions'
-import { z } from 'zod'
-import { verifySession } from '../../actions/session/session-actions'
-import { useRouter } from 'next/navigation'
-import { Icons } from '@repo/ui/icons'
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Input } from '@repo/ui/shadcn';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/form';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { verifySessionSchema } from '../../actions';
+import { z } from 'zod';
+import { verifySession } from '../../actions/session/session-actions';
+import { useRouter } from 'next/navigation';
+import { Icons } from '@repo/ui/icons';
 
 const JoinSessionForm = () => {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof verifySessionSchema>>({
     resolver: zodResolver(verifySessionSchema),
     defaultValues: {
       room_code: '',
       password: '',
     },
-  })
+  });
 
   const onJoinSession = async (formData: z.infer<typeof verifySessionSchema>) => {
-    setIsLoading(true)
-    console.log('hello =', formData)
+    setIsLoading(true);
+    console.log('hello =', formData);
 
-    const response = await verifySession(formData.room_code)
-    console.log('rs =', response)
+    const response = await verifySession(formData.room_code);
+    console.log('rs =', response);
     if (response.data?.id) {
-      router.push(`live-session/${response.data.room_code}`)
+      router.push(`live-session/${response.data.room_code}`);
     }
-  }
+  };
 
   return (
     <div className="flex-1 smd:block min-w-[20rem] hidden">
@@ -124,7 +124,7 @@ const JoinSessionForm = () => {
         </Form>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default JoinSessionForm
+export default JoinSessionForm;

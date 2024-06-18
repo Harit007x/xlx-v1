@@ -1,41 +1,41 @@
-'use client'
-import { Button, Input } from '@repo/ui/shadcn'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form'
-import * as React from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import { cn } from '@repo/ui/utils'
-import { userRegisterSchema } from '../actions/user/schema'
-import { createUser } from '../actions/user/user-actions'
-import { Icons } from '../../../packages/ui/src/icons'
+'use client';
+import { Button, Input } from '@repo/ui/shadcn';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@repo/ui/form';
+import * as React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { cn } from '@repo/ui/utils';
+import { userRegisterSchema } from '../actions/user/schema';
+import { createUser } from '../actions/user/user-actions';
+import { Icons } from '../../../packages/ui/src/icons';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onSubmit(formData: z.infer<typeof userRegisterSchema>) {
-    setIsLoading(true)
-    const res = await createUser(formData)
+    setIsLoading(true);
+    const res = await createUser(formData);
 
     if (!res?.error) {
-      toast.success(res.message)
-      router.push('/login')
+      toast.success(res.message);
+      router.push('/login');
     } else {
-      console.log('toasted')
+      console.log('toasted');
       toast.error(res.error, {
         action: {
           label: 'Close',
           onClick: () => console.log('Closed Toast'),
         },
-      })
+      });
     }
-    setIsLoading(false)
+    setIsLoading(false);
   }
 
   const form = useForm<z.infer<typeof userRegisterSchema>>({
@@ -46,7 +46,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
       username: '',
       password: '',
     },
-  })
+  });
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -132,5 +132,5 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
         </div>
       </div> */}
     </div>
-  )
+  );
 }

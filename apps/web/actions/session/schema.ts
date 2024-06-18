@@ -1,5 +1,5 @@
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from '@repo/ui/shadcn'
-import * as z from 'zod'
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from '@repo/ui/shadcn';
+import * as z from 'zod';
 
 export const sessionSchema = z.object({
   name: z.string().min(1, 'Session Name is required').min(6, 'Session Name must be at least 6 characters').max(20),
@@ -23,9 +23,9 @@ export const sessionSchema = z.object({
       })
     )
     .optional(),
-})
+});
 
-const roomIDRegex = new RegExp(REGEXP_ONLY_DIGITS_AND_CHARS)
+const roomIDRegex = new RegExp(REGEXP_ONLY_DIGITS_AND_CHARS);
 export const verifySessionSchema = z.object({
   room_code: z
     .string()
@@ -34,7 +34,7 @@ export const verifySessionSchema = z.object({
       message: 'Session Id must only contain alphanumeric characters.',
     }),
   password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters'),
-})
+});
 
 export const sessionMessagesSchema = z.object({
   id: z.number(),
@@ -44,7 +44,7 @@ export const sessionMessagesSchema = z.object({
   message: z.string(),
   room_id: z.number(),
   user_id: z.number(),
-})
+});
 
 export const questionsSchema = z.object({
   id: z.number(),
@@ -57,4 +57,4 @@ export const questionsSchema = z.object({
   down_vote_count: z.number(),
   room_id: z.number(),
   user_id: z.number(),
-})
+});

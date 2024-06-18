@@ -52,7 +52,7 @@ import {
   Phone,
   Menu,
   CircleCheck,
-} from 'lucide-react'
+} from 'lucide-react';
 
 export const Icons = {
   logo: Command,
@@ -139,4 +139,4 @@ export const Icons = {
     </svg>
   ),
   check: Check,
-}
+};
