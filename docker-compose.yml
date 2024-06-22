@@ -8,36 +8,15 @@ services:
     ports:
       - 3000:3000
       - 5555:5555
-   
     environment:
       - LOCAL_DB=postgresql://postgres:postgres@db:5432/postgres
     depends_on:
       - db
-    develop:
-      watch:
-        - action: sync
-          path: ./
-          target: /usr/src/app
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: package.json
-      # - migrate
-        
-  # migrate:
-  #   image: node:alpine
-  #   container_name: migrate
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   volumes:
-  #     - ./packages/xlx-db:/app/packages/xlx-db
-  #   entrypoint: ["sh", "-c", "apk add --no-cache postgresql-client && until pg_isready -h xlx-db -U postgres; do sleep 1; done; npx prisma migrate dev --schema=/app/packages/xlx-db/prisma/schema.prisma"]
-  #   environment:
-  #     - LOCAL_DB=postgresql://postgres:postgres@xlx-db:5432/postgres
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   db:
     image: postgres:alpine
@@ -49,14 +28,31 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5432:5432
-    
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: [ 'CMD-SHELL', 'pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}' ]
+      test: ['CMD-SHELL', 'pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER']
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+
+  test:
+    container_name: test
+    build:
+      context: .
+      dockerfile: ./apps/test/Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    environment:
+      - LOCAL_DB=postgresql://postgres:postgres@db:5432/postgres
 
 volumes:
   postgres-data:

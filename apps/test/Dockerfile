@@ -17,15 +17,13 @@ RUN npm install -g pnpm
 # Install dependencies
 RUN pnpm install
 
-# # Generate Prisma client
-# RUN cd packages/xlx-db && pnpx prisma generate && cd -
+# Generate Prisma client
+# RUN cd packages/xlx-db && ls -la && pnpx prisma generate
 
 # Expose ports for both applications
-EXPOSE 3000
+EXPOSE 8000
 
 WORKDIR /usr/src/app
 
-# RUN cd packages/xlx-db && npx prisma generate
-
 # Command to start both services
-CMD ["pnpm", "run", "dev:docker"]
+CMD ["pnpm", "run", "dev:test"]

@@ -5,11 +5,19 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate"
+    "db:generate": "pnpx prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "build": "tsc"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
     "prisma": "^5.14.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@types/node": "^20.14.8",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
   }
 }
