@@ -4,24 +4,54 @@ services:
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
-    restart: always
+    depends_on:
+      - db
+      - redis
     ports:
       - 3000:3000
       - 5555:5555
+    volumes:
+      - .:/usr/src/app:rw
+      - web_node_modules:/usr/src/app/apps/web/node_modules
+    command: pnpm run dev:docker
     environment:
       - LOCAL_DB=postgresql://postgres:postgres@db:5432/postgres
-    depends_on:
-      - db
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./
+    #       target: /usr/src/app
+    #       ignore:
+    #         - node_modules/
+    #     - action: rebuild
+    #       path: package.json
+
+  test:
+    container_name: test
+    build:
+      context: .
+      dockerfile: ./apps/test/Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      - LOCAL_DB=postgresql://postgres:postgres@db:5432/postgres
+    volumes:
+      - .:/usr/src/app:rw
+      - test_node_modules:/usr/src/app/apps/test/node_modules
+    command: pnpm run dev:test
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./
+    #       target: /usr/src/app
+    #       ignore:
+    #         - node_modules/
+    #     - action: rebuild
+    #       path: package.json
 
   db:
     image: postgres:alpine
     container_name: db
-    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -35,7 +65,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  
+
   redis:
     image: redis:alpine
     container_name: redis
@@ -43,17 +73,8 @@ services:
     ports:
       - 6379:6379
 
-  test:
-    container_name: test
-    build:
-      context: .
-      dockerfile: ./apps/test/Dockerfile
-    restart: always
-    ports:
-      - 8000:8000
-    environment:
-      - LOCAL_DB=postgresql://postgres:postgres@db:5432/postgres
-
 volumes:
   postgres-data:
     external: false
+  web_node_modules:
+  test_node_modules:
