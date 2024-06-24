@@ -1,31 +1,19 @@
 FROM node:20-alpine
 
-# Enable Corepack
-# RUN corepack enable
-
-# Prepare the specified version of Yarn
-# RUN corepack prepare npm@9.5.1 --activate
-
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy the entire monorepo into the container
-COPY . .
-
+# Installing Dependencies
+COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm
-
-# Install dependencies
 RUN pnpm install
 
-# # Generate Prisma client
-# RUN cd packages/xlx-db && pnpx prisma generate && cd -
+# Copy the entire monorepo into the container
+COPY . .
+RUN pnpm install
 
 # Expose ports for both applications
 EXPOSE 3000
-
-WORKDIR /usr/src/app
-
-# RUN cd packages/xlx-db && npx prisma generate
 
 # Command to start both services
 CMD ["pnpm", "run", "dev:docker"]

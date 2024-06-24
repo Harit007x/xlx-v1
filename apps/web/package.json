@@ -12,9 +12,10 @@
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
+    "@repo/store": "*",
     "@repo/ui": "*",
     "@repo/xlx": "*",
-    "@repo/store": "*",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "clsx": "^2.1.1",
@@ -26,9 +27,11 @@
     "next-themes": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.51.2",
+    "react-hook-form": "^7.52.0",
     "recoil": "^0.7.7",
     "socket.io-client": "^4.7.5",
+    "sonner": "^1.4.41",
+    "yup": "^1.4.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -39,7 +42,7 @@
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "eslint": "^8.57.0",
-    "typescript": "^5.3.3",
-    "turbo": "latest"
+    "turbo": "latest",
+    "typescript": "^5.3.3"
   }
 }
