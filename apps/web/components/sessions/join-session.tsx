@@ -117,7 +117,7 @@ const JoinSessionForm = () => {
             <CardFooter className="">
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-                Join Session
+                Join asdsd
               </Button>
             </CardFooter>
           </form>

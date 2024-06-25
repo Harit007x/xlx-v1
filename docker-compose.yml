@@ -10,21 +10,21 @@ services:
     ports:
       - 3000:3000
       - 5555:5555
-    volumes:
-      - .:/usr/src/app:rw
-      - web_node_modules:/usr/src/app/apps/web/node_modules
+    # volumes:
+    #   - .:/usr/src/app:rw
+    #   - web_node_modules:/usr/src/app/apps/web/node_modules
     command: pnpm run dev:docker
     environment:
       - LOCAL_DB=postgresql://postgres:postgres@db:5432/postgres
-    # develop:
-    #   watch:
-    #     - action: sync
-    #       path: ./
-    #       target: /usr/src/app
-    #       ignore:
-    #         - node_modules/
-    #     - action: rebuild
-    #       path: package.json
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /usr/src/app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
 
   test:
     container_name: test
@@ -35,19 +35,19 @@ services:
       - 8000:8000
     environment:
       - LOCAL_DB=postgresql://postgres:postgres@db:5432/postgres
-    volumes:
-      - .:/usr/src/app:rw
-      - test_node_modules:/usr/src/app/apps/test/node_modules
-    command: pnpm run dev:test
-    # develop:
-    #   watch:
-    #     - action: sync
-    #       path: ./
-    #       target: /usr/src/app
-    #       ignore:
-    #         - node_modules/
-    #     - action: rebuild
-    #       path: package.json
+    # volumes:
+    #   - .:/usr/src/app:rw
+    #   - test_node_modules:/usr/src/app/apps/test/node_modules
+    # command: pnpm run dev:test
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /usr/src/app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
 
   db:
     image: postgres:alpine
@@ -76,5 +76,5 @@ services:
 volumes:
   postgres-data:
     external: false
-  web_node_modules:
-  test_node_modules:
+  # web_node_modules:
+  # test_node_modules:

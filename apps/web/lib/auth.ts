@@ -1,6 +1,6 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import axios from 'axios';
-import { User } from '@prisma/client';
+import { User } from '@repo/xlx';
 
 async function validateUser(username: string, password: string): Promise<{ data: null } | { data: User }> {
   // if (false) {
