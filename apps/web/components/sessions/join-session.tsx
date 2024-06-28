@@ -15,7 +15,7 @@ const JoinSessionForm = () => {
   const form = useForm<z.infer<typeof verifySessionSchema>>({
     resolver: zodResolver(verifySessionSchema),
     defaultValues: {
-      room_code: '',
+      meeting_id: '',
       password: '',
     },
   });
@@ -23,11 +23,10 @@ const JoinSessionForm = () => {
   const onJoinSession = async (formData: z.infer<typeof verifySessionSchema>) => {
     setIsLoading(true);
     console.log('hello =', formData);
-
-    const response = await verifySession(formData.room_code);
+    const response = await verifySession(formData.meeting_id, formData.password);
     console.log('rs =', response);
     if (response.data?.id) {
-      router.push(`live-session/${response.data.room_code}`);
+      router.push(`live-session/${response.data.meeting_id}`);
     }
   };
 
@@ -75,7 +74,7 @@ const JoinSessionForm = () => {
                 <div className="flex flex-col space-y-1.5">
                   <FormField
                     control={form.control}
-                    name="room_code"
+                    name="meeting_id"
                     render={({ field }) => (
                       <FormItem>
                         <div className="space-y-0.5">

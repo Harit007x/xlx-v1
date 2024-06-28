@@ -11,6 +11,7 @@ import {
 import { revalidatePath } from 'next/cache';
 import { customAlphabet } from 'nanoid';
 import { db } from '@repo/xlx';
+import { hash, compare } from 'bcrypt';
 
 export const createSession = async (data: InputTypeSession, user_id: number): Promise<CreateReturnTypeSession> => {
   const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
@@ -36,6 +37,8 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
         is_ind_paused: false,
       },
     });
+    
+    const hashedPassword = await hash(password, 10);
 
     const session = await db.session.create({
       data: {
@@ -44,7 +47,8 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
         schedule_date_time,
         is_auto,
         invitation_link: 'asd',
-        password,
+        meeting_id: nanoid(),
+        password: hashedPassword,
         tags,
         user_id: user.id,
         room_id: room.id,
@@ -83,27 +87,15 @@ export const getSessionDetails = async (user_id: number): Promise<GetReturnTypeS
     const session = await db.session.findMany({
       where: {
         user_id,
-      },
-      include: {
-        room: {
-          select: {
-            room_code: true,
-            name: true,
-          },
-        },
-      },
+      }
     });
 
-    const sessionsWithJoinId = session.map((session) => ({
-      ...session,
-      joining_id: session.room.room_code,
-    }));
 
     if (!session) {
       return { error: 'Sessions not found.' };
     }
 
-    return { data: sessionsWithJoinId, message: 'Sessions fetched successfully.' };
+    return { data: session, message: 'Sessions fetched successfully.' };
   } catch (err) {
     console.log(err);
     return { error: 'Failed to fetch sessions.' };
@@ -165,19 +157,25 @@ export const updateSession = async (
   }
 };
 
-export const verifySession = async (room_code: string): Promise<VerifyTypeSession> => {
+export const verifySession = async (meeting_id: string, password:string): Promise<VerifyTypeSession> => {
   try {
-    const room = await db.room.findUnique({
+    const session = await db.session.findUnique({
       where: {
-        room_code,
+        meeting_id,
       },
     });
 
-    if (!room) {
-      return { error: 'Wrong session credentials.' };
+    if (!session){
+      return { error: 'Session not found.' };
     }
 
-    return { data: room, message: 'Session verified successfully.' };
+    const passwordMatch = await compare(password, session.password);
+    
+    if (!passwordMatch) {
+      return {error: 'Wrong session credentials.'};
+    }
+
+    return { data: session, message: 'Session verified successfully.' };
   } catch (err) {
     console.log(err);
     return { error: 'Failed to verify session details.' };

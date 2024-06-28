@@ -11,6 +11,6 @@ export type SessionQuestionsSchema = z.infer<typeof questionsSchema>
 export type CreateReturnTypeSession = ActionState<InputTypeSession, Session>
 export type GetReturnTypeSingleSession = ActionState<InputTypeSession, Session>
 export type GetReturnTypeSession = ActionState<InputTypeSession, Session[]>
-export type VerifyTypeSession = ActionState<VerifySessionSchema, Room>
+export type VerifyTypeSession = ActionState<VerifySessionSchema, Session>
 export type GetSessionMessages = ActionState<SessionMessagesSchema, SessionMessagesSchema[]>
 export type GetSessionQuestions = ActionState<SessionQuestionsSchema, SessionQuestionsSchema[]>

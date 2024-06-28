@@ -44,6 +44,7 @@ model Session {
   description        String
   is_auto            Boolean
   invitation_link    String
+  meeting_id         String   @unique
   password           String
   tags               Json[]
 

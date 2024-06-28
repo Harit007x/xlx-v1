@@ -130,7 +130,7 @@ export function SessionForm(props: ISessionFormProps) {
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <ScrollArea>
+            <div className='overflow-y-auto	'>
               <Card className="w-full border-none p-0 m-0 h-screen">
                 <CardHeader>
                   <CardTitle>{props.isEdit ? 'Edit Session Details' : 'Schedule Session'}</CardTitle>
@@ -236,24 +236,44 @@ export function SessionForm(props: ISessionFormProps) {
                       />
                     </div>
                     {props.isEdit && (
-                      <div className="flex gap-3 space-y-1.5">
-                        <FormField
-                          control={form.control}
-                          name="invitation_link"
-                          render={({ field }) => (
-                            <FormItem className="w-full">
-                              <div className="space-y-0.5">
-                                <FormLabel className="text-base">Invitation Link</FormLabel>
-                              </div>
-                              <FormControl>
-                                <Input placeholder="invitation_link" disabled {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <CopyButton className="self-end" textToCopy={props.sessionData?.invitation_link} />
-                      </div>
+                      <>
+                         <div className="flex gap-3 space-y-1.5">
+                            <FormField
+                              control={form.control}
+                              name="meeting_id"
+                              render={({ field }) => (
+                                <FormItem className="w-full">
+                                  <div className="space-y-0.5">
+                                    <FormLabel className="text-base">Meeting ID</FormLabel>
+                                  </div>
+                                  <FormControl>
+                                    <Input placeholder="meeting_id" disabled {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <CopyButton className="self-end" textToCopy={props.sessionData?.meeting_id} />
+                          </div>
+                          <div className="flex gap-3 space-y-1.5">
+                            <FormField
+                              control={form.control}
+                              name="invitation_link"
+                              render={({ field }) => (
+                                <FormItem className="w-full">
+                                  <div className="space-y-0.5">
+                                    <FormLabel className="text-base">Invitation Link</FormLabel>
+                                  </div>
+                                  <FormControl>
+                                    <Input placeholder="invitation_link" disabled {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <CopyButton className="self-end" textToCopy={props.sessionData?.invitation_link} />
+                          </div>
+                      </>
                     )}
                     <div className="flex flex-col space-y-1.5">
                       <FormField
@@ -321,7 +341,7 @@ export function SessionForm(props: ISessionFormProps) {
                   )}
                 </CardFooter>
               </Card>
-            </ScrollArea>
+            </div>
           </form>
         </Form>
       </SheetContent>

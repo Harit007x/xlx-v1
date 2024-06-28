@@ -12,6 +12,7 @@ export const sessionSchema = z.object({
     required_error: 'Schedule date and time is required',
     invalid_type_error: 'Invalid date format',
   }),
+  meeting_id: z.string().optional(),
   invitation_link: z.string().optional(),
   is_auto: z.boolean().default(false),
   password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters'),
@@ -27,7 +28,7 @@ export const sessionSchema = z.object({
 
 const roomIDRegex = new RegExp(REGEXP_ONLY_DIGITS_AND_CHARS);
 export const verifySessionSchema = z.object({
-  room_code: z
+  meeting_id: z
     .string()
     .min(10, 'Session Id must be 10 characters.')
     .refine((val) => roomIDRegex.test(val), {
