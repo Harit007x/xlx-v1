@@ -32,7 +32,6 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
     const room = await db.room.create({
       data: {
         name,
-        room_code: nanoid(),
         is_chat_paused: false,
         is_ind_paused: false,
       },

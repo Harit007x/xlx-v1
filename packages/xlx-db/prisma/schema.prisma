@@ -43,6 +43,7 @@ model Session {
   schedule_date_time DateTime @default(now())
   description        String
   is_auto            Boolean
+  is_finished        Boolean  @default(false)
   invitation_link    String
   meeting_id         String   @unique
   password           String
@@ -62,7 +63,6 @@ model Session {
 
 model Room {
   id             Int     @id @default(autoincrement())
-  room_code      String  @unique
   name           String
   is_chat_paused Boolean @default(false)
   is_ind_paused  Boolean @default(false)

@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
   ScrollArea,
   Tabs,
+  TabsContent,
   TabsList,
   TabsTrigger,
 } from '@repo/ui/shadcn';
@@ -46,36 +47,45 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
           </Button>
         </div>
 
-        <div className="flex flex-col overflow-hidden gap-2">
-          <div className="flex justify-between items-center px-4 pb-2">
-            <div className="flex justify-between items-center gap-4">
-              <Tabs defaultValue="all">
-                <TabsList className="ml-auto">
-                  <TabsTrigger value="all" className="text-zinc-600 dark:text-zinc-200">
-                    Upcoming
-                  </TabsTrigger>
-                  <TabsTrigger value="unread" className="text-zinc-600 dark:text-zinc-200">
-                    Scheduled
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="h-10 gap-3" size="sm" variant="outline">
-                    <Icons.listFilter className="h-4 w-4" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Filter</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem checked>Active</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+        <div className="flex overflow-hidden">
+          <Tabs defaultValue="upcoming" className='h-full flex flex-1 flex-col gap-2'>
+            <div className='px-4'>
+              
+            <TabsList className="self-start">
+              <TabsTrigger value="upcoming" className="text-zinc-600 dark:text-zinc-200">
+                Upcoming
+              </TabsTrigger>
+              <TabsTrigger value="finished" className="text-zinc-600 dark:text-zinc-200">
+                Finished
+              </TabsTrigger>
+            </TabsList>
             </div>
+            <TabsContent value='upcoming' className='flex-1 overflow-hidden'>
+              <ScrollArea className="h-full px-4">
+                <div className="flex flex-col gap-2 min-w-[22rem]">
+                  <SessionBox
+                    sessionList={sessionList?.filter((item) => !item.is_finished)}
+                    setSessionData={setSessionData}
+                    setToggleOpen={setToggleOpen}
+                    setIsEdit={setIsEdit}
+                  />
+                </div>
+              </ScrollArea>
+            </TabsContent>
+            <TabsContent value='finished' className='flex-1 overflow-hidden'>
+              <ScrollArea className="h-full px-4">
+                <div className="flex flex-col gap-2 min-w-[22rem]">
+                  <SessionBox
+                    sessionList={sessionList?.filter((item) => item.is_finished)}
+                    setSessionData={setSessionData}
+                    setToggleOpen={setToggleOpen}
+                    setIsEdit={setIsEdit}
+                  />
+                </div>
+              </ScrollArea>
+            </TabsContent>
+          </Tabs>
+          <div className='smd:flex flex-1 flex-col items-end gap-4 hidden pr-4'>
             <Button
               className="gap-1 hidden md:flex"
               onClick={() => {
@@ -86,31 +96,6 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
               <Icons.add className="h-3.5 w-3.5" />
               <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Session</span>
             </Button>
-          </div>
-
-          <div className="flex overflow-hidden md:mr-4">
-            <div className="flex flex-1 overflow-hidden shadow-[inset_0px_17px_12px_0px_#e2e8f0]] relative">
-            {/* <div className="shadow-custom-inset backdrop-blur-sm absolute top-0 flex w-full h-6 z-10 flex-1 pointer-events-none"></div> */}
-            <ScrollArea className="flex-1">
-                <div className="flex flex-col gap-2 px-4  min-w-[22rem]">
-                  {sessionList?.map((item: TSessionBoxItems) => (
-                    <SessionBox
-                      key={item.id}
-                      name={item.name}
-                      schedule_date_time={item.schedule_date_time}
-                      description={item.description}
-                      tags={item.tags}
-                      invitation_link={item.invitation_link}
-                      onClick={() => {
-                        setSessionData(item);
-                        setToggleOpen(true);
-                        setIsEdit(true);
-                      }}
-                    />
-                  ))}
-                </div>
-              </ScrollArea>
-            </div>
             <JoinSessionForm />
           </div>
         </div>

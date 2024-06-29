@@ -35,7 +35,7 @@ const JoinSessionForm = () => {
   };
 
   return (
-    <div className="flex-1 smd:block min-w-[20rem] hidden">
+    <div className="min-w-[20rem] w-full">
       <Card className="h-fit">
         <CardHeader>
           <CardTitle>Join Session</CardTitle>
@@ -45,36 +45,6 @@ const JoinSessionForm = () => {
           <form onSubmit={form.handleSubmit(onJoinSession)}>
             <CardContent>
               <div className="grid w-full items-center gap-4">
-                {/* <FormField
-                  control={form.control}
-                  name="room_code"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Session Id</FormLabel>
-                      <FormControl>
-                        <InputOTP 
-                          maxLength={10}
-                          pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                          {...field}
-                        >
-                          <InputOTPGroup>
-                            <InputOTPSlot index={0} />
-                            <InputOTPSlot index={1} />
-                            <InputOTPSlot index={2} />
-                            <InputOTPSlot index={3} />
-                            <InputOTPSlot index={4} />
-                            <InputOTPSlot index={5} />
-                            <InputOTPSlot index={6} />
-                            <InputOTPSlot index={7} />
-                            <InputOTPSlot index={8} />
-                            <InputOTPSlot index={9} />
-                          </InputOTPGroup>
-                        </InputOTP>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
                 <div className="flex flex-col space-y-1.5">
                   <FormField
                     control={form.control}
