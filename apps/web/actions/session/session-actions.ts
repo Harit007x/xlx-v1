@@ -183,24 +183,24 @@ export const verifySession = async (meeting_id: string, password:string): Promis
 };
 
 export const getSessionMessages = async (
-  room_code: string,
+  meeting_id: string,
   limit?: number,
   offset?: number
 ): Promise<GetSessionMessages> => {
   try {
-    const room = await db.room.findUnique({
+    const session = await db.session.findUnique({
       where: {
-        room_code,
+        meeting_id,
       },
     });
-
-    if (!room) {
+    
+    if (!session) {
       return { error: 'room not found.' };
     }
 
     const sessionMessages = await db.sessionMessages.findMany({
       where: {
-        room_id: room.id,
+        session_id: session.id,
       },
       include: {
         user: {
@@ -215,7 +215,7 @@ export const getSessionMessages = async (
       },
     });
 
-    const annotate = sessionMessages.map((message) => ({
+    const annotate = sessionMessages.map((message:any) => ({
       ...message,
       initials: `${message.user.first_name.slice(0, 1)}${message.user.last_name.slice(0, 1)}`,
       user_name: `${message.user.first_name} ${message.user.last_name}`,
@@ -242,24 +242,24 @@ export const getSessionMessages = async (
 };
 
 export const getSessionQuestions = async (
-  room_code: string,
+  meeting_id: string,
   limit?: number,
   offset?: number
 ): Promise<GetSessionQuestions> => {
   try {
-    const room = await db.room.findUnique({
+    const session = await db.session.findUnique({
       where: {
-        room_code,
+        meeting_id,
       },
     });
 
-    if (!room) {
-      return { error: 'room not found.' };
+    if (!session) {
+      return { error: 'session not found.' };
     }
 
     const sessionQuestions = await db.questions.findMany({
       where: {
-        room_id: room.id,
+        session_id: session.id,
       },
       include: {
         user: {

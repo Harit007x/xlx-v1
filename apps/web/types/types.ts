@@ -12,7 +12,7 @@ export type TSessionBoxItems = {
   schedule_date_time: Date
   description: string
   tags: any
-  meeting_id: string
+  meeting_id?: string
   invitation_link: string
   onClick?: () => void
   is_auto?: boolean

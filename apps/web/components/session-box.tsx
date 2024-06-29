@@ -15,7 +15,7 @@ const SessionBox = (props: TSessionBoxItems) => {
   };
   return (
     <main
-      className="flex flex-col p-4 gap-3 border border-foreground/10 rounded-lg hover:bg-secondary hover:cursor-pointer"
+      className="flex flex-col relative p-4 gap-3 border border-foreground/10 rounded-lg hover:bg-secondary hover:cursor-pointer"
       onClick={props.onClick}
     >
       <div className="flex flex-col gap-2">
@@ -27,12 +27,15 @@ const SessionBox = (props: TSessionBoxItems) => {
       </div>
 
       <span className="flex justify-between gap-4">
-        <div className="flex gap-2 flex-wrap	">
+        <div className="flex gap-2 flex-wrap">
           {props.tags.map((item: any) => {
             return <Badge key={item.value}>{item.value}</Badge>;
           })}
         </div>
-        <Icons.link2 className="min-w-fit" width="18" height="18" />
+        <div className='absolute right-4 flex gap-2'>
+          <Icons.link2 className="min-w-fit" width="20" height="20" />
+          {/* <Icons.clipBoardPaste className="min-w-fit cursor-copy" width="20" height="20" /> */}
+        </div>
       </span>
     </main>
   );

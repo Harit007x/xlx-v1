@@ -5,17 +5,17 @@ import QuestionsContainer from '../../../../components/sessions/questions-contai
 import { SocketProvider } from '../../../socketContext';
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const room_id: string = params.id;
-  const messageResponse = await getSessionMessages(room_id, 10, 0);
-  const questionsResponse = await getSessionQuestions(room_id, 10, 0);
+  const meeting_id: string = params.id;
+  const messageResponse = await getSessionMessages(meeting_id, 10, 0);
+  const questionsResponse = await getSessionQuestions(meeting_id, 10, 0);
 
   return (
-    <SocketProvider room_id={room_id}>
+    <SocketProvider meeting_id={meeting_id}>
       <main className="p-4 h-[100vh] flex flex-col justify-between overflow-y-auto">
         <div className="flex-1 gap-2">
           <div className="grid gap-4 lg:grid-cols-3">
-            <ChatContainer room_id={room_id} messages={messageResponse} />
-            <QuestionsContainer room_id={room_id} questions={questionsResponse} />
+            <ChatContainer meeting_id={meeting_id} messages={messageResponse} />
+            <QuestionsContainer meeting_id={meeting_id} questions={questionsResponse} />
           </div>
         </div>
         <ControlDock />

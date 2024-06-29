@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { verifySession } from '../../actions/session/session-actions';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@repo/ui/icons';
+import { toast } from 'sonner';
 
 const JoinSessionForm = () => {
   const router = useRouter();
@@ -27,6 +28,9 @@ const JoinSessionForm = () => {
     console.log('rs =', response);
     if (response.data?.id) {
       router.push(`live-session/${response.data.meeting_id}`);
+    }else{
+      setIsLoading(false);
+      toast.error(response.error);
     }
   };
 
@@ -116,7 +120,7 @@ const JoinSessionForm = () => {
             <CardFooter className="">
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-                Join asdsd
+                Join Session
               </Button>
             </CardFooter>
           </form>

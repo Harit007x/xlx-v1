@@ -8,9 +8,10 @@ import { toast } from 'sonner';
 interface CopyButtonProps {
   textToCopy: any
   className: string
+  toastMessage: string
 }
 
-export const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, className }) => {
+export const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, className, toastMessage }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,7 +20,9 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, className })
       await navigator.clipboard.writeText(textToCopy);
       setCopied(true);
 
-      toast.success('Link copied');
+      toast.success(toastMessage, {
+        duration: 2000,
+      });
 
       setTimeout(() => setCopied(false), 3000);
     } catch (err) {

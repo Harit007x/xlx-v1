@@ -10,14 +10,14 @@ const SocketContext = createContext<SocketContextProps>({ socket: null });
 
 export const useSocket = () => useContext(SocketContext);
 
-export const SocketProvider: React.FC<{ room_id: string; children: React.ReactNode }> = ({ room_id, children }) => {
+export const SocketProvider: React.FC<{ meeting_id: string; children: React.ReactNode }> = ({ meeting_id, children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-
+  console.log('socket =', meeting_id);
   useEffect(() => {
     const socketInstance = io('http://localhost:8000');
 
     socketInstance.on('connect', () => {
-      socketInstance.emit('joinRoom', room_id);
+      socketInstance.emit('joinRoom', meeting_id);
     });
 
     setSocket(socketInstance);
@@ -25,7 +25,7 @@ export const SocketProvider: React.FC<{ room_id: string; children: React.ReactNo
     return () => {
       socketInstance.disconnect();
     };
-  }, [room_id]);
+  }, [meeting_id]);
 
   return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };

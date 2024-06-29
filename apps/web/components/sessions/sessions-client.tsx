@@ -47,7 +47,7 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
         </div>
 
         <div className="flex flex-col overflow-hidden gap-2">
-          <div className="flex justify-between items-center px-4 pb-4">
+          <div className="flex justify-between items-center px-4 pb-2">
             <div className="flex justify-between items-center gap-4">
               <Tabs defaultValue="all">
                 <TabsList className="ml-auto">
@@ -89,9 +89,10 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
           </div>
 
           <div className="flex overflow-hidden md:mr-4">
-            <div className="flex flex-1 overflow-hidden">
-              <ScrollArea className="flex-1">
-                <div className="flex flex-col gap-2 px-4 pb-4 min-w-[22rem]">
+            <div className="flex flex-1 overflow-hidden shadow-[inset_0px_17px_12px_0px_#e2e8f0]] relative">
+            {/* <div className="shadow-custom-inset backdrop-blur-sm absolute top-0 flex w-full h-6 z-10 flex-1 pointer-events-none"></div> */}
+            <ScrollArea className="flex-1">
+                <div className="flex flex-col gap-2 px-4  min-w-[22rem]">
                   {sessionList?.map((item: TSessionBoxItems) => (
                     <SessionBox
                       key={item.id}

@@ -253,7 +253,7 @@ export function SessionForm(props: ISessionFormProps) {
                                 </FormItem>
                               )}
                             />
-                            <CopyButton className="self-end" textToCopy={props.sessionData?.meeting_id} />
+                            <CopyButton className="self-end" toastMessage={'Meeting ID copied'} textToCopy={props.sessionData?.meeting_id} />
                           </div>
                           <div className="flex gap-3 space-y-1.5">
                             <FormField
@@ -271,27 +271,30 @@ export function SessionForm(props: ISessionFormProps) {
                                 </FormItem>
                               )}
                             />
-                            <CopyButton className="self-end" textToCopy={props.sessionData?.invitation_link} />
+                            <CopyButton className="self-end" toastMessage={'Link copied'} textToCopy={props.sessionData?.invitation_link} />
                           </div>
                       </>
                     )}
-                    <div className="flex flex-col space-y-1.5">
-                      <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <div className="space-y-0.5">
-                              <FormLabel className="text-base">Session Password</FormLabel>
-                            </div>
-                            <FormControl>
-                              <Input placeholder="Password" disabled={props.isEdit} type="password" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    {props.isEdit === false && (
+                        <div className="flex flex-col space-y-1.5">
+                          <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                              <FormItem>
+                                <div className="space-y-0.5">
+                                  <FormLabel className="text-base">Session Password</FormLabel>
+                                </div>
+                                <FormControl>
+                                  <Input placeholder="Password" disabled={props.isEdit} type="password" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      )
+                    }
                     <FormField
                       control={form.control}
                       name="is_auto"

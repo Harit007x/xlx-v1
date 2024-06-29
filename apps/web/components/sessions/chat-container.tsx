@@ -12,7 +12,7 @@ import { getSessionMessages } from '../../actions/session/session-actions';
 import { useSocket } from '../../app/socketContext';
 
 interface IChatContainerProps {
-  room_id: string
+  meeting_id: string
   messages: GetSessionMessages
 }
 
@@ -38,7 +38,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
       });
     }
   }, [socket]);
-
+console.log("inbox = ",inbox)
   useEffect(() => {
     requestAnimationFrame(() => {
       if (inboxDivRef.current) {
@@ -52,7 +52,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
     try {
       if (inbox?.length !== props.messages.count) {
         const previousScrollHeight = inboxDivRef.current?.scrollHeight || 0;
-        const result = await getSessionMessages(props.room_id, 10, inbox?.length);
+        const result = await getSessionMessages(props.meeting_id, 10, inbox?.length);
         // console.log('messages fetched =', result.data)
         if (result.error) {
           console.error(result.error);
@@ -97,7 +97,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
     if (formData.message !== '') {
       if (socket) {
         // console.log("Sending message:", formData.message);
-        socket.emit('message', formData.message, props.room_id, user?.user_id);
+        socket.emit('message', formData.message, props.meeting_id, user?.user_id);
       }
       form.reset({
         message: '',

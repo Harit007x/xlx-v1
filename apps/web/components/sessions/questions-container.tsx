@@ -21,7 +21,7 @@ import { getSessionQuestions } from '../../actions/session/session-actions';
 // import clsx from 'clsx'
 
 interface IQuestionsContainerProps {
-  room_id: string
+  meeting_id: string
   questions: GetSessionQuestions
 }
 
@@ -40,13 +40,13 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
 
   useEffect(() => {
     if (socket) {
-      socket.on('question', (question) => {
+      socket.on('question', (question:any) => {
         console.log('Received question:', question);
         setScrollDown((prev) => !prev);
         setInbox((inbox: any) => [...inbox, question]);
       });
 
-      socket.on('question-action', (question) => {
+      socket.on('question-action', (question:any) => {
         console.log('question action:', question);
         setScrollDown((prev) => !prev);
         setInbox((inbox: any) => {
@@ -89,7 +89,7 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
     try {
       if (inbox?.length !== props.questions.count) {
         const previousScrollHeight = inboxDivRef.current?.scrollHeight || 0;
-        const result = await getSessionQuestions(props.room_id, 10, inbox?.length);
+        const result = await getSessionQuestions(props.meeting_id, 10, inbox?.length);
         // console.log('messages fetched =', result.data)
         if (result.error) {
           console.error(result.error);
@@ -135,7 +135,7 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
     if (formData.question !== '') {
       if (socket) {
         // console.log("Sending question:", formData.question);
-        socket.emit('question', formData.question, props.room_id, user?.user_id);
+        socket.emit('question', formData.question, props.meeting_id, user?.user_id);
       }
       form.reset({
         question: '',
@@ -152,7 +152,8 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
     // up_vote_count: number
   ) => {
     if (socket) {
-      socket.emit('question-action', props.room_id, question_id, user_id, up_vote, down_vote);
+      console.log("check it =", props.meeting_id)
+      socket.emit('question-action', props.meeting_id, question_id, user_id, up_vote, down_vote);
     }
   };
 
@@ -247,7 +248,7 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
               <FormField
                 control={form.control}
                 name="question"
-                render={({ field }) => (
+                render={({ field }:any) => (
                   <FormItem className="w-full">
                     <FormControl>
                       <Input placeholder="Ask your question..." {...field} />

@@ -47,6 +47,8 @@ model Session {
   meeting_id         String   @unique
   password           String
   tags               Json[]
+  sessionmessages    SessionMessages[]
+  questions       Questions[]
 
   user_id Int
   user    User @relation(fields: [user_id], references: [id])
@@ -67,8 +69,6 @@ model Room {
 
   participants    Participants?
   session         Session[]
-  sessionmessages SessionMessages[]
-  questions       Questions[]
 }
 
 model Participants {
@@ -90,8 +90,8 @@ model SessionMessages {
   user_id Int
   user    User @relation(fields: [user_id], references: [id])
 
-  room_id Int
-  room    Room @relation(fields: [room_id], references: [id])
+  session_id Int
+  session    Session @relation(fields: [session_id], references: [id])
 
   // @@index([user_id])
   // @@index([room_id])
@@ -111,8 +111,8 @@ model Questions {
   user_id Int
   user    User @relation(fields: [user_id], references: [id])
 
-  room_id Int
-  room    Room @relation(fields: [room_id], references: [id])
+  session_id Int
+  session    Session @relation(fields: [session_id], references: [id])
 }
 
 model QuestionActions {

@@ -36,25 +36,26 @@ class SocketService {
     io.on('connection', (socket) => {
       console.log('connected user');
 
-      socket.on('message', async (message: string, room: string, user_id: number) => {
-        console.log('message event =', message, room, user_id);
+      socket.on('message', async (message: string, meeting_id: string, user_id: number) => {
+        console.log('message event =', message, meeting_id, user_id);
         let new_message = null;
         try {
-          const roomIns = await db.room.findUnique({
+          const fetched_session = await db.session.findUnique({
             where: {
-              room_code: room,
+              meeting_id: meeting_id,
             },
           });
-          console.log('reached itsjbdasj');
-          if (!roomIns) {
-            return { error: 'Room not found.' };
+          console.log('reached itsjbdasj', fetched_session);
+          if (!fetched_session) {
+            console.log('session not found');
+            return { error: 'Session not found.' };
           }
 
           const createdMessage = await db.sessionMessages.create({
             data: {
               message,
               user_id,
-              room_id: roomIns?.id, // assuming room is the room_id, convert to int if it's a string
+              session_id: fetched_session?.id, // assuming room is the room_id, convert to int if it's a string
             },
           });
 
@@ -86,28 +87,29 @@ class SocketService {
         }
 
         if (new_message) {
-          await pub.publish('MESSAGES', JSON.stringify({ room, message: new_message }));
+          await pub.publish('MESSAGES', JSON.stringify({ meeting_id, message: new_message }));
         }
       });
 
-      socket.on('question', async (question: string, room: string, user_id: number) => {
-        console.log('question event =', question, room, user_id);
+      socket.on('question', async (question: string, meeting_id: string, user_id: number) => {
+        console.log('question event =', question, meeting_id, user_id);
         let new_question = null;
         try {
-          const fetched_room = await db.room.findUnique({
+          const fetched_session = await db.session.findUnique({
             where: {
-              room_code: room,
+              meeting_id: meeting_id,
             },
           });
-          if (!fetched_room) {
-            return { error: 'Room not found.' };
+          if (!fetched_session) {
+            console.log('session not found');
+            return { error: 'Session not found.' };
           }
 
           const createdQuestion = await db.questions.create({
             data: {
               question,
               user_id,
-              room_id: fetched_room?.id,
+              session_id: fetched_session?.id,
               up_vote_count: 0,
               down_vote_count: 0,
             },
@@ -142,13 +144,11 @@ class SocketService {
 
         if (new_question) {
           console.log('re baba re baba =', new_question);
-          await pub.publish('QUESTIONS', JSON.stringify({ room, question: new_question }));
+          await pub.publish('QUESTIONS', JSON.stringify({ meeting_id, question: new_question }));
         }
       });
 
-      socket.on(
-        'question-action',
-        async (room: string, question_id: number, user_id: number, up_vote: boolean, down_vote: boolean) => {
+      socket.on('question-action', async (meeting_id: string, question_id: number, user_id: number, up_vote: boolean, down_vote: boolean) => {
           let updated_question = null;
           try {
             const currentQuestion = await db.questions.findUnique({
@@ -173,42 +173,42 @@ class SocketService {
               }
             }
 
-            // const updatedQuestion = await db.questions.update({
-            //     where: {
-            //         id: question_id
-            //     },
-            //     data: updateData
-            // });
+            const updatedQuestion = await db.questions.update({
+                where: {
+                    id: question_id
+                },
+                data: updateData
+            });
 
-            // const existingAction = await db.questionActions.findUnique({
-            //     where: {
-            //         user_id_questions_id: {
-            //             user_id,
-            //             questions_id: question_id,
-            //         },
-            //     },
-            // });
+            const existingAction = await db.questionActions.findUnique({
+                where: {
+                    user_id_questions_id: {
+                        user_id,
+                        questions_id: question_id,
+                    },
+                },
+            });
 
-            // if (existingAction) {
-            //     const updatedAction = await db.questionActions.update({
-            //         where: {
-            //             id: existingAction.id,
-            //         },
-            //         data: {
-            //             did_up_vote: up_vote,
-            //             did_down_vote: down_vote,
-            //         },
-            //     });
-            // } else {
-            //     const newAction = await db.questionActions.create({
-            //         data: {
-            //             user_id,
-            //             questions_id: question_id,
-            //             did_up_vote: up_vote,
-            //             did_down_vote: down_vote,
-            //         },
-            //     });
-            // }
+            if (existingAction) {
+                const updatedAction = await db.questionActions.update({
+                    where: {
+                        id: existingAction.id,
+                    },
+                    data: {
+                        did_up_vote: up_vote,
+                        did_down_vote: down_vote,
+                    },
+                });
+            } else {
+                const newAction = await db.questionActions.create({
+                    data: {
+                        user_id,
+                        questions_id: question_id,
+                        did_up_vote: up_vote,
+                        did_down_vote: down_vote,
+                    },
+                });
+            }
 
             const fetchedQuestion = await db.questions.findUnique({
               where: {
@@ -240,13 +240,13 @@ class SocketService {
               );
             }
             updated_question = fetchedQuestion;
-            console.log('got the data =', updated_question);
+            console.log('got the data =', updated_question, meeting_id);
           } catch (err) {
             console.log(err);
           }
 
           if (updated_question) {
-            await pub.publish('QUESTION-ACTION', JSON.stringify({ room, question: updated_question }));
+            await pub.publish('QUESTION-ACTION', JSON.stringify({ meeting_id, question: updated_question }));
           }
         }
       );
@@ -265,8 +265,8 @@ class SocketService {
       const messageData = JSON.parse(data);
       if (channel === 'MESSAGES') {
         console.log('new message from redis', messageData);
-        if (messageData.room.length > 0) {
-          io.to(messageData.room).emit('message', messageData.message);
+        if (messageData.meeting_id != '') {
+          io.to(messageData.meeting_id).emit('message', messageData.message);
         } else {
           io.emit('message', messageData.message);
         }
@@ -274,8 +274,8 @@ class SocketService {
 
       if (channel === 'QUESTIONS') {
         console.log('new question from redis', messageData);
-        if (messageData.room.length > 0) {
-          io.to(messageData.room).emit('question', messageData.question);
+        if (messageData.meeting_id != '') {
+          io.to(messageData.meeting_id).emit('question', messageData.question);
         } else {
           io.emit('question', messageData.question);
         }
@@ -283,8 +283,8 @@ class SocketService {
 
       if (channel === 'QUESTION-ACTION') {
         console.log('updated question from redis', messageData);
-        if (messageData.room.length > 0) {
-          io.to(messageData.room).emit('question-action', messageData.question);
+        if (messageData.meeting_id != '') {
+          io.to(messageData.meeting_id).emit('question-action', messageData.question);
         } else {
           io.emit('question-action', messageData.question);
         }
