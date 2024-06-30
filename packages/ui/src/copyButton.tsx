@@ -4,24 +4,28 @@ import { useState } from 'react';
 import { Button } from './shadcn/ui/button';
 import { Icons } from './icons';
 import { toast } from 'sonner';
+import clsx from 'clsx';
 
 interface CopyButtonProps {
   textToCopy: any
   className: string
   toastMessage: string
+  type?: 'text' | 'icon'
+  beforeCopyText?: string
+  afterCopyText?: string
 }
 
-export const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, className, toastMessage }) => {
+export const CopyButton = (props: CopyButtonProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      await navigator.clipboard.writeText(textToCopy);
+      await navigator.clipboard.writeText(props.textToCopy);
       setCopied(true);
 
-      toast.success(toastMessage, {
-        duration: 2000,
+      toast.success(props.toastMessage, {
+        duration: 1500,
       });
 
       setTimeout(() => setCopied(false), 3000);
@@ -34,11 +38,31 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, className, t
     <Button
       type="button"
       size={'icon'}
-      className={`hover:bg-secondary bg-background text-foreground border border-secondary ${className}`}
+      variant={'outline'}
+      className={clsx(
+        `hover:bg-secondary bg-background text-foreground border border-secondary ${props.className}`,
+        {
+          'w-full': props.type=='text',
+        }
+      )}
       onClick={handleCopy}
       disabled={copied}
     >
-      {copied ? <Icons.check className="h-4 w-4" /> : <Icons.clipBoard className="h-4 w-4" />}
+      {
+        props.type == 'text'
+        ?
+          copied 
+            ? 
+              props.afterCopyText
+            : 
+              props.beforeCopyText
+        :
+          copied
+            ? 
+              <Icons.check className="h-4 w-4" />
+            : 
+              <Icons.clipBoard className="h-4 w-4" />
+      }
     </Button>
   );
 };

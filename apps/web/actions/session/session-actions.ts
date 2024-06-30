@@ -15,7 +15,7 @@ import { hash, compare } from 'bcrypt';
 
 export const createSession = async (data: InputTypeSession, user_id: number): Promise<CreateReturnTypeSession> => {
   const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
-
+  const baseUrl = "http://localhost:3000/live-session"
   try {
     const user = await db.user.findUnique({
       where: {
@@ -39,14 +39,17 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
     
     const hashedPassword = await hash(password, 10);
 
+    const meeting_id = nanoid();
+    const invitation_link = `${baseUrl}/${meeting_id}`;
+
     const session = await db.session.create({
       data: {
         name,
         description,
         schedule_date_time,
         is_auto,
-        invitation_link: 'asd',
-        meeting_id: nanoid(),
+        invitation_link: invitation_link,
+        meeting_id: meeting_id,
         password: hashedPassword,
         tags,
         user_id: user.id,
@@ -132,7 +135,7 @@ export const updateSession = async (
       return { error: 'User is not authorized to update this session.' };
     }
 
-    const { name, description, schedule_date_time, is_auto, tags, password } = data;
+    const { name, description, schedule_date_time, is_auto, tags, password, invitation_link } = data;
 
     const updatedSession = await db.session.update({
       where: {
@@ -143,7 +146,7 @@ export const updateSession = async (
         description,
         schedule_date_time,
         is_auto,
-        invitation_link: 'asd',
+        invitation_link,
         password,
         tags,
       },

@@ -5,9 +5,7 @@ import { NextResponse } from 'next/server';
 export default withAuth(
   async (req) => {
     const token = await getToken({ req });
-    // console.log("check token =", token?.uid)
     const isAuth = !!token;
-    // console.log("autgh hai  =", isAuth  )
     const isAuthPage = req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/register');
 
     if (isAuthPage) {
@@ -22,20 +20,14 @@ export default withAuth(
     }
 
     if (!isAuth) {
-      // let from = req.nextUrl.pathname;
-      // if (req.nextUrl.search) {
-      //   from += req.nextUrl.search;
-      // }
-      console.log('loggedIn nahi hai', req.url);
       return NextResponse.redirect(new URL(`/login`, req.url));
     }
+
+    return NextResponse.next();
   },
   {
     callbacks: {
       async authorized() {
-        // This is a work-around for handling redirect on auth pages.
-        // We return true here so that the middleware function above
-        // is always called.
         return true;
       },
     },
@@ -43,5 +35,12 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/', '/sessions', '/home', '/login', '/register'],
+  matcher: [
+    '/',
+    '/sessions',
+    '/home',
+    '/login',
+    '/register',
+    '/live-session/:path*'  // This handles dynamic routes like /live-session/[id]
+  ],
 };

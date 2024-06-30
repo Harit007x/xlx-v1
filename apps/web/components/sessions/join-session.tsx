@@ -9,10 +9,12 @@ import { verifySession } from '../../actions/session/session-actions';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@repo/ui/icons';
 import { toast } from 'sonner';
+import { useMeetingSession } from '@repo/store';
 
 const JoinSessionForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [meetingSession, setMeetingSession] = useMeetingSession()
   const form = useForm<z.infer<typeof verifySessionSchema>>({
     resolver: zodResolver(verifySessionSchema),
     defaultValues: {
@@ -27,6 +29,7 @@ const JoinSessionForm = () => {
     const response = await verifySession(formData.meeting_id, formData.password);
     console.log('rs =', response);
     if (response.data?.id) {
+      setMeetingSession(response.data);
       router.push(`live-session/${response.data.meeting_id}`);
     }else{
       setIsLoading(false);

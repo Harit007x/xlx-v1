@@ -18,7 +18,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             <QuestionsContainer meeting_id={meeting_id} questions={questionsResponse} />
           </div>
         </div>
-        <ControlDock />
+        <ControlDock/>
       </main>
     </SocketProvider>
   );
