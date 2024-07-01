@@ -34,9 +34,9 @@ export const SessionsClient: React.FC<SessionsProps> = ({ sessionList }) => {
     <div className="h-screen">
       <main className="flex flex-col h-screen">
         <div className="flex gap-4 p-4">
-          <p className="text-2xl font-bold">Sessions</p>
+          <p className="text-xl font-bold">Sessions</p>
           <Button
-            className="gap-1 md:hidden"
+            className="gap-1 smd:hidden"
             size={'sm'}
             onClick={() => {
               setToggleOpen(!toggleOpen);

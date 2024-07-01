@@ -12,9 +12,11 @@ import { revalidatePath } from 'next/cache';
 import { customAlphabet } from 'nanoid';
 import { db } from '@repo/xlx';
 import { hash, compare } from 'bcrypt';
+import formateMeetingID from '../../lib/helper';
 
 export const createSession = async (data: InputTypeSession, user_id: number): Promise<CreateReturnTypeSession> => {
-  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
+  const meeting_nano_id = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
+  const password_nano_id = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
   const baseUrl = "http://localhost:3000/live-session"
   try {
     const user = await db.user.findUnique({
@@ -27,7 +29,7 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
       return { error: 'User not found.' };
     }
 
-    const { name, description, schedule_date_time, is_auto, tags, password } = data;
+    const { name, description, schedule_date_time, is_auto, tags } = data;
 
     const room = await db.room.create({
       data: {
@@ -37,9 +39,9 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
       },
     });
     
-    const hashedPassword = await hash(password, 10);
 
-    const meeting_id = nanoid();
+    const password = password_nano_id();
+    const meeting_id = formateMeetingID(meeting_nano_id());
     const invitation_link = `${baseUrl}/${meeting_id}`;
 
     const session = await db.session.create({
@@ -50,7 +52,7 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
         is_auto,
         invitation_link: invitation_link,
         meeting_id: meeting_id,
-        password: hashedPassword,
+        password: password,
         tags,
         user_id: user.id,
         room_id: room.id,
@@ -135,7 +137,7 @@ export const updateSession = async (
       return { error: 'User is not authorized to update this session.' };
     }
 
-    const { name, description, schedule_date_time, is_auto, tags, password, invitation_link } = data;
+    const { name, description, schedule_date_time, is_auto, tags, invitation_link } = data;
 
     const updatedSession = await db.session.update({
       where: {
@@ -147,7 +149,6 @@ export const updateSession = async (
         schedule_date_time,
         is_auto,
         invitation_link,
-        password,
         tags,
       },
     });
@@ -171,9 +172,7 @@ export const verifySession = async (meeting_id: string, password:string): Promis
       return { error: 'Session not found.' };
     }
 
-    const passwordMatch = await compare(password, session.password);
-    
-    if (!passwordMatch) {
+    if (password !== session.password) {
       return {error: 'Wrong session credentials.'};
     }
 

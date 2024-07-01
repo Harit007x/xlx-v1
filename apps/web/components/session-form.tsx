@@ -10,7 +10,6 @@ import {
   CardTitle,
   Textarea,
   Switch,
-  ScrollArea,
   Sheet,
   SheetContent,
   SheetClose,
@@ -149,7 +148,7 @@ export function SessionForm(props: ISessionFormProps) {
                         render={({ field }) => (
                           <FormItem>
                             <div className="space-y-0.5">
-                              <FormLabel className="text-base">Session Name</FormLabel>
+                              <FormLabel>Session Name</FormLabel>
                             </div>
                             <FormControl>
                               <Input placeholder="Name" {...field} />
@@ -166,7 +165,7 @@ export function SessionForm(props: ISessionFormProps) {
                         render={({ field }) => (
                           <FormItem>
                             <div className="space-y-0.5">
-                              <FormLabel className="text-base">Session Description</FormLabel>
+                              <FormLabel>Session Description</FormLabel>
                             </div>
                             <FormControl>
                               <Textarea placeholder="Description" {...field} />
@@ -244,16 +243,16 @@ export function SessionForm(props: ISessionFormProps) {
                               render={({ field }) => (
                                 <FormItem className="w-full">
                                   <div className="space-y-0.5">
-                                    <FormLabel className="text-base">Meeting ID</FormLabel>
+                                    <FormLabel>Meeting ID</FormLabel>
                                   </div>
                                   <FormControl>
-                                    <Input placeholder="meeting_id" disabled {...field} />
+                                    <Input placeholder="meeting_id" readOnly {...field} />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
-                            <CopyButton className="self-end" toastMessage={'Meeting ID copied'} textToCopy={props.sessionData?.meeting_id} />
+                            <CopyButton className="self-end" toastMessage={'ID copied'} textToCopy={props.sessionData?.meeting_id} />
                           </div>
                           <div className="flex gap-3 space-y-1.5">
                             <FormField
@@ -262,10 +261,10 @@ export function SessionForm(props: ISessionFormProps) {
                               render={({ field }) => (
                                 <FormItem className="w-full">
                                   <div className="space-y-0.5">
-                                    <FormLabel className="text-base">Invitation Link</FormLabel>
+                                    <FormLabel>Invitation Link</FormLabel>
                                   </div>
                                   <FormControl>
-                                    <Input placeholder="invitation_link" disabled {...field} />
+                                    <Input placeholder="invitation_link" readOnly {...field} />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -275,23 +274,24 @@ export function SessionForm(props: ISessionFormProps) {
                           </div>
                       </>
                     )}
-                    {props.isEdit === false && (
-                        <div className="flex flex-col space-y-1.5">
+                    {props.isEdit && (
+                        <div className="flex gap-3 space-y-1.5">
                           <FormField
                             control={form.control}
                             name="password"
                             render={({ field }) => (
-                              <FormItem>
+                              <FormItem className="w-full">
                                 <div className="space-y-0.5">
-                                  <FormLabel className="text-base">Session Password</FormLabel>
+                                  <FormLabel>Pass Code</FormLabel>
                                 </div>
                                 <FormControl>
-                                  <Input placeholder="Password" disabled={props.isEdit} type="password" {...field} />
+                                  <Input placeholder="Password" readOnly {...field} />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
                           />
+                          <CopyButton className="self-end" toastMessage={'Passcode copied'} textToCopy={props.sessionData?.password} />
                         </div>
                       )
                     }
@@ -301,7 +301,7 @@ export function SessionForm(props: ISessionFormProps) {
                       render={({ field }) => (
                         <FormItem>
                           <div className="space-y-0.5">
-                            <FormLabel className="text-base">Auto Start</FormLabel>
+                            <FormLabel>Auto Start</FormLabel>
                             <FormDescription>
                               If enabled, the session will automatically start at the scheduled time.
                             </FormDescription>

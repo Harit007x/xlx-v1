@@ -131,7 +131,7 @@ const ControlDock = (props: ControlDockProps) => {
                 </Label>
                 <Input
                   id="link"
-                  defaultValue="80asdua@3cs9"
+                  defaultValue={meetingSession?.password}
                   readOnly
                 />
               </div>

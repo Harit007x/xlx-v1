@@ -41,7 +41,7 @@ const JoinSessionForm = () => {
     <div className="min-w-[20rem] w-full">
       <Card className="h-fit">
         <CardHeader>
-          <CardTitle>Join Session</CardTitle>
+          <CardTitle className='text-xl'>Join Session</CardTitle>
           <CardDescription>Enter the session id and password to join the session.</CardDescription>
         </CardHeader>
         <Form {...form}>
@@ -55,7 +55,7 @@ const JoinSessionForm = () => {
                     render={({ field }) => (
                       <FormItem>
                         <div className="space-y-0.5">
-                          <FormLabel className="text-base">Session Id</FormLabel>
+                          <FormLabel>Session Id</FormLabel>
                         </div>
                         <FormControl>
                           <Input placeholder="Enter session id" disabled={isLoading} {...field} />
@@ -72,10 +72,10 @@ const JoinSessionForm = () => {
                     render={({ field }) => (
                       <FormItem>
                         <div className="space-y-0.5">
-                          <FormLabel className="text-base">Session Password</FormLabel>
+                          <FormLabel>Session Password</FormLabel>
                         </div>
                         <FormControl>
-                          <Input placeholder="Enter session password" type="password" disabled={isLoading} {...field} />
+                          <Input placeholder="Enter session password" disabled={isLoading} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

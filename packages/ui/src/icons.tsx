@@ -53,6 +53,8 @@ import {
   Menu,
   CircleCheck,
   ClipboardPaste,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 
 export const Icons = {
@@ -108,6 +110,8 @@ export const Icons = {
   menu: Menu,
   circleCheck: CircleCheck,
   clipBoardPaste: ClipboardPaste,
+  eye: Eye,
+  eyeOff: EyeOff,
   checkSVG: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
