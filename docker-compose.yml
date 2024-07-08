@@ -52,7 +52,7 @@ services:
           path: package.json
 
   db:
-    image: postgres:alpine
+    image: postgres:14.12
     container_name: db
     environment:
       POSTGRES_USER: postgres

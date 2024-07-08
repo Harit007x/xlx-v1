@@ -3,14 +3,14 @@ import * as prisma from '@repo/xlx';
 import { Redis } from 'ioredis';
 
 const pub = new Redis({
-  host: 'redis',
+  host: 'localhost',
   port: 6379,
-  username: 'default',
+  username: '',
   password: '',
 });
 
 const sub = new Redis({
-  host: 'redis',
+  host: 'localhost',
   port: 6379,
   username: '',
   password: '',
