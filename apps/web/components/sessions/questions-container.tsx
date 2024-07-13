@@ -152,7 +152,7 @@ const QuestionsContainer = (props: IQuestionsContainerProps) => {
     // up_vote_count: number
   ) => {
     if (socket) {
-      console.log("check it =", props.meeting_id)
+      console.log("check it =", props.meeting_id);
       socket.emit('question-action', props.meeting_id, question_id, user_id, up_vote, down_vote);
     }
   };

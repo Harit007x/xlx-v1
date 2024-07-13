@@ -42,7 +42,7 @@ class SocketService {
         try {
           const fetched_session = await db.session.findUnique({
             where: {
-              meeting_id: meeting_id,
+              meeting_id,
             },
           });
           console.log('reached itsjbdasj', fetched_session);
@@ -97,7 +97,7 @@ class SocketService {
         try {
           const fetched_session = await db.session.findUnique({
             where: {
-              meeting_id: meeting_id,
+              meeting_id,
             },
           });
           if (!fetched_session) {

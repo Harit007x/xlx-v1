@@ -30,6 +30,10 @@ module.exports = {
     // Ignore dotfiles
     ".*.js",
     "node_modules/",
+    "dist/",
+    'tailwind.config.js',
+    'next.config.js',
+    'postcss.config.js'
   ],
   overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
 };

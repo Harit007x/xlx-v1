@@ -1,4 +1,3 @@
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from '@repo/ui/shadcn';
 import * as z from 'zod';
 
 export const sessionSchema = z.object({
@@ -26,7 +25,6 @@ export const sessionSchema = z.object({
     .optional(),
 });
 
-const roomIDRegex = new RegExp(REGEXP_ONLY_DIGITS_AND_CHARS);
 export const verifySessionSchema = z.object({
   meeting_id: z
     .string()

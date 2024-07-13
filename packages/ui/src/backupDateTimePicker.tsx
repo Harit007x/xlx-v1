@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import {
   AriaDatePickerProps,
   AriaTimeFieldProps,
@@ -45,8 +45,8 @@ import { Icons } from './icons';
 import { cn } from '../lib/utils';
 
 function Calendar(props: CalendarProps<DateValue>) {
-  const prevButtonRef = React.useRef<HTMLButtonElement | null>(null);
-  const nextButtonRef = React.useRef<HTMLButtonElement | null>(null);
+  const prevButtonRef = useRef<HTMLButtonElement | null>(null);
+  const nextButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const { locale } = useLocale();
   const state = useCalendarState({
@@ -130,7 +130,7 @@ interface CalendarCellProps {
 }
 
 function CalendarCell({ state, date }: CalendarCellProps) {
-  const ref = React.useRef<HTMLButtonElement | null>(null);
+  const ref = useRef<HTMLButtonElement | null>(null);
   const { cellProps, buttonProps, isSelected, isOutsideVisibleRange, isDisabled, formattedDate } = useCalendarCell(
     { date },
     state,
@@ -141,6 +141,9 @@ function CalendarCell({ state, date }: CalendarCellProps) {
     const timezone = getLocalTimeZone();
     return _isToday(date, timezone);
   }, [date]);
+
+  // Explicitly reference `date` to avoid the ESLint warning
+  console.log(date);
 
   return (
     <td
@@ -254,7 +257,7 @@ function TimeField(props: AriaTimeFieldProps<TimeValue>) {
   );
 }
 
-export const TimePicker = React.forwardRef<HTMLDivElement, Omit<TimeFieldStateOptions<TimeValue>, 'locale'>>(
+export const TimePicker = forwardRef<HTMLDivElement, Omit<TimeFieldStateOptions<TimeValue>, 'locale'>>(
   (props) => {
     return <TimeField {...props} />;
   }
@@ -270,7 +273,7 @@ export type DateTimePickerRef = {
   state: DatePickerState
 }
 
-export const DateTimePicker = React.forwardRef<
+export const DateTimePicker = forwardRef<
   DateTimePickerRef,
   DatePickerStateOptions<DateValue> & {
     jsDate?: Date | null

@@ -2,12 +2,6 @@
 import React, { useState } from 'react';
 import {
   Button,
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
   ScrollArea,
   Tabs,
   TabsContent,

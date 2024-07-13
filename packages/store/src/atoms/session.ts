@@ -1,4 +1,4 @@
-import { atom, useRecoilState } from 'recoil';
+import { atom } from 'recoil';
 
 export interface session {
     id?: number | undefined;
@@ -17,7 +17,3 @@ export const sessionAtom = atom<null | session>({
   key: 'sessionAtom',
   default: null,
 });
-
-export function useMeetingSession() {
-    return useRecoilState(sessionAtom);
-}

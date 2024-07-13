@@ -9,12 +9,14 @@ import { verifySession } from '../../actions/session/session-actions';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@repo/ui/icons';
 import { toast } from 'sonner';
-import { useMeetingSession } from '@repo/store';
+import { sessionAtom } from '@repo/store';
+import { useSetRecoilState } from 'recoil';
 
 const JoinSessionForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [meetingSession, setMeetingSession] = useMeetingSession()
+  const setMeetingSession = useSetRecoilState(sessionAtom);
+
   const form = useForm<z.infer<typeof verifySessionSchema>>({
     resolver: zodResolver(verifySessionSchema),
     defaultValues: {
@@ -31,7 +33,7 @@ const JoinSessionForm = () => {
     if (response.data?.id) {
       setMeetingSession(response.data);
       router.push(`live-session/${response.data.meeting_id}`);
-    }else{
+    } else {
       setIsLoading(false);
       toast.error(response.error);
     }

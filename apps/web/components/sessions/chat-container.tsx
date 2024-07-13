@@ -38,7 +38,7 @@ export const ChatContainer = (props: IChatContainerProps) => {
       });
     }
   }, [socket]);
-console.log("inbox = ",inbox)
+console.log("inbox = ",inbox);
   useEffect(() => {
     requestAnimationFrame(() => {
       if (inboxDivRef.current) {

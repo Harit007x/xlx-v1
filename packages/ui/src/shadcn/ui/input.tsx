@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import * as React from 'react';
 
 import { cn } from '@repo/ui/utils';
@@ -6,15 +6,14 @@ import { Icons } from '../../icons';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, ...props }, ref) => {
-  const [showPassword, setShowPassword] = React.useState(false)
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
+    setShowPassword(!showPassword);
   };
 
-  const inputType = type === "password" && showPassword ? "text" : type
+  const inputType = type === "password" && showPassword ? "text" : type;
   return (
     <div className="relative">
       <input

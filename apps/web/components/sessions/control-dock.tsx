@@ -8,19 +8,17 @@ import clsx from 'clsx';
 import CurrentTime from '../current-time';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../../../packages/ui/src/shadcn/ui/dialog';
 import { CopyButton } from '@repo/ui/copy-button';
-import { useMeetingSession } from '@repo/store';
+import { useRecoilValue } from 'recoil';
+import { sessionAtom } from '@repo/store';
 
-interface ControlDockProps {
-}
-
-const ControlDock = (props: ControlDockProps) => {
+const ControlDock = () => {
   const router = useRouter();
   const [pollDisabled, setPollDisabled] = useState(false);
   const [messageDisabled, setMessageDisabled] = useState(false);
   const [qnaDisabled, setQnaDisabled] = useState(false);
   const [isMore, setIsMore] = useState(false);
-  const [meetingSession] = useMeetingSession()
-  console.log('asdasd',meetingSession)
+  const meetingSession = useRecoilValue(sessionAtom);
+  console.log('asdasd',meetingSession);
 
   const handleExit = () => {
     router.push('/sessions');
@@ -89,7 +87,6 @@ const ControlDock = (props: ControlDockProps) => {
           <Icons.phone className="h-5 w-5 rotate-[135deg]" />
         </Button>
       </div>
-     
 
       <Dialog>
         <DialogTrigger asChild>

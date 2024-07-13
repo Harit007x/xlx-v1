@@ -11,13 +11,12 @@ import {
 import { revalidatePath } from 'next/cache';
 import { customAlphabet } from 'nanoid';
 import { db } from '@repo/xlx';
-import { hash, compare } from 'bcrypt';
 import formateMeetingID from '../../lib/helper';
 
 export const createSession = async (data: InputTypeSession, user_id: number): Promise<CreateReturnTypeSession> => {
   const meeting_nano_id = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
   const password_nano_id = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
-  const baseUrl = "http://localhost:3000/live-session"
+  const baseUrl = "http://localhost:3000/live-session";
   try {
     const user = await db.user.findUnique({
       where: {
@@ -38,7 +37,6 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
         is_ind_paused: false,
       },
     });
-    
 
     const password = password_nano_id();
     const meeting_id = formateMeetingID(meeting_nano_id());
@@ -50,9 +48,9 @@ export const createSession = async (data: InputTypeSession, user_id: number): Pr
         description,
         schedule_date_time,
         is_auto,
-        invitation_link: invitation_link,
-        meeting_id: meeting_id,
-        password: password,
+        invitation_link,
+        meeting_id,
+        password,
         tags,
         user_id: user.id,
         room_id: room.id,
@@ -93,7 +91,6 @@ export const getSessionDetails = async (user_id: number): Promise<GetReturnTypeS
         user_id,
       }
     });
-
 
     if (!session) {
       return { error: 'Sessions not found.' };
@@ -168,7 +165,7 @@ export const verifySession = async (meeting_id: string, password:string): Promis
       },
     });
 
-    if (!session){
+    if (!session) {
       return { error: 'Session not found.' };
     }
 
