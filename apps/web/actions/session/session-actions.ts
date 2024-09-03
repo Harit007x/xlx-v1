@@ -10,7 +10,7 @@ import {
 } from './types';
 import { revalidatePath } from 'next/cache';
 import { customAlphabet } from 'nanoid';
-import { db } from '@repo/xlx';
+import { db } from '@repo/db';
 import formateMeetingID from '../../lib/helper';
 
 export const createSession = async (data: InputTypeSession, user_id: number): Promise<CreateReturnTypeSession> => {

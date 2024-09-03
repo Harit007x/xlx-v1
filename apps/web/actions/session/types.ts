@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { questionsSchema, sessionMessagesSchema, sessionSchema, verifySessionSchema } from './schema';
 import { ActionState } from '../../lib/create-safe-action';
-import { Session } from '@repo/xlx';
+import { Session } from '@repo/db';
 
 export type InputTypeSession = z.infer<typeof sessionSchema>
 export type VerifySessionSchema = z.infer<typeof verifySessionSchema>

@@ -13,7 +13,8 @@
     "dev:docker": "pnpm run prisma:docker && cd apps/web && pnpm run dev",
     "dev:test": "pnpm run prisma:docker && cd apps/test && pnpm run dev",
     "prisma:docker": "cd packages/xlx-db && pnpx prisma migrate dev",
-    "db:generate": "pnpx prisma generate && cd ../.."
+    "db:generate": "cd packages/xlx-db && pnpx prisma generate && cd ../..",
+    "postinstall": "turbo run db:generate"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

@@ -1,6 +1,7 @@
 {
-  "name": "@repo/xlx",
+  "name": "@repo/db",
   "version": "0.0.0",
+  "main": "index.js",
   "exports": {
     ".": "./src/index.ts"
   },
@@ -10,8 +11,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0",
-    "prisma": "^5.14.0"
+    "@prisma/client": "^5.19.1",
+    "prisma": "^5.19.1"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",

@@ -15,7 +15,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@repo/store": "*",
     "@repo/ui": "*",
-    "@repo/xlx": "*",
+    "@repo/db": "*",
     "@types/next": "^9.0.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",

@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import * as prisma from '@repo/xlx';
+import * as prisma from '@repo/db';
 import { Redis } from 'ioredis';
 
 const pub = new Redis({

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 // import { hash } from 'bcrypt';
 import * as z from 'zod';
-import { db } from '@repo/xlx';
+import { db } from '@repo/db';
 
 const userSchema = z.object({
   username: z.string().min(1, 'Username is required').min(4, 'Username must be at least 4 characters').max(10),

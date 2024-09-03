@@ -13,7 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
-    "recoil": "^0.7.7",
-    "@repo/common": "*"
+    "recoil": "^0.7.7"
   }
 }

@@ -1,7 +1,7 @@
 'use server';
 import { InputTypeRegisterUser, ReturnTypeRegisterUser } from './types';
 import { hash } from 'bcrypt';
-import { db } from '@repo/xlx';
+import { db } from '@repo/db';
 
 export const getUserDetails = async (username?: string) => {
   try {

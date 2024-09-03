@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { compare } from 'bcrypt';
 import { userLoginSchema } from '../../../actions/user/schema';
-import { db } from '@repo/xlx';
+import { db } from '@repo/db';
 
 export async function POST(req: NextRequest) {
   try {
