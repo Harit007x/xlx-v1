@@ -151,6 +151,9 @@ importers:
       '@next/eslint-plugin-next':
         specifier: ^14.1.1
         version: 14.2.7
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.19.1
+        version: 5.19.1
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -1286,6 +1289,10 @@ packages:
     dependencies:
       '@prisma/debug': 5.19.1
     dev: false
+
+  /@prisma/nextjs-monorepo-workaround-plugin@5.19.1:
+    resolution: {integrity: sha512-1iYnW2IVhnQYsXwNjY+8dche/huVmkOL8FNKYjzHBsppuyqGcZ7fn6po4xfQgyfpnzsb/eEYYtlh5fycAy6fcw==}
+    dev: true
 
   /@radix-ui/number@1.1.0:
     resolution: {integrity: sha512-V3gRzhVNU1ldS5XhAPTom1fOIo4ccrjjJgmE+LI2h/WaFpHmx0MQApT+KZHnx8abG6Avtfcz4WoEciMnpFT3HQ==}
