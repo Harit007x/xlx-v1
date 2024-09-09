@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -38,18 +37,18 @@ model Preferences {
 }
 
 model Session {
-  id                 Int      @id @default(autoincrement())
+  id                 Int               @id @default(autoincrement())
   name               String
-  schedule_date_time DateTime @default(now())
+  schedule_date_time DateTime          @default(now())
   description        String
   is_auto            Boolean
-  is_finished        Boolean  @default(false)
+  is_finished        Boolean           @default(false)
   invitation_link    String
-  meeting_id         String   @unique
+  meeting_id         String            @unique
   password           String
   tags               Json[]
   sessionmessages    SessionMessages[]
-  questions       Questions[]
+  questions          Questions[]
 
   user_id Int
   user    User @relation(fields: [user_id], references: [id])
@@ -67,8 +66,8 @@ model Room {
   is_chat_paused Boolean @default(false)
   is_ind_paused  Boolean @default(false)
 
-  participants    Participants?
-  session         Session[]
+  participants Participants?
+  session      Session[]
 }
 
 model Participants {
