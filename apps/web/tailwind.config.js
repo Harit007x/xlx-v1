@@ -9,6 +9,7 @@ module.exports = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
     './screens/**/*{.ts,tsx}',
+    '!../../packages/ui/node_modules/**/*'
   ],
   prefix: "",
   theme: {
