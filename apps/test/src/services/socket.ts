@@ -1,21 +1,36 @@
 import { Server } from 'socket.io';
 import * as prisma from '@repo/db';
-import { Redis } from 'ioredis';
+import { Redis, RedisOptions } from 'ioredis';
+import 'dotenv/config';
 
-const pub = new Redis({
-  host: 'localhost',
-  port: 6379,
-  username: '',
-  password: '',
-});
+function isRedisOptions(config: RedisOptions | string): config is RedisOptions {
+  return typeof config !== 'string';
+}
 
-const sub = new Redis({
-  host: 'localhost',
-  port: 6379,
-  username: '',
-  password: '',
-});
+function createRedisClient(config: RedisOptions | string): Redis {
+  if (isRedisOptions(config)) {
+    return new Redis(config);
+  }
+  return new Redis(config);
+}
 
+let redisConfig: RedisOptions | string;
+
+if (process.env.REDIS_URL) {
+  // If a full Redis URL is provided, use it directly
+  redisConfig = process.env.REDIS_URL;
+} else {
+  // Otherwise, use individual parameters
+  redisConfig = {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: 6379,
+    username: process.env.REDIS_USERNAME || undefined,
+    password: process.env.REDIS_PASSWORD || undefined,
+  };
+}
+
+const pub = createRedisClient(redisConfig);
+const sub = createRedisClient(redisConfig);
 class SocketService {
   private _io: Server;
   constructor() {
@@ -173,7 +188,7 @@ class SocketService {
               }
             }
 
-            const updatedQuestion = await db.questions.update({
+            await db.questions.update({
                 where: {
                     id: question_id
                 },
@@ -190,7 +205,7 @@ class SocketService {
             });
 
             if (existingAction) {
-                const updatedAction = await db.questionActions.update({
+                await db.questionActions.update({
                     where: {
                         id: existingAction.id,
                     },
@@ -200,7 +215,7 @@ class SocketService {
                     },
                 });
             } else {
-                const newAction = await db.questionActions.create({
+                await db.questionActions.create({
                     data: {
                         user_id,
                         questions_id: question_id,
@@ -265,7 +280,7 @@ class SocketService {
       const messageData = JSON.parse(data);
       if (channel === 'MESSAGES') {
         console.log('new message from redis', messageData);
-        if (messageData.meeting_id != '') {
+        if (messageData.meeting_id !== '') {
           io.to(messageData.meeting_id).emit('message', messageData.message);
         } else {
           io.emit('message', messageData.message);
@@ -274,7 +289,7 @@ class SocketService {
 
       if (channel === 'QUESTIONS') {
         console.log('new question from redis', messageData);
-        if (messageData.meeting_id != '') {
+        if (messageData.meeting_id !== '') {
           io.to(messageData.meeting_id).emit('question', messageData.question);
         } else {
           io.emit('question', messageData.question);
@@ -283,7 +298,7 @@ class SocketService {
 
       if (channel === 'QUESTION-ACTION') {
         console.log('updated question from redis', messageData);
-        if (messageData.meeting_id != '') {
+        if (messageData.meeting_id !== '') {
           io.to(messageData.meeting_id).emit('question-action', messageData.question);
         } else {
           io.emit('question-action', messageData.question);
