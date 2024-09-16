@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prisma:migrate": "cd ../../packages/xlx-db && pnpx prisma migrate dev && cd ../../apps/web",
     "start": "ts-node dist/app.js",
     "dev": "ts-node src/app.ts",
-    "build": "tsup src/app.ts",
+    "build": "tsup src/app.ts && pnpm run prisma:migrate",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
