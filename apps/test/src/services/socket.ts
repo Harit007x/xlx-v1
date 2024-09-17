@@ -37,7 +37,7 @@ class SocketService {
     this._io = new Server({
       cors: {
         allowedHeaders: ['*'],
-        origin: 'http://localhost:3000',
+        origin: ['http://localhost:3000', 'https://xlx-v1-web.vercel.app/'],
       },
     });
     sub.subscribe('MESSAGES');
