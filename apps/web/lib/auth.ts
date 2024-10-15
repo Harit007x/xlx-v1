@@ -18,7 +18,7 @@ async function validateUser(username: string, password: string): Promise<{ data:
   const body = new URLSearchParams();
   body.append('username', username);
   body.append('password', password);
-  console.log('making an apir calll ok')
+  console.log('making an apir calll ok', url)
   try {
     const response = await axios.post(url, body, { headers });
     console.log('res pom of call =', response)
